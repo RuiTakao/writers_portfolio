@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ログイン - Writers Portfolio</title>
     <?= $this->Html->css('reset') ?>
-    <?= $this->Html->css('Admin/login') ?>
+    <?= $this->Html->css('admin/login') ?>
 </head>
 
 <body>
