@@ -17,7 +17,7 @@
 }
 
 .container {
-    max-width: 560px;
+    max-width: 480px;
     width: 90%;
     margin: 0 auto;
     padding-top: 144px;
@@ -81,4 +81,34 @@ input:focus {
 
 .error-message {
     color: #DC3545;
+}
+
+.back_button {
+    border: 1px solid #C3C4C7;
+    background: #fff;
+    color: #333;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    font-size: 14px;
+    text-decoration: none;
+    display: block;
+    padding: 8px;
+    margin-top: 16px;
+    text-align: center;
+}
+
+.back_button:hover {
+    background: #efefef;
+}
+
+.confirm_text {
+    margin-bottom: 48px;
+    font-size: 18px;
+    font-weight: 600;
+    white-space: nowrap
+}
+
+.confirm_text span {
+    margin-left: 32px;
 }

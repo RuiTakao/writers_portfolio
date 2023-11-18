@@ -26,15 +26,6 @@
         }
     }
 
-    <?php /** ライセンス発行確認用モーダル */ ?>
-    function checkCreateLicense() {
-        if (confirm(`ライセンスの発行を行いますか？`)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     <?php /** ログアウト確認モーダル */ ?>
     function logout() {
         if (confirm(`ログアウトしますか？`)) {

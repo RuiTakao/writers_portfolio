@@ -77,8 +77,7 @@ class UsersTable extends Table
 
         $validator
             ->maxLength('password', 255, 'パスワードは255文字以内で入力してください。')
-            ->notBlank('password', 'パスワードが入力されていません。')
-            ->asciiAlphaNumeric('password', 'パスワードは半角英数字のみで入力してください。');
+            ->notBlank('password', 'パスワードが入力されていません。');
 
         return $validator;
     }
