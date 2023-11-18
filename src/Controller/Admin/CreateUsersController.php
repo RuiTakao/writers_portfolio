@@ -160,6 +160,7 @@ class CreateUsersController extends AppController
                 return $this->redirect('/');
             }
 
+            $this->session->delete('create_user_data');
             return $this->redirect(['action' => 'complete']);
         }
 
@@ -169,6 +170,10 @@ class CreateUsersController extends AppController
     public function complete()
     {
         $this->viewBuilder()->disableAutoLayout();
+
+        $user = $this->Users->find('all', ['conditions' => ['id' => $this->AuthUser->id]])->first();
+
+        $this->set('user', $user);
     }
 
     protected function _setPassword(string $password): ?string
