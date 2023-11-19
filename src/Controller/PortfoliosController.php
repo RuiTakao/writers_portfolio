@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Model\Table\ProfilesTable;
+use App\Model\Table\SitesTable;
 use App\Model\Table\UsersTable;
 use Cake\ORM\TableRegistry;
 
@@ -12,6 +13,7 @@ use Cake\ORM\TableRegistry;
  *
  * @param UsersTable $Users
  * @param ProfilesTable $Profiles
+ * @param SitesTable $Sites
  */
 class PortfoliosController extends AppController
 {
@@ -23,6 +25,7 @@ class PortfoliosController extends AppController
         // 使用するモデル
         $this->Users = TableRegistry::getTableLocator()->get('Users');
         $this->Profiles = TableRegistry::getTableLocator()->get('Profiles');
+        $this->Sites = TableRegistry::getTableLocator()->get('Sites');
     }
 
     /**
@@ -41,7 +44,11 @@ class PortfoliosController extends AppController
         }
 
         $profile = $this->Profiles->find('all', ['conditions' => ['user_id' => $user->id]])->first();
+
+        $site = $this->Sites->find('all', ['conditions' => ['user_id' => $user->id]])->first();
+
         $this->set('profile', $profile);
+        $this->set('site', $site);
         $this->set('username', $username);
     }
 }

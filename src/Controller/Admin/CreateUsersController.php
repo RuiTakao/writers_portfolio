@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Controller\Admin\AppController;
 use App\Model\Table\ProfilesTable;
+use App\Model\Table\SitesTable;
 use App\Model\Table\UsersTable;
 use Authentication\PasswordHasher\DefaultPasswordHasher;
 use Cake\Event\EventInterface;
@@ -17,6 +18,7 @@ use Cake\ORM\TableRegistry;
  *
  * @property UsersTable $Users
  * @property ProfilesTable $Profiles
+ * @property SitesTable $Sites
  */
 class CreateUsersController extends AppController
 {
@@ -28,6 +30,7 @@ class CreateUsersController extends AppController
         // 使用するモデル
         $this->Users = TableRegistry::getTableLocator()->get('Users');
         $this->Profiles = TableRegistry::getTableLocator()->get('Profiles');
+        $this->Sites = TableRegistry::getTableLocator()->get('Sites');
 
         // トランザクション用の変数
         $this->connection = $this->Users->getConnection();
@@ -178,6 +181,53 @@ class CreateUsersController extends AppController
 
                 // ユーザープロフィール画像保存用ディレクトリ作成
                 $mkdir = mkdir(WWW_ROOT . 'img/users/profiles/' . $user->username);
+                if (!$mkdir) {
+                    throw new DatabaseException('ディレクトリ作成失敗');
+                }
+
+                // コミット
+                $connection->commit();
+            } catch (DatabaseException $e) {
+
+                // ロールバック
+                $connection->rollback();
+                $this->session->write('message', $e);
+                return $this->redirect('/');
+            }
+
+            // トランザクション用の変数用意
+            $connection = $this->Sites->getConnection();
+
+            $data = [
+                'site_title' => $user->username,
+                'user_id' => $this->AuthUser->id
+            ];
+
+            try {
+
+                // トランザクション開始
+                $connection->begin();
+
+                $sites = $this->Sites->newEmptyEntity();
+                $sites = $this->Sites->patchEntity($sites, $data);
+                if ($user->getErrors()) {
+                    return $this->redirect('/');
+                }
+
+                // 登録処理
+                $ret = $this->Sites->save($sites);
+                if (!$ret) {
+                    throw new DatabaseException('ユーザーの作成に失敗しました。');
+                }
+
+                // ファビコン画像保存用ディレクトリ作成
+                $mkdir = mkdir(WWW_ROOT . 'img/users/sites/favicons/' . $user->username);
+                if (!$mkdir) {
+                    throw new DatabaseException('ディレクトリ作成失敗');
+                }
+
+                // ヘッダー画像保存用ディレクトリ作成
+                $mkdir = mkdir(WWW_ROOT . 'img/users/sites/headers/' . $user->username);
                 if (!$mkdir) {
                     throw new DatabaseException('ディレクトリ作成失敗');
                 }
