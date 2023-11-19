@@ -7,6 +7,7 @@
     <title>管理画面 - Writers Portfolio</title>
     <?= $this->Html->css([
         'reset',
+        'base',
         'admin/layout'
     ]) ?>
     <?php /** css 各ページ */ ?>
@@ -23,6 +24,8 @@
     <aside class="aside">
         <nav class="aside_navi">
             <ul class="aside_navi_list">
+                <li class="aside_navi_item"><?= $this->Html->link('プロフィール設定', ['controller' => 'Profiles', 'action' => 'index']) ?></li>
+                <li class="aside_navi_item"><?= $this->Html->link('サイト設定', ['controller' => 'Sites', 'action' => 'index']) ?></li>
             </ul>
         </nav>
     </aside>

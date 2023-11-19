@@ -5,17 +5,24 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Controller\Admin\AppController;
+use App\Model\Table\ProfilesTable;
+use App\Model\Table\SitesTable;
+use App\Model\Table\UsersTable;
 use Authentication\PasswordHasher\DefaultPasswordHasher;
 use Cake\Event\EventInterface;
+use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
 
 /**
  * CreateUsers Controller
  *
- * @method \App\Model\Entity\CreateUser[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @property UsersTable $Users
+ * @property ProfilesTable $Profiles
+ * @property SitesTable $Sites
  */
 class CreateUsersController extends AppController
 {
+
     public function initialize(): void
     {
         parent::initialize();
@@ -23,11 +30,15 @@ class CreateUsersController extends AppController
         // 使用するモデル
         $this->Users = TableRegistry::getTableLocator()->get('Users');
         $this->Profiles = TableRegistry::getTableLocator()->get('Profiles');
+        $this->Sites = TableRegistry::getTableLocator()->get('Sites');
 
         // トランザクション用の変数
         $this->connection = $this->Users->getConnection();
     }
 
+    /**
+     * @param EventInterface $event
+     */
     public function beforeFilter(EventInterface $event)
     {
         parent::beforeFilter($event);
@@ -38,50 +49,73 @@ class CreateUsersController extends AppController
         }
     }
 
+    /**
+     * ユーザー名作成画面
+     * 
+     * @return Response|void
+     */
     public function create()
     {
         $this->viewBuilder()->disableAutoLayout();
 
+        // エンティティ作成
         $user = $this->Users->newEmptyEntity();
 
         if ($this->request->is(['patch', 'post', 'put'])) {
+            // postの場合
 
+            // requestデータ取得
             $data = $this->request->getData();
 
-            // バリデーション処理
+            // エンティティにデータセット
             $user = $this->Users->patchEntity($user, $data);
 
+            // パスワード再入力チェック
             if ($data['password'] != $data['re_password']) {
                 $user->setError('password', ['入力されたパスワードと一致しません。']);
                 $user->setError('re_password', ['入力されたパスワードと一致しません。']);
             }
 
+            // バリデーション処理
             if ($user->getErrors()) {
                 $this->set('user', $user);
-
                 return;
             }
 
+            // セッションにデータ保持し確認画面へ遷移
             $this->session->write('create_user_data', $data);
             return $this->redirect(['action' => 'confirm']);
         }
 
+        // データセット
         $this->set('user', $user);
     }
 
+    /**
+     * 確認画面
+     * 
+     * @return Response|void
+     */
     public function confirm()
     {
 
         $this->viewBuilder()->disableAutoLayout();
 
+        // セッションデータが無ければリダイレクト
         if (!$this->session->check('create_user_data')) {
             return $this->redirect('/');
         }
 
+        // セッションからデータ取得
         $session_data = $this->session->read('create_user_data');
-
+        
         if ($this->request->is(['patch', 'post', 'put'])) {
+            // postの場合
 
+            // セッションデータ削除
+            $this->session->delete('create_user_data');
+
+            // 保存に必要なデータセット
             $data = [
                 'username' => $session_data['username'],
                 'password' => $this->_setPassword($session_data['password']),
@@ -100,10 +134,11 @@ class CreateUsersController extends AppController
                     ->epilog('FOR UPDATE')
                     ->first();
 
+                // idからデータ取得
                 $user = $this->Users->find('all', ['conditions' => ['id' => $this->AuthUser->id]])->first();
-                $user = $this->Users->patchEntity($user, $data);
 
                 // 登録処理
+                $user = $this->Users->patchEntity($user, $data);
                 $ret = $this->Users->save($user);
                 if (!$ret) {
                     throw new DatabaseException('ユーザーの作成に失敗しました。');
@@ -123,7 +158,7 @@ class CreateUsersController extends AppController
             $connection = $this->Profiles->getConnection();
 
             $data = [
-                'name' => $user->username,
+                'view_name' => $user->username,
                 'user_id' => $this->AuthUser->id
             ];
 
@@ -160,6 +195,53 @@ class CreateUsersController extends AppController
                 return $this->redirect('/');
             }
 
+            // トランザクション用の変数用意
+            $connection = $this->Sites->getConnection();
+
+            $data = [
+                'site_title' => $user->username,
+                'user_id' => $this->AuthUser->id
+            ];
+
+            try {
+
+                // トランザクション開始
+                $connection->begin();
+
+                $sites = $this->Sites->newEmptyEntity();
+                $sites = $this->Sites->patchEntity($sites, $data);
+                if ($user->getErrors()) {
+                    return $this->redirect('/');
+                }
+
+                // 登録処理
+                $ret = $this->Sites->save($sites);
+                if (!$ret) {
+                    throw new DatabaseException('ユーザーの作成に失敗しました。');
+                }
+
+                // ファビコン画像保存用ディレクトリ作成
+                $mkdir = mkdir(WWW_ROOT . 'img/users/sites/favicons/' . $user->username);
+                if (!$mkdir) {
+                    throw new DatabaseException('ディレクトリ作成失敗');
+                }
+
+                // ヘッダー画像保存用ディレクトリ作成
+                $mkdir = mkdir(WWW_ROOT . 'img/users/sites/headers/' . $user->username);
+                if (!$mkdir) {
+                    throw new DatabaseException('ディレクトリ作成失敗');
+                }
+
+                // コミット
+                $connection->commit();
+            } catch (DatabaseException $e) {
+
+                // ロールバック
+                $connection->rollback();
+                $this->session->write('message', $e);
+                return $this->redirect('/');
+            }
+
             $this->session->delete('create_user_data');
             return $this->redirect(['action' => 'complete']);
         }
@@ -167,6 +249,9 @@ class CreateUsersController extends AppController
         $this->set('user', $session_data);
     }
 
+    /**
+     * ユーザー作成完了
+     */
     public function complete()
     {
         $this->viewBuilder()->disableAutoLayout();
@@ -176,6 +261,9 @@ class CreateUsersController extends AppController
         $this->set('user', $user);
     }
 
+    /**
+     * パスワード暗号化
+     */
     protected function _setPassword(string $password): ?string
     {
         if (strlen($password) > 0) {

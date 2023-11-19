@@ -1,0 +1,295 @@
+/*********************************
+	css初期化
+*********************************/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/*********************************
+	共通パーツ
+*********************************/
+.section {
+    margin-top: 104px;
+}
+
+.container {
+    max-width: 768px;
+    margin: 0 auto;
+}
+
+.section_title {
+    color: #333;
+    font-weight: 600;
+    background: #F2F1EF;
+    padding: 4px 12px;
+    border-left: 4px solid #333;
+    border-bottom: 1px solid #333;
+    letter-spacing: .2em;
+    margin-bottom: 40px;
+}
+
+.content_title {
+    font-weight: 600;
+    border-bottom: 1px solid #333;
+    padding: 2px 4px;
+}
+
+@media screen and (max-width:960px) {
+    .container {
+        width: 90%;
+    }
+}
+
+/*********************************
+	ファーストビュー
+*********************************/
+.fv {
+    height: 368px;
+    position: relative;
+}
+
+.fv_bg {
+    height: 336px;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: 1;
+}
+
+.fv_bg_cover {
+    height: 336px;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background: #fff;
+    opacity: .6;
+    z-index: 2;
+}
+
+.fv_container {
+    position: absolute;
+    max-width: 768px;
+    width: 100%;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+.fv_user_icon img {
+    width: 192px;
+    height: 192px;
+    display: block;
+    border: 3px solid #fff;
+}
+
+.fv_user_name {
+    font-size: 32px;
+    color: #333;
+    font-weight: 600;
+}
+
+.fv_user_works {
+    font-size: 24px;
+    color: #333;
+    font-weight: 600;
+    margin-top: 8px;
+}
+
+@media screen and (max-width:960px) {
+    .fv_container {
+        width: 90%;
+    }
+}
+
+@media screen and (max-width:640px) {
+    .fv_container {
+        gap: 32px;
+    }
+
+    .fv_user_icon img {
+        width: 144px;
+        height: 144px;
+    }
+
+    .fv_user_name {
+        font-size: 24px;
+    }
+
+    .fv_user_works {
+        font-size: 16px;
+        margin-top: 8px;
+    }
+}
+
+/*********************************
+	自己PR
+*********************************/
+.pr {
+    margin-top: 80px;
+}
+
+.pr_content {
+    font-size: 16px;
+    letter-spacing: .2em;
+    line-height: 1.8em;
+}
+
+@media screen and (max-width:640px) {
+    .pr {
+        margin-top: 64px;
+    }
+}
+
+/*********************************
+	経歴
+*********************************/
+.career_list {
+    margin-left: 12px;
+    width: 100%;
+}
+
+.career_item {
+    list-style: none;
+    display: flex;
+}
+
+.career_item:not(:first-child) {
+    margin-top: 56px;
+}
+
+.career_item_title {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+}
+
+.career_term {
+    font-size: 14px;
+}
+
+.career_work {
+    margin-top: 4px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.career_detail {
+    line-height: 28px;
+    width: 60%;
+    font-size: 14px;
+    padding-top: 8px;
+}
+
+@media screen and (max-width:768px) {
+    .career_item {
+        display: block;
+    }
+
+    .career_item_title {
+        width: 100%;
+    }
+
+    .career_term {
+        order: 2;
+    }
+
+    .career_work {
+        order: 1;
+    }
+
+    .career_work::after {
+        display: block;
+        width: 40px;
+        height: 1px;
+        margin: 20px 0;
+        content: "";
+        background: #333;
+    }
+
+    .career_detail {
+        width: 100%;
+    }
+}
+
+/*********************************
+	実績紹介
+*********************************/
+.works_content_item {
+    list-style: none;
+}
+
+.works_content_item:not(:first-child) {
+    margin-top: 80px;
+}
+
+.works_content_image {
+    width: 100%;
+    height: auto;
+    max-height: 368px;
+    margin-top: 16px;
+}
+
+.works_content_image img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 368px;
+}
+
+.works_content_link {
+    margin-top: 16px;
+    font-size: 14px;
+}
+
+.works_content_detail {
+    font-size: 16px;
+    letter-spacing: .2em;
+    line-height: 1.8em;
+    margin-top: 32px;
+}
+
+/*********************************
+	仕事について
+*********************************/
+.work_style_content_item {
+    list-style: none;
+}
+
+.work_style_content_item:not(:first-child) {
+    margin-top: 32px;
+}
+
+.work_style_content_list {
+    margin-top: 16px;
+    margin-left: 32px;
+    line-height: 1.8em;
+}
+
+/*********************************
+	お問い合わせ
+*********************************/
+._blank {
+    height: 320px;
+    line-height: 320px;
+}
+
+/*********************************
+	footer
+*********************************/
+.footer {
+    background: #333;
+    height: 56px;
+    line-height: 56px;
+    color: #fff;
+    text-align: right;
+}

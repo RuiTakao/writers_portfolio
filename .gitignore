@@ -5,6 +5,12 @@
 /logs/*
 /tmp/*
 /vendor/*
+/webroot/img/users/profiles/*
+/webroot/img/users/sites/favicons/*
+/webroot/img/users/sites/headers/*
+!/webroot/img/users/profiles/.gitkeep
+!/webroot/img/users/sites/favicons/.gitkeep
+!/webroot/img/users/sites/headers/.gitkeep
 
 # OS generated files #
 ######################
@@ -14,7 +20,8 @@
 .Spotlight-V100
 .Trashes
 # Icon must end with two \r
-Icon
+Icon
+
 ehthumbs.db
 Thumbs.db
 .directory
