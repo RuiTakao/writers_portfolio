@@ -12,11 +12,11 @@
 <table class="text_table">
     <tr>
         <th>サイトタイトル</th>
-        <td></td>
+        <td><?= h($site->site_title) ?></td>
     </tr>
     <tr>
         <th>ディスクリプション</th>
-        <td></td>
+        <td><?= nl2br(h($site->site_description)) ?></td>
     </tr>
 </table>
 <?= $this->Html->link('編集', ['action' => 'edit'], ['class' => 'button']) ?>
@@ -27,13 +27,13 @@
     </tr>
     <tr>
         <td>
-            <div class="profile_image">
+            <div class="favicon_image">
                 <?php if (is_null($site->favicon_path) || !file_exists(WWW_ROOT . 'img/users/sites/favicons/' . $auth->username . '/' . $site->favicon_path)) : ?>
                     <div class="image_blank"></div>
                 <?php else : ?>
                     <?= $this->Html->image('users/sites/favicons/' . $auth->username . '/' . $site->favicon_path) ?>
                 <?php endif; ?>
-                <?= $this->Html->link('画像の編集', ['action' => 'edit_image'], ['class' => 'edit_image']) ?>
+                <?= $this->Html->link('画像の編集', ['action' => 'edit_favicon_image'], ['class' => 'edit_image']) ?>
             </div>
         </td>
     </tr>
@@ -45,7 +45,7 @@
     </tr>
     <tr>
         <td>
-            <div class="profile_image">
+            <div class="header_image">
                 <?php if (is_null($site->header_image_path) || !file_exists(WWW_ROOT . 'img/users/sites/headers/' . $auth->username . '/' . $site->header_image_path)) : ?>
                     <div class="image_blank"></div>
                 <?php else : ?>

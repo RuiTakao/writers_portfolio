@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="<?= $site->site_description ?>">
+    <link rel="icon" href="<?= $this->Url->image('users/sites/favicons/' . $username . '/' . $site->favicon_path) ?>">
+    <meta name="description" content="<?= h($site->site_description) ?>">
     <?= $this->Html->css('portfolios') ?>
-    <title><?= $site->site_title ?></title>
+    <title><?= h($site->site_title) ?></title>
 </head>
 
 <body>
