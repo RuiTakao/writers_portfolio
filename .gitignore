@@ -5,10 +5,10 @@
 /logs/*
 /tmp/*
 /vendor/*
-# /webroot/img/users/profiles/*
+/webroot/img/users/profiles/*
 /webroot/img/users/sites/favicons/*
 /webroot/img/users/sites/headers/*
-# !/webroot/img/users/profiles/.gitkeep
+!/webroot/img/users/profiles/.gitkeep
 !/webroot/img/users/sites/favicons/.gitkeep
 !/webroot/img/users/sites/headers/.gitkeep
 
