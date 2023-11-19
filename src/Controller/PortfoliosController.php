@@ -32,13 +32,16 @@ class PortfoliosController extends AppController
      */
     public function index($username)
     {
+        $this->viewBuilder()->disableAutoLayout();
+
         $user = $this->Users->find('all', ['conditions' => ['username' => $username]])->first();
 
         if (is_null($user) || $user->autherized_flg	== 0) {
             return $this->redirect('/');
         }
 
-        $profiles = $this->Profiles->find('all', ['conditions' => ['user_id' => $user->id]])->first();
-        $this->set('profiles', $profiles);
+        $profile = $this->Profiles->find('all', ['conditions' => ['user_id' => $user->id]])->first();
+        $this->set('profile', $profile);
+        $this->set('username', $username);
     }
 }
