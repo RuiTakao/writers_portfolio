@@ -1,0 +1,108 @@
+/*********************************
+	body
+*********************************/
+body {
+    color: #333;
+}
+
+/*********************************
+	header
+*********************************/
+header {
+    background: #333;
+    color: #fff;
+}
+
+/*********************************
+	aside
+*********************************/
+aside {
+    background: #333;
+    color: #fff;
+}
+
+aside a {
+    color: #fff;
+}
+
+/*********************************
+	main
+*********************************/
+main {
+    background: #F0F0F1;
+}
+
+/*********************************
+	Form
+*********************************/
+input {
+    border: 1px solid #C3C4C7;
+    padding-left: 4px;
+}
+
+textarea {
+    padding: 8px;
+}
+
+input:focus {
+    outline: 1px solid #8FBBFC;
+    box-shadow: 0px 0px 6px #8FBBFC;
+}
+
+/*********************************
+	button
+*********************************/
+.button {
+    background: #0284BB;
+    color: #fff;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    text-decoration: none;
+    text-align: center;
+}
+
+.button.delete {
+    background: #DC3545;
+}
+
+.button:hover {
+    opacity: .8;
+}
+
+.button:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.button.back {
+    border: 1px solid #C3C4C7;
+    background: #fff;
+    color: #333;
+}
+
+.button.back:hover {
+    background: #efefef;
+}
+
+/*********************************
+	table
+*********************************/
+table {
+    border-collapse: collapse;
+    border: 1px solid #C3C4C7;
+    background: #fff;
+}
+
+th,
+td {
+    border: 1px solid #C3C4C7;
+}
+
+/*********************************
+	バリデーションメッセージ
+*********************************/
+.error-message {
+    color: #DC3545;
+    font-size: 14px;
+}

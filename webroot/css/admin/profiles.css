@@ -1,0 +1,87 @@
+.flex {
+    display: flex;
+    gap: 56px;
+    align-items: flex-end;
+    width: 100%;
+}
+
+.flex_right {
+    width: calc(100% - 192px + 32px);
+}
+
+.profile_image {
+    width: 192px;
+    height: 192px;
+    position: relative;
+}
+
+.image_blank {
+    width: 192px;
+    height: 192px;
+    background: #C3C4C7;
+}
+
+.edit_image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 192px;
+    height: 192px;
+    line-height: 192px;
+    text-align: center;
+    background: rgba(51, 51, 51, .4);
+    text-decoration: none;
+    color: rgba(255, 255, 255, 1);
+    cursor: pointer;
+    transition: all .3s;
+}
+
+.profile_content_list {
+    padding-bottom: 16px;
+}
+
+.profile_content_item {
+    list-style: none;
+    border-bottom: 1px solid #333;
+    padding-bottom: 2px;
+    vertical-align: bottom;
+}
+
+.profile_content_item .text {
+    font-weight: 600;
+    font-size: 32px;
+    margin-left: 32px;
+}
+
+.profile_content_item:not(:first-child) {
+    margin-top: 16px;
+}
+
+.profile_text {
+    margin-top: 32px;
+}
+
+.profile_text .title {
+    position: relative;
+    height: 40px;
+    margin-bottom: 32px;
+}
+
+.profile_text .title::after {
+    position: absolute;
+    content: '';
+    width: 116px;
+    height: 1px;
+    background: #333;
+    left: 0;
+    bottom: 0;
+}
+
+.button {
+    font-weight: 600;
+    width: 192px;
+    font-size: 14px;
+    display: block;
+    padding: 8px;
+    margin-top: 16px;
+}

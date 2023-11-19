@@ -7,6 +7,7 @@
     <title>管理画面 - Writers Portfolio</title>
     <?= $this->Html->css([
         'reset',
+        'base',
         'admin/layout'
     ]) ?>
     <?php /** css 各ページ */ ?>
