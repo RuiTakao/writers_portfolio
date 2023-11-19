@@ -57,6 +57,13 @@ class ProfilesController extends AppController
                 // トランザクション開始
                 $this->connection->begin();
 
+                // 排他制御
+                $this->Profiles
+                    ->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])
+                    ->modifier('SQL_NO_CACHE')
+                    ->epilog('FOR UPDATE')
+                    ->first();
+
                 // エンティティにデータセット
                 $profile = $this->Profiles->patchEntity($profile, $data);
 
@@ -85,6 +92,72 @@ class ProfilesController extends AppController
             $this->session->write('message', 'プロフィールを変更しました。');
             return $this->redirect(['action' => 'index']);
         }
+
+        $this->set('profile', $profile);
+    }
+
+    public function editImage()
+    {
+        // ログインidからデータ取得
+        $profile = $this->Profiles->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])->first();
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            // postの場合
+
+            // requestデータ取得
+            $data = $this->request->getData();
+
+            if ($data['image_path']->getClientFilename() == '' || $data['image_path']->getClientMediaType() == '') {
+                $this->session->write('message', 'プロフィールを変更しました。');
+                return $this->redirect(['action' => 'index']);
+            }
+
+            $image = $data['image_path'];
+            $data['image_path'] = $data['image_path']->getClientFilename();
+
+            try {
+
+                // トランザクション開始
+                $this->connection->begin();
+
+                // 排他制御
+                $this->Profiles
+                    ->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])
+                    ->modifier('SQL_NO_CACHE')
+                    ->epilog('FOR UPDATE')
+                    ->first();
+
+                // エンティティにデータセット
+                $profile = $this->Profiles->patchEntity($profile, $data);
+
+                // バリデーション処理
+                if ($profile->getErrors()) {
+                    $this->set('profile', $profile);
+                    return;
+                }
+
+                // 登録処理
+                $ret = $this->Profiles->save($profile);
+                if (!$ret) {
+                    throw new DatabaseException('プロフィールの変更に失敗しました。');
+                }
+
+                $image->moveTo(WWW_ROOT . 'img/users/profiles/' . $this->AuthUser->username . '/' . $data['image_path']);
+
+                // コミット
+                $this->connection->commit();
+            } catch (DatabaseException $e) {
+
+                // ロールバック
+                $this->connection->rollback();
+                $this->session->write('message', $e);
+                return $this->redirect('/');
+            }
+
+            $this->session->write('message', 'プロフィールを変更しました。');
+            return $this->redirect(['action' => 'index']);
+        }
+
 
         $this->set('profile', $profile);
     }

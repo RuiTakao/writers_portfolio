@@ -36,6 +36,11 @@
     transition: all .3s;
 }
 
+.profile_image img {
+    width: 192px;
+    height: 192px;
+}
+
 .profile_content_list {
     padding-bottom: 16px;
 }

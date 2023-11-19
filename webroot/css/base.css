@@ -112,3 +112,15 @@ td {
     color: #DC3545;
     font-size: 14px;
 }
+
+
+.content_title {
+    font-size: 32px;
+    margin-top: 32px;
+    margin-bottom: 16px;
+}
+
+.content_title a {
+    font-size: 16px;
+    margin-left: 32px;
+}

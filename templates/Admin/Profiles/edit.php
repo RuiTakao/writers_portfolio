@@ -18,6 +18,7 @@
 </style>
 <?php $this->end() ?>
 
+<p class="content_title">プロフィール編集<?= $this->Html->link('< 戻る', ['action' => 'index']) ?></p>
 <?= $this->Form->create($profile, [
     'url' => ['controller' => 'Profiles', 'action' => 'edit'],
     'onSubmit' => 'return checkEdit()'
