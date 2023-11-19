@@ -50,9 +50,8 @@ return function (RouteBuilder $routes): void {
     $routes->setRouteClass(DashedRoute::class);
 
     $routes->scope('/', function (RouteBuilder $builder): void {
-        
-        $builder->connect('/', ['controller' => 'Pages', 'action' => 'display', 'home']);
-        $builder->connect('/pages/*', 'Pages::display');
+        $builder->connect('/{username}', ['controller' => 'Portfolios', 'action' => 'index'])->setPass(['username']);
+        $builder->connect('/', ['controller' => 'LandingPages', 'action' => 'index']);
         $builder->fallbacks();
     });
 

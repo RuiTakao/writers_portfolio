@@ -123,7 +123,7 @@ class CreateUsersController extends AppController
             $connection = $this->Profiles->getConnection();
 
             $data = [
-                'name' => $user->username,
+                'view_name' => $user->username,
                 'user_id' => $this->AuthUser->id
             ];
 
