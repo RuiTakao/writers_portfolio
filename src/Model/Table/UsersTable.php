@@ -61,21 +61,23 @@ class UsersTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->scalar('username')
-            ->maxLength('username', 255)
-            ->requirePresence('username', 'create')
-            ->notEmptyString('username')
-            ->add('username', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->maxLength('username', 255, 'ユーザー名は255文字以内で入力してください。')
+            ->notBlank('username', 'ユーザー名が入力されていません。')
+            ->asciiAlphaNumeric('username', 'ユーザー名は半角英数字のみで入力してください。')
+            ->add('username', 'unique', ['rule' => 'validateUnique', 'provider' => 'table', 'message' => 'ユーザー名は既に使用されています。'])
+            ->add('username', 'custom', [
+                'rule' => function($value) {
+                    if ($value == 'admin') {
+                        return false;
+                    }
+                    return true;
+                },
+                'message' => 'このユーザー名は使用できません。'
+            ]);
 
         $validator
-            ->scalar('password')
-            ->maxLength('password', 255)
-            ->requirePresence('password', 'create')
-            ->notEmptyString('password');
-
-        $validator
-            ->integer('autherized_flg')
-            ->notEmptyString('autherized_flg');
+            ->maxLength('password', 255, 'パスワードは255文字以内で入力してください。')
+            ->notBlank('password', 'パスワードが入力されていません。');
 
         return $validator;
     }
