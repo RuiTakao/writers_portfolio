@@ -2,13 +2,26 @@
 
 /** ページタイトル */ ?>
 <?php $this->start('page_title') ?>
-プロフィール設定
+プロフィール設定 > 編集
 <?php $this->end() ?>
 
 <?php $this->start('css') ?>
 <?= $this->Html->css('admin/profiles') ?>
+<style>
+    .profile_content_list {
+        padding: 0;
+    }
+
+    .profile_content_item {
+        border: none;
+    }
+</style>
 <?php $this->end() ?>
 
+<?= $this->Form->create($profile, [
+    'url' => ['controller' => 'Profiles', 'action' => 'edit'],
+    'onSubmit' => 'return checkEdit()'
+]) ?>
 <div class="profile">
     <div class="flex">
         <div class="flex_left ">
@@ -24,21 +37,27 @@
         <div class="flex_right">
             <ul class="profile_content_list">
                 <li class="profile_content_item">
-                    <span class="title">名前（表示名）</span><span class="text"><?= h($profile->view_name) ?></span>
+                    <?= $this->Form->control('view_name', [
+                        'label' => '名前（表示名）',
+                        'value' => $profile->view_name
+                    ]) ?>
                 </li>
                 <li class="profile_content_item">
-                    <span class="title">肩書（仕事名）</span><span class="text"><?= h($profile->works) ?></span>
+                    <?= $this->Form->control('works', [
+                        'label' => '肩書（仕事名）',
+                        'value' => $profile->works
+                    ]) ?>
                 </li>
             </ul>
         </div>
     </div>
     <div class="profile_text">
-        <p class="title">プロフィール文</p>
-        <p class="text"><?= nl2br(h($profile->profile_text)) ?></p>
+        <?= $this->Form->control('profile_text', [
+            'type' => 'textarea',
+            'label' => 'プロフィール文',
+            'value' => $profile->profile_text
+        ]) ?>
     </div>
 </div>
-<?= $this->Html->link('編集する', [
-    'controller' => 'Profiles', 'action' => 'edit'
-], [
-    'class' => 'button'
-]) ?>
+<?= $this->Form->submit('この内容で変更する',  ['class' => 'button']) ?>
+<?= $this->Form->end() ?>

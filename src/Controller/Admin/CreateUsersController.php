@@ -76,7 +76,6 @@ class CreateUsersController extends AppController
             // バリデーション処理
             if ($user->getErrors()) {
                 $this->set('user', $user);
-
                 return;
             }
 

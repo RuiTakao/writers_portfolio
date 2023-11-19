@@ -35,8 +35,13 @@ main {
 /*********************************
 	Form
 *********************************/
-input {
+input,
+textarea {
     border: 1px solid #C3C4C7;
+    font-size: 16px;
+}
+
+input {
     padding-left: 4px;
 }
 
@@ -44,7 +49,8 @@ textarea {
     padding: 8px;
 }
 
-input:focus {
+input:focus,
+textarea:focus {
     outline: 1px solid #8FBBFC;
     box-shadow: 0px 0px 6px #8FBBFC;
 }

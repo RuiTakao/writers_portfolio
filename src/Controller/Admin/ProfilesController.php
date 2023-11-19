@@ -35,9 +35,57 @@ class ProfilesController extends AppController
      */
     public function index()
     {
-        // エンティティの作成
-        $profiles = $this->Profiles->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])->first();
+        // ログインidからデータ取得
+        $profile = $this->Profiles->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])->first();
 
-        $this->set('profiles', $profiles);
+        $this->set('profile', $profile);
+    }
+
+    public function edit()
+    {
+        // ログインidからデータ取得
+        $profile = $this->Profiles->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])->first();
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            // postの場合
+
+            // requestデータ取得
+            $data = $this->request->getData();
+
+            try {
+
+                // トランザクション開始
+                $this->connection->begin();
+
+                // エンティティにデータセット
+                $profile = $this->Profiles->patchEntity($profile, $data);
+
+                // バリデーション処理
+                if ($profile->getErrors()) {
+                    $this->set('profile', $profile);
+                    return;
+                }
+
+                // 登録処理
+                $ret = $this->Profiles->save($profile);
+                if (!$ret) {
+                    throw new DatabaseException('プロフィールの変更に失敗しました。');
+                }
+
+                // コミット
+                $this->connection->commit();
+            } catch (DatabaseException $e) {
+
+                // ロールバック
+                $this->connection->rollback();
+                $this->session->write('message', $e);
+                return $this->redirect('/');
+            }
+
+            $this->session->write('message', 'プロフィールを変更しました。');
+            return $this->redirect(['action' => 'index']);
+        }
+
+        $this->set('profile', $profile);
     }
 }
