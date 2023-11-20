@@ -27,6 +27,9 @@ class CreateUsersController extends AppController
     {
         parent::initialize();
 
+        // ユーザー作成用のテンプレート読み込み
+        $this->viewBuilder()->setLayout('CreateUsers');
+
         // 使用するモデル
         $this->Users = TableRegistry::getTableLocator()->get('Users');
         $this->Profiles = TableRegistry::getTableLocator()->get('Profiles');
@@ -56,9 +59,7 @@ class CreateUsersController extends AppController
      */
     public function create()
     {
-        $this->viewBuilder()->disableAutoLayout();
-
-        // エンティティ作成
+        // 空のエンティティ作成
         $user = $this->Users->newEmptyEntity();
 
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -68,7 +69,7 @@ class CreateUsersController extends AppController
             $data = $this->request->getData();
 
             // エンティティにデータセット
-            $user = $this->Users->patchEntity($user, $data);
+            $user = $this->Users->patchEntity($this->AuthUser, $data);
 
             // パスワード再入力チェック
             if ($data['password'] != $data['re_password']) {
@@ -87,7 +88,7 @@ class CreateUsersController extends AppController
             return $this->redirect(['action' => 'confirm']);
         }
 
-        // データセット
+        // viewに渡すデータセット
         $this->set('user', $user);
     }
 
@@ -98,8 +99,6 @@ class CreateUsersController extends AppController
      */
     public function confirm()
     {
-
-        $this->viewBuilder()->disableAutoLayout();
 
         // セッションデータが無ければリダイレクト
         if (!$this->session->check('create_user_data')) {
@@ -158,7 +157,7 @@ class CreateUsersController extends AppController
             $connection = $this->Profiles->getConnection();
 
             $data = [
-                'view_name' => $user->username,
+                'view_name' => $this->AuthUser->username,
                 'user_id' => $this->AuthUser->id
             ];
 
@@ -169,7 +168,7 @@ class CreateUsersController extends AppController
 
                 $profiles = $this->Profiles->newEmptyEntity();
                 $profiles = $this->Profiles->patchEntity($profiles, $data);
-                if ($user->getErrors()) {
+                if ($profiles->getErrors()) {
                     return $this->redirect('/');
                 }
 
@@ -180,7 +179,7 @@ class CreateUsersController extends AppController
                 }
 
                 // ユーザープロフィール画像保存用ディレクトリ作成
-                $mkdir = mkdir(WWW_ROOT . 'img/users/profiles/' . $user->username);
+                $mkdir = mkdir(WWW_ROOT . 'img/users/profiles/' . $this->AuthUser->username);
                 if (!$mkdir) {
                     throw new DatabaseException('ディレクトリ作成失敗');
                 }
@@ -199,7 +198,7 @@ class CreateUsersController extends AppController
             $connection = $this->Sites->getConnection();
 
             $data = [
-                'site_title' => $user->username,
+                'site_title' => $this->AuthUser->username,
                 'user_id' => $this->AuthUser->id
             ];
 
@@ -210,7 +209,7 @@ class CreateUsersController extends AppController
 
                 $sites = $this->Sites->newEmptyEntity();
                 $sites = $this->Sites->patchEntity($sites, $data);
-                if ($user->getErrors()) {
+                if ($sites->getErrors()) {
                     return $this->redirect('/');
                 }
 
@@ -221,13 +220,13 @@ class CreateUsersController extends AppController
                 }
 
                 // ファビコン画像保存用ディレクトリ作成
-                $mkdir = mkdir(WWW_ROOT . 'img/users/sites/favicons/' . $user->username);
+                $mkdir = mkdir(WWW_ROOT . 'img/users/sites/favicons/' . $this->AuthUser->username);
                 if (!$mkdir) {
                     throw new DatabaseException('ディレクトリ作成失敗');
                 }
 
                 // ヘッダー画像保存用ディレクトリ作成
-                $mkdir = mkdir(WWW_ROOT . 'img/users/sites/headers/' . $user->username);
+                $mkdir = mkdir(WWW_ROOT . 'img/users/sites/headers/' . $this->AuthUser->username);
                 if (!$mkdir) {
                     throw new DatabaseException('ディレクトリ作成失敗');
                 }
@@ -254,11 +253,7 @@ class CreateUsersController extends AppController
      */
     public function complete()
     {
-        $this->viewBuilder()->disableAutoLayout();
-
-        $user = $this->Users->find('all', ['conditions' => ['id' => $this->AuthUser->id]])->first();
-
-        $this->set('user', $user);
+        $this->set('user', $this->AuthUser);
     }
 
     /**
