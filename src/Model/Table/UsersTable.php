@@ -31,6 +31,11 @@ use Cake\Validation\Validator;
  */
 class UsersTable extends Table
 {
+    // バリデーションメッセージ
+    const PASSWORD_MISMATCH = '入力されたパスワードと一致しません。';
+    const INVALID_CREATE_USER = 'ユーザーの作成に失敗しました。';
+    const INVALID_CREATE_DIR = 'ユーザーの作成に失敗しました。';
+
     /**
      * Initialize method
      *

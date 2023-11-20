@@ -5,8 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ユーザー作成 - Writers Portfolio</title>
-    <?= $this->Html->css('reset') ?>
-    <?= $this->Html->css('admin/create_users') ?>
+    <?= $this->Html->css([
+        'reset',
+        'base',
+        'admin/create_users'
+    ]) ?>
     <?php /** css 各ページ */ ?>
     <?= $this->fetch('css') ?>
 </head>

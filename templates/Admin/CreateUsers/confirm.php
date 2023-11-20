@@ -26,8 +26,8 @@
 
 <p class="caution_text">※一度確定したら変更できません</p>
 <?= $this->Form->create(null, ['url' => ['controller' => 'CreateUsers', 'action' => 'confirm'], 'onclick' => 'return checkCreateUser()']) ?>
-<?= $this->Form->submit('確定する'); ?>
+<?= $this->Form->submit('確定する', ['class' => 'button']); ?>
 <?= $this->Form->end() ?>
-<?= $this->Html->link('修正する', ['action' => 'create'], ['class' => 'back_button']) ?>
+<?= $this->Html->link('修正する', ['action' => 'create'], ['class' => 'button back']) ?>
 </div>
 </main>

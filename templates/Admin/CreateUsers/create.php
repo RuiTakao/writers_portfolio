@@ -1,4 +1,6 @@
-<?php /** form */ ?>
+<?php
+
+/** form */ ?>
 <?= $this->Form->create($user) ?>
 <?php /** username */ ?>
 <label for="username">ユーザー名入力<span>※半角英数字のみ</span></label>
@@ -26,5 +28,5 @@
 <p class="caution_text">※一度確定したら変更できません</p>
 
 <?php /** submit */ ?>
-<?= $this->Form->submit('確認'); ?>
+<?= $this->Form->submit('確認', ['class' => 'button']); ?>
 <?= $this->Form->end() ?>
