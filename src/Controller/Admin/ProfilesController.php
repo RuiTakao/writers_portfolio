@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Controller\Admin\AppController;
 use App\Model\Table\ProfilesTable;
+use Cake\Database\Exception\DatabaseException;
 use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
 
@@ -59,6 +60,16 @@ class ProfilesController extends AppController
             // requestデータ取得
             $data = $this->request->getData();
 
+            // エンティティにデータセット
+            $profile = $this->Profiles->patchEntity($profile, $data);
+
+            // バリデーション処理
+            if ($profile->getErrors()) {
+                $this->session->write('message', ProfilesTable::INVALID_INPUT_MESSEGE);
+                $this->set('profile', $profile);
+                return;
+            }
+
             try {
 
                 // トランザクション開始
@@ -71,19 +82,10 @@ class ProfilesController extends AppController
                     ->epilog('FOR UPDATE')
                     ->first();
 
-                // エンティティにデータセット
-                $profile = $this->Profiles->patchEntity($profile, $data);
-
-                // バリデーション処理
-                if ($profile->getErrors()) {
-                    $this->set('profile', $profile);
-                    return;
-                }
-
                 // 登録処理
                 $ret = $this->Profiles->save($profile);
                 if (!$ret) {
-                    throw new DatabaseException(ProfilesTable::INVALID_MESSAGE);
+                    throw new DatabaseException;
                 }
 
                 // コミット
@@ -92,8 +94,8 @@ class ProfilesController extends AppController
 
                 // ロールバック
                 $this->connection->rollback();
-                $this->session->write('message', $e);
-                return $this->redirect('/');
+                $this->session->write('message', ProfilesTable::INVALID_MESSAGE);
+                return $this->redirect(['action' => 'index']);
             }
 
             // 完了画面へリダイレクト
@@ -137,6 +139,20 @@ class ProfilesController extends AppController
             // 画像名をリクエストデータに代入
             $data['image_path'] = $data['image_path']->getClientFilename();
 
+            // バリデーション
+            if (!in_array(pathinfo($data['image_path'])['extension'], ProfilesTable::EXTENTIONS)) {
+                $profile->setError('image_path', [ProfilesTable::INVALID_EXTENSION_MESSAGE]);
+                $this->set('profile', $profile);
+                return;
+            }
+
+            // エンティティにデータセット
+            $profile = $this->Profiles->patchEntity($profile, $data);
+            if ($profile->getErrors()) {
+                $this->session->write('message', ProfilesTable::INVALID_MESSAGE);
+                return $this->redirect(['action' => 'index']);
+            }
+
             try {
 
                 // トランザクション開始
@@ -149,25 +165,18 @@ class ProfilesController extends AppController
                     ->epilog('FOR UPDATE')
                     ->first();
 
-                // エンティティにデータセット
-                $profile = $this->Profiles->patchEntity($profile, $data);
-
-                // バリデーション処理
-                if ($profile->getErrors()) {
-                    $this->set('profile', $profile);
-                    return;
-                }
-
                 // 登録処理
                 $ret = $this->Profiles->save($profile);
                 if (!$ret) {
-                    throw new DatabaseException(ProfilesTable::INVALID_MESSAGE);
+                    throw new DatabaseException;
                 }
 
                 // ディレクトリに画像保存
-                $ret = $image->moveTo(WWW_ROOT . 'img/users/profiles/' . $this->AuthUser->username . '/' . $data['image_path']);
-                if (!$ret) {
-                    throw new DatabaseException(ProfilesTable::INVALID_MESSAGE);
+                $path = ProfilesTable::ROOT_PROFILE_IMAGE_PATH . $this->AuthUser->username;
+                if (file_exists($path)) {
+                    $image->moveTo($path . '/' . $data['image_path']);
+                } else {
+                    throw new DatabaseException;
                 }
 
                 // コミット
@@ -176,8 +185,8 @@ class ProfilesController extends AppController
 
                 // ロールバック
                 $this->connection->rollback();
-                $this->session->write('message', $e);
-                return $this->redirect('/');
+                $this->session->write('message', ProfilesTable::INVALID_MESSAGE);
+                return $this->redirect(['action' => 'index']);
             }
 
             // 完了画面へリダイレクト

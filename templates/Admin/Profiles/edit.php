@@ -1,8 +1,18 @@
 <?php
 
-/** ページタイトル */ ?>
+use App\Model\Table\ProfilesTable;
+
+// プロフィール画像が設定されているか判定
+if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IMAGE_PATH)) {
+    $profile_image_path = ProfilesTable::BLANK_PROFILE_IMAGE_PATH;
+} else {
+    $profile_image_path = ProfilesTable::PROFILE_IMAGE_PATH .  $auth->username . '/' . $profile->image_path;
+}
+?>
+
+<?php /** ページタイトル */ ?>
 <?php $this->start('page_title') ?>
-プロフィール設定 > 編集
+<?= $this->Html->link('プロフィール設定', ['action' => 'index']) ?> > 編集
 <?php $this->end() ?>
 
 <?php $this->start('css') ?>
@@ -18,15 +28,11 @@
     <div class="flex">
         <div class="flex_left ">
             <div class="profile_image">
-                <?php if (is_null($profile->image_path) || !file_exists(WWW_ROOT . 'img/users/profiles/' . $auth->username . '/' . $profile->image_path)) : ?>
-                    <div class="image_blank"></div>
-                <?php else : ?>
-                    <?= $this->Html->image('users/profiles/' . $auth->username . '/' . $profile->image_path) ?>
-                <?php endif; ?>
+                <?= $this->Html->image($profile_image_path) ?>
             </div>
         </div>
         <div class="flex_right">
-            <ul class="profile_content_list" style="padding: 0;">
+            <ul class="profile_content_list">
                 <li class="profile_content_item">
                     <?= $this->Form->control('view_name', [
                         'label' => '名前（表示名）',

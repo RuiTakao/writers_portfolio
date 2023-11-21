@@ -2,7 +2,7 @@
 
 use App\Model\Table\ProfilesTable;
 
-// ヘッダー画像が設定されているか判定
+// プロフィール画像が設定されているか判定
 if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IMAGE_PATH)) {
     $profile_image_path = ProfilesTable::BLANK_PROFILE_IMAGE_PATH;
 } else {
@@ -27,7 +27,7 @@ if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IM
             </div>
             <?= $this->Html->link('画像の編集', ['action' => 'edit_image'], ['class' => 'button edit_image']) ?>
         </div>
-        <div class="flex_right">
+        <div class="flex_right" style="padding-bottom: 48px;">
             <ul class="profile_content_list">
                 <li class="profile_content_item border_bottom">
                     <span class="title">名前（表示名）</span><span class="text"><?= h($profile->view_name) ?></span>
@@ -44,5 +44,6 @@ if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IM
     </div>
 </div>
 <?= $this->Html->link('編集する', ['controller' => 'Profiles', 'action' => 'edit'], [
-    'class' => 'button'
+    'class' => 'button',
+    'style' => 'margin-top: 32px;'
 ]) ?>

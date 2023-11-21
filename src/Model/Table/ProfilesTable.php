@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Table;
@@ -37,6 +38,8 @@ class ProfilesTable extends Table
      */
     const SUCCESS_MESSAGE = 'プロフィールを変更しました。';
     const INVALID_MESSAGE = 'プロフィールの変更に失敗しました。';
+    const INVALID_INPUT_MESSEGE = '入力に不備があります。';
+    const INVALID_EXTENSION_MESSAGE = '拡張子が無効です。';
 
     /**
      * 画像ファイルパス
@@ -46,7 +49,17 @@ class ProfilesTable extends Table
     // ルートからの相対パス
     const ROOT_PROFILE_IMAGE_PATH = WWW_ROOT . 'img/' . self::PROFILE_IMAGE_PATH;
     // ブランク画像のパス
-    const BLANK_PROFILE_IMAGE_PATH = 'blank/profiles/favicon_blank.jpg';
+    const BLANK_PROFILE_IMAGE_PATH = 'blank/profiles/profile_blank_image.jpg';
+
+    /**
+     * 画像の拡張子
+     */
+    const EXTENTIONS = [
+        'jpg',
+        'png',
+        'jpeg',
+        'webp'
+    ];
 
     /**
      * Initialize method

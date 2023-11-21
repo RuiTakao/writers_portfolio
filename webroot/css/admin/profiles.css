@@ -10,7 +10,6 @@
 
 .flex_right {
     width: calc(100% - 192px + 32px);
-    padding-bottom: 16px;
 }
 
 /*********************************
@@ -24,6 +23,23 @@
 .profile_image img {
     width: 192px;
     height: 192px;
+}
+
+.before_image_title {
+    position: relative;
+    height: 40px;
+    margin-bottom: 32px;
+    margin-top: 56px;
+}
+
+.before_image_title::after {
+    position: absolute;
+    content: '';
+    width: 64px;
+    height: 1px;
+    background: #333;
+    left: 0;
+    bottom: 0;
 }
 
 /*********************************

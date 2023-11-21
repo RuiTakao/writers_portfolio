@@ -2,7 +2,7 @@
 
 use App\Model\Table\ProfilesTable;
 
-// ヘッダー画像が設定されているか判定
+// プロフィール画像が設定されているか判定
 if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IMAGE_PATH)) {
     $profile_image_path = ProfilesTable::BLANK_PROFILE_IMAGE_PATH;
 } else {
@@ -12,7 +12,7 @@ if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IM
 
 <?php /** ページタイトル */ ?>
 <?php $this->start('page_title') ?>
-プロフィール設定 > プロフィール画像編集
+<?= $this->Html->link('プロフィール設定', ['action' => 'index']) ?> > プロフィール画像編集
 <?php $this->end() ?>
 
 <?php $this->start('css') ?>
@@ -42,7 +42,7 @@ if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IM
 <?= $this->Form->submit('この内容で変更する',  ['class' => 'button']) ?>
 <?= $this->Form->end() ?>
 
-<p style="margin-top: 56px;">現在の画像</p>
+<p class="before_image_title">現在の画像</p>
 <div class="profile_image">
     <?= $this->Html->image($profile_image_path) ?>
 </div>
