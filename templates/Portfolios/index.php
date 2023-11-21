@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="<?= $this->Url->image('users/sites/favicons/' . $username . '/' . $site->favicon_path) ?>">
+    <?php if (!is_null($favicon)) : ?>
+        <link rel="icon" href="<?= $this->Url->image($favicon) ?>">
+    <?php endif; ?>
     <meta name="description" content="<?= h($site->site_description) ?>">
     <?= $this->Html->css('portfolios') ?>
     <title><?= h($site->site_title) ?></title>
@@ -13,9 +15,9 @@
 <body>
     <div class="fv">
         <div class="fv_bg_cover"></div>
-        <div class="fv_bg" style="background-image: url('<?= $this->Url->image('users/sites/headers/' . $username . '/' . $site->header_image_path) ?>');"></div>
+        <div class="fv_bg" style="background-image: url('<?= $this->Url->image($header_image) ?>');"></div>
         <div class="fv_container">
-            <div class="fv_user_icon"><?= $this->Html->image('users/profiles/' . h($username) . '/' . h($profile->image_path)) ?></div>
+            <div class="fv_user_icon"><?= $this->Html->image($profile_image) ?></div>
             <div class="fv_user_content">
                 <p class="fv_user_name"><?= h($profile->view_name) ?></p>
                 <p class="fv_user_works"><?= h($profile->works) ?></p>

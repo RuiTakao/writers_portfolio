@@ -57,6 +57,7 @@ class SitesTable extends Table
     // ブランク画像のパス
     const BLANK_FAVICON_PATH = 'blank/sites/favicons/favicon_blank.jpg';
     const BLANK_HEADER_IMAGE_PATH = 'blank/sites/headers/header_blank_image.jpg';
+    const BLANK_HEADER_ADMIN_IMAGE_PATH = 'blank/sites/headers/header_admin_blank_image.jpg';
 
     /**
      * 画像の拡張子
