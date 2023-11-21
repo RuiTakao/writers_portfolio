@@ -33,7 +33,7 @@ if (is_null($site->header_image_path) || !file_exists(SitesTable::ROOT_HEADER_IM
     'onSubmit' => 'return checkEdit()'
 ]) ?>
 <div class="profile">
-    <?= $this->Form->control('header_image_path', ['type' => 'file', 'class' => 'dropify', 'label' => false]) ?>
+    <?= $this->Form->control('header_image_path', ['type' => 'file', 'class' => 'dropify', 'label' => false, 'required' => false]) ?>
 </div>
 <?= $this->Form->submit('この内容で変更する',  ['class' => 'button']) ?>
 <?= $this->Form->end() ?>

@@ -142,6 +142,7 @@ class ProfilesController extends AppController
             // バリデーション
             if (!in_array(pathinfo($data['image_path'])['extension'], ProfilesTable::EXTENTIONS)) {
                 $profile->setError('image_path', [ProfilesTable::INVALID_EXTENSION_MESSAGE]);
+                $this->session->write('message', ProfilesTable::INVALID_INPUT_MESSEGE);
                 $this->set('profile', $profile);
                 return;
             }
