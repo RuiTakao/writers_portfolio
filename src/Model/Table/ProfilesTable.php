@@ -37,6 +37,7 @@ class ProfilesTable extends Table
      * メッセージ
      */
     const SUCCESS_MESSAGE = 'プロフィールを変更しました。';
+    const SUCCESS_IMAGE_MESSAGE = 'プロフィール画像を変更しました。';
     const INVALID_MESSAGE = 'プロフィールの変更に失敗しました。';
     const INVALID_INPUT_MESSEGE = '入力に不備があります。';
     const INVALID_EXTENSION_MESSAGE = '拡張子が無効です。';

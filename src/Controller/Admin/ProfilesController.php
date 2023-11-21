@@ -129,7 +129,7 @@ class ProfilesController extends AppController
             if ($data['image_path']->getClientFilename() == '' || $data['image_path']->getClientMediaType() == '') {
 
                 // アップロードされていなければ処理せず変更完了
-                $this->session->write('message', ProfilesTable::SUCCESS_MESSAGE);
+                $this->session->write('message', ProfilesTable::SUCCESS_IMAGE_MESSAGE);
                 return $this->redirect(['action' => 'index']);
             }
 
