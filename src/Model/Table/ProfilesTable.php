@@ -31,6 +31,23 @@ use Cake\Validation\Validator;
  */
 class ProfilesTable extends Table
 {
+
+    /**
+     * メッセージ
+     */
+    const SUCCESS_MESSAGE = 'プロフィールを変更しました。';
+    const INVALID_MESSAGE = 'プロフィールの変更に失敗しました。';
+
+    /**
+     * 画像ファイルパス
+     */
+    // 画像表示用のパス
+    const PROFILE_IMAGE_PATH = 'users/profiles/';
+    // ルートからの相対パス
+    const ROOT_PROFILE_IMAGE_PATH = WWW_ROOT . 'img/' . self::PROFILE_IMAGE_PATH;
+    // ブランク画像のパス
+    const BLANK_PROFILE_IMAGE_PATH = 'blank/profiles/favicon_blank.jpg';
+
     /**
      * Initialize method
      *
@@ -76,11 +93,6 @@ class ProfilesTable extends Table
         $validator
             ->maxLength('image_path', 255)
             ->allowEmptyString('image_path');
-
-        $validator
-            ->scalar('user_id')
-            ->maxLength('user_id', 255)
-            ->notEmptyString('user_id');
 
         return $validator;
     }

@@ -7,15 +7,6 @@
 
 <?php $this->start('css') ?>
 <?= $this->Html->css('admin/profiles') ?>
-<style>
-    .profile_content_list {
-        padding: 0;
-    }
-
-    .profile_content_item {
-        border: none;
-    }
-</style>
 <?php $this->end() ?>
 
 <p class="content_title">プロフィール編集<?= $this->Html->link('< 戻る', ['action' => 'index']) ?></p>
@@ -32,11 +23,10 @@
                 <?php else : ?>
                     <?= $this->Html->image('users/profiles/' . $auth->username . '/' . $profile->image_path) ?>
                 <?php endif; ?>
-                <?= $this->Html->link('画像の編集', ['action' => 'edit_image'], ['class' => 'edit_image']) ?>
             </div>
         </div>
         <div class="flex_right">
-            <ul class="profile_content_list">
+            <ul class="profile_content_list" style="padding: 0;">
                 <li class="profile_content_item">
                     <?= $this->Form->control('view_name', [
                         'label' => '名前（表示名）',

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Table;
@@ -31,6 +32,20 @@ use Cake\Validation\Validator;
  */
 class SitesTable extends Table
 {
+    /**
+     * 画像ファイルパス
+     */
+    // 画像表示用のパス
+    const FAVICON_PATH = 'users/sites/favicons/';
+    const HEADER_IMAGE_PATH = 'users/sites/headers/';
+    // ルートからの相対パス
+    const ROOT_FAVICON_PATH = WWW_ROOT . 'img/' . self::FAVICON_PATH;
+    const ROOT_HEADER_IMAGE_PATH = WWW_ROOT . 'img/' . self::HEADER_IMAGE_PATH;
+    // ブランク画像のパス
+    const BLANK_FAVICON_PATH = 'blank/sites/favicons/favicon_blank.jpg';
+    const BLANK_HEADER_IMAGE_PATH = 'blank/sites/headers/header_blank_image.jpg';
+
+
     /**
      * Initialize method
      *

@@ -1,6 +1,16 @@
 <?php
 
-/** ページタイトル */ ?>
+use App\Model\Table\ProfilesTable;
+
+// ヘッダー画像が設定されているか判定
+if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IMAGE_PATH)) {
+    $profile_image_path = ProfilesTable::BLANK_PROFILE_IMAGE_PATH;
+} else {
+    $profile_image_path = ProfilesTable::PROFILE_IMAGE_PATH .  $auth->username . '/' . $profile->image_path;
+}
+?>
+
+<?php /** ページタイトル */ ?>
 <?php $this->start('page_title') ?>
 プロフィール設定
 <?php $this->end() ?>
@@ -13,20 +23,16 @@
     <div class="flex">
         <div class="flex_left ">
             <div class="profile_image">
-                <?php if (is_null($profile->image_path) || !file_exists(WWW_ROOT . 'img/users/profiles/' . $auth->username . '/' . $profile->image_path)) : ?>
-                    <div class="image_blank"></div>
-                <?php else : ?>
-                    <?= $this->Html->image('users/profiles/' . $auth->username . '/' . $profile->image_path) ?>
-                <?php endif; ?>
-                <?= $this->Html->link('画像の編集', ['action' => 'edit_image'], ['class' => 'edit_image']) ?>
+                <?= $this->Html->image($profile_image_path) ?>
             </div>
+            <?= $this->Html->link('画像の編集', ['action' => 'edit_image'], ['class' => 'button edit_image']) ?>
         </div>
         <div class="flex_right">
             <ul class="profile_content_list">
-                <li class="profile_content_item">
+                <li class="profile_content_item border_bottom">
                     <span class="title">名前（表示名）</span><span class="text"><?= h($profile->view_name) ?></span>
                 </li>
-                <li class="profile_content_item">
+                <li class="profile_content_item border_bottom">
                     <span class="title">肩書（仕事名）</span><span class="text"><?= h($profile->works) ?></span>
                 </li>
             </ul>
@@ -37,8 +43,6 @@
         <p class="text"><?= nl2br(h($profile->profile_text)) ?></p>
     </div>
 </div>
-<?= $this->Html->link('編集する', [
-    'controller' => 'Profiles', 'action' => 'edit'
-], [
+<?= $this->Html->link('編集する', ['controller' => 'Profiles', 'action' => 'edit'], [
     'class' => 'button'
 ]) ?>
