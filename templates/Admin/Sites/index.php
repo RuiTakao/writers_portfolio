@@ -11,7 +11,7 @@ if (is_null($site->favicon_path) || !file_exists(SitesTable::ROOT_FAVICON_PATH))
 
 // ヘッダー画像が設定されているか判定
 if (is_null($site->header_image_path) || !file_exists(SitesTable::ROOT_HEADER_IMAGE_PATH)) {
-    $header_image_path = SitesTable::BLANK_HEADER_IMAGE_PATH;
+    $header_image_path = SitesTable::BLANK_HEADER_ADMIN_IMAGE_PATH;
 } else {
     $header_image_path = SitesTable::HEADER_IMAGE_PATH . $auth->username . '/' . $site->header_image_path;
 }
