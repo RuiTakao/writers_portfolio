@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Table;
@@ -31,6 +32,36 @@ use Cake\Validation\Validator;
  */
 class ProfilesTable extends Table
 {
+
+    /**
+     * メッセージ
+     */
+    const SUCCESS_MESSAGE = 'プロフィールを変更しました。';
+    const SUCCESS_IMAGE_MESSAGE = 'プロフィール画像を変更しました。';
+    const INVALID_MESSAGE = 'プロフィールの変更に失敗しました。';
+    const INVALID_INPUT_MESSEGE = '入力に不備があります。';
+    const INVALID_EXTENSION_MESSAGE = '拡張子が無効です。';
+
+    /**
+     * 画像ファイルパス
+     */
+    // 画像表示用のパス
+    const PROFILE_IMAGE_PATH = 'users/profiles/';
+    // ルートからの相対パス
+    const ROOT_PROFILE_IMAGE_PATH = WWW_ROOT . 'img/' . self::PROFILE_IMAGE_PATH;
+    // ブランク画像のパス
+    const BLANK_PROFILE_IMAGE_PATH = 'blank/profiles/profile_blank_image.jpg';
+
+    /**
+     * 画像の拡張子
+     */
+    const EXTENTIONS = [
+        'jpg',
+        'png',
+        'jpeg',
+        'webp'
+    ];
+
     /**
      * Initialize method
      *
@@ -76,11 +107,6 @@ class ProfilesTable extends Table
         $validator
             ->maxLength('image_path', 255)
             ->allowEmptyString('image_path');
-
-        $validator
-            ->scalar('user_id')
-            ->maxLength('user_id', 255)
-            ->notEmptyString('user_id');
 
         return $validator;
     }

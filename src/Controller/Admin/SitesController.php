@@ -6,6 +6,8 @@ namespace App\Controller\Admin;
 
 use App\Controller\Admin\AppController;
 use App\Model\Table\SitesTable;
+use Cake\Database\Exception\DatabaseException;
+use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -15,6 +17,7 @@ use Cake\ORM\TableRegistry;
  */
 class SitesController extends AppController
 {
+
     public function initialize(): void
     {
         parent::initialize();
@@ -26,14 +29,26 @@ class SitesController extends AppController
         $this->connection = $this->Sites->getConnection();
     }
 
+    /**
+     * サイト管理画面
+     * 
+     * @return Response|void|null
+     */
     public function index()
     {
         // ログインidからデータ取得
         $site = $this->Sites->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])->first();
 
+        // viewに渡すデータセット
         $this->set('site', $site);
     }
 
+    /**
+     * サイト編集画面
+     * 
+     * @return Response|void|null
+     * @throws DatabaseException
+     */
     public function edit()
     {
         // ログインidからデータ取得
@@ -44,6 +59,16 @@ class SitesController extends AppController
 
             // requestデータ取得
             $data = $this->request->getData();
+
+            // エンティティにデータセット
+            $site = $this->Sites->patchEntity($site, $data);
+
+            // バリデーション処理
+            if ($site->getErrors()) {
+                $this->session->write('message', SitesTable::INVALID_INPUT_MESSEGE);
+                $this->set('site', $site);
+                return;
+            }
 
             try {
 
@@ -57,19 +82,10 @@ class SitesController extends AppController
                     ->epilog('FOR UPDATE')
                     ->first();
 
-                // エンティティにデータセット
-                $site = $this->Sites->patchEntity($site, $data);
-
-                // バリデーション処理
-                if ($site->getErrors()) {
-                    $this->set('site', $site);
-                    return;
-                }
-
                 // 登録処理
                 $ret = $this->Sites->save($site);
                 if (!$ret) {
-                    throw new DatabaseException('サイトの変更に失敗しました。');
+                    throw new DatabaseException();
                 }
 
                 // コミット
@@ -78,17 +94,25 @@ class SitesController extends AppController
 
                 // ロールバック
                 $this->connection->rollback();
-                $this->session->write('message', $e);
-                return $this->redirect('/');
+                $this->session->write('message', SitesTable::INVALID_MESSAGE);
+                return $this->redirect(['action' => 'index']);
             }
 
-            $this->session->write('message', 'サイトを変更しました。');
+            // 完了画面へリダイレクト
+            $this->session->write('message', SitesTable::SUCCESS_MESSAGE);
             return $this->redirect(['action' => 'index']);
         }
 
+        // viewに渡すデータセット
         $this->set('site', $site);
     }
 
+    /**
+     * ファビコン編集画面
+     * 
+     * @return Response|void|null
+     * @throws DatabaseException
+     */
     public function editFaviconImage()
     {
         // ログインidからデータ取得
@@ -101,12 +125,32 @@ class SitesController extends AppController
             $data = $this->request->getData();
 
             if ($data['favicon_path']->getClientFilename() == '' || $data['favicon_path']->getClientMediaType() == '') {
-                $this->session->write('message', 'ファビコンを変更しました。');
+
+                // アップロードされていなければ処理せず変更完了
+                $this->session->write('message', SitesTable::SUCCESS_FAVICON_MESSAGE);
                 return $this->redirect(['action' => 'index']);
             }
 
+            // 画像データを変数に格納
             $image = $data['favicon_path'];
+
+            // 画像名をリクエストデータに代入
             $data['favicon_path'] = $data['favicon_path']->getClientFilename();
+
+            // バリデーション
+            if (!in_array(pathinfo($data['favicon_path'])['extension'], SitesTable::FAVICON_EXTENTIONS)) {
+                $site->setError('favicon_path', [SitesTable::INVALID_EXTENSION_MESSAGE]);
+                $this->session->write('message', SitesTable::INVALID_INPUT_MESSEGE);
+                $this->set('site', $site);
+                return;
+            }
+
+            // エンティティにデータセット
+            $site = $this->Sites->patchEntity($site, $data);
+            if ($site->getErrors()) {
+                $this->session->write('message', SitesTable::INVALID_MESSAGE);
+                return $this->redirect(['action' => 'index']);
+            }
 
             try {
 
@@ -120,22 +164,19 @@ class SitesController extends AppController
                     ->epilog('FOR UPDATE')
                     ->first();
 
-                // エンティティにデータセット
-                $site = $this->Sites->patchEntity($site, $data);
-
-                // バリデーション処理
-                if ($site->getErrors()) {
-                    $this->set('site', $site);
-                    return;
-                }
-
                 // 登録処理
                 $ret = $this->Sites->save($site);
                 if (!$ret) {
-                    throw new DatabaseException('ファビコンの変更に失敗しました。');
+                    throw new DatabaseException;
                 }
 
-                $image->moveTo(WWW_ROOT . 'img/users/sites/favicons/' . $this->AuthUser->username . '/' . $data['favicon_path']);
+                // ディレクトリに画像保存
+                $path = SitesTable::ROOT_FAVICON_PATH . $this->AuthUser->username;
+                if (file_exists($path)) {
+                    $image->moveTo($path . '/' . $data['favicon_path']);
+                } else {
+                    throw new DatabaseException;
+                }
 
                 // コミット
                 $this->connection->commit();
@@ -143,15 +184,16 @@ class SitesController extends AppController
 
                 // ロールバック
                 $this->connection->rollback();
-                $this->session->write('message', $e);
-                return $this->redirect('/');
+                $this->session->write('message', SitesTable::INVALID_FAVICON_MESSAGE);
+                return $this->redirect(['action' => 'index']);
             }
 
-            $this->session->write('message', 'ファビコンを変更しました。');
+            // 完了画面へリダイレクト
+            $this->session->write('message', SitesTable::SUCCESS_FAVICON_MESSAGE);
             return $this->redirect(['action' => 'index']);
         }
 
-
+        // viewに渡すデータセット
         $this->set('site', $site);
     }
 
@@ -167,12 +209,32 @@ class SitesController extends AppController
             $data = $this->request->getData();
 
             if ($data['header_image_path']->getClientFilename() == '' || $data['header_image_path']->getClientMediaType() == '') {
-                $this->session->write('message', 'ヘッダー画像を変更しました。');
+
+                // アップロードされていなければ処理せず変更完了
+                $this->session->write('message', SitesTable::SUCCESS_HEADER_IMAGE_MESSAGE);
                 return $this->redirect(['action' => 'index']);
             }
 
+            // 画像データを変数に格納
             $image = $data['header_image_path'];
+
+            // 画像名をリクエストデータに代入
             $data['header_image_path'] = $data['header_image_path']->getClientFilename();
+
+            // バリデーション
+            if (!in_array(pathinfo($data['header_image_path'])['extension'], SitesTable::EXTENTIONS)) {
+                $site->setError('header_image_path', [SitesTable::INVALID_EXTENSION_MESSAGE]);
+                $this->session->write('message', SitesTable::INVALID_INPUT_MESSEGE);
+                $this->set('site', $site);
+                return;
+            }
+
+            // エンティティにデータセット
+            $site = $this->Sites->patchEntity($site, $data);
+            if ($site->getErrors()) {
+                $this->session->write('message', SitesTable::INVALID_MESSAGE);
+                return $this->redirect(['action' => 'index']);
+            }
 
             try {
 
@@ -186,22 +248,19 @@ class SitesController extends AppController
                     ->epilog('FOR UPDATE')
                     ->first();
 
-                // エンティティにデータセット
-                $site = $this->Sites->patchEntity($site, $data);
-
-                // バリデーション処理
-                if ($site->getErrors()) {
-                    $this->set('site', $site);
-                    return;
-                }
-
                 // 登録処理
                 $ret = $this->Sites->save($site);
                 if (!$ret) {
-                    throw new DatabaseException('ヘッダー画像の変更に失敗しました。');
+                    throw new DatabaseException;
                 }
 
-                $image->moveTo(WWW_ROOT . 'img/users/sites/headers/' . $this->AuthUser->username . '/' . $data['header_image_path']);
+                // ディレクトリに画像保存
+                $path = SitesTable::ROOT_HEADER_IMAGE_PATH . $this->AuthUser->username;
+                if (file_exists($path)) {
+                    $image->moveTo($path . '/' . $data['header_image_path']);
+                } else {
+                    throw new DatabaseException;
+                }
 
                 // コミット
                 $this->connection->commit();
@@ -209,15 +268,16 @@ class SitesController extends AppController
 
                 // ロールバック
                 $this->connection->rollback();
-                $this->session->write('message', $e);
-                return $this->redirect('/');
+                $this->session->write('message', SitesTable::INVALID_HEADER_IMAGE_MESSAGE);
+                return $this->redirect(['action' => 'index']);
             }
 
-            $this->session->write('message', 'ヘッダー画像を変更しました。');
+            // 完了画面へリダイレクト
+            $this->session->write('message', SitesTable::SUCCESS_HEADER_IMAGE_MESSAGE);
             return $this->redirect(['action' => 'index']);
         }
 
-
+        // viewに渡すデータセット
         $this->set('site', $site);
     }
 }

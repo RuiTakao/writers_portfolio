@@ -1,19 +1,33 @@
 <?php
 
-/** ページタイトル */ ?>
+use App\Model\Table\ProfilesTable;
+
+// プロフィール画像が設定されているか判定
+if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IMAGE_PATH)) {
+    $profile_image_path = ProfilesTable::BLANK_PROFILE_IMAGE_PATH;
+} else {
+    $profile_image_path = ProfilesTable::PROFILE_IMAGE_PATH .  $auth->username . '/' . $profile->image_path;
+}
+?>
+
+<?php /** ページタイトル */ ?>
 <?php $this->start('page_title') ?>
-プロフィール設定 > プロフィール画像編集
+<?= $this->Html->link('プロフィール設定', ['action' => 'index']) ?> > プロフィール画像編集
 <?php $this->end() ?>
 
 <?php $this->start('css') ?>
-<?= $this->Html->css('admin/profiles') ?>
-<?= $this->Html->css('dropify/css/dropify.min.css') ?>
+<?= $this->Html->css([
+    'dropify/css/dropify.min.css',
+    'admin/profiles'
+]) ?>
 <?php $this->end() ?>
 
 <?php $this->start('script') ?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<?= $this->Html->script('dropify/dropify.min.js') ?>
-<?= $this->Html->script('dropify/index') ?>
+<?= $this->Html->script([
+    'dropify/dropify.min.js',
+    'profiles/profiles'
+]) ?>
 <?php $this->end() ?>
 
 <p class="content_title">プロフィール画像編集<?= $this->Html->link('< 戻る', ['action' => 'index']) ?></p>
@@ -28,11 +42,7 @@
 <?= $this->Form->submit('この内容で変更する',  ['class' => 'button']) ?>
 <?= $this->Form->end() ?>
 
-<p style="margin-top: 56px;">現在の画像</p>
+<p class="before_image_title">現在の画像</p>
 <div class="profile_image">
-    <?php if (is_null($profile->image_path) || !file_exists(WWW_ROOT . 'img/users/profiles/' . $auth->username . '/' . $profile->image_path)) : ?>
-        <div class="image_blank">画像無し</div>
-    <?php else : ?>
-        <?= $this->Html->image('users/profiles/' . $auth->username . '/' . $profile->image_path) ?>
-    <?php endif; ?>
+    <?= $this->Html->image($profile_image_path) ?>
 </div>

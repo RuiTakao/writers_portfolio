@@ -49,7 +49,8 @@ textarea {
     padding: 8px;
 }
 
-input:focus,
+input[type=text]:focus,
+input[type=password]:focus,
 textarea:focus {
     outline: 1px solid #8FBBFC;
     box-shadow: 0px 0px 6px #8FBBFC;

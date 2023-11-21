@@ -1,3 +1,6 @@
+/*********************************
+	flex
+*********************************/
 .flex {
     display: flex;
     gap: 56px;
@@ -9,31 +12,12 @@
     width: calc(100% - 192px + 32px);
 }
 
+/*********************************
+	image
+*********************************/
 .profile_image {
     width: 192px;
     height: 192px;
-    position: relative;
-}
-
-.image_blank {
-    width: 192px;
-    height: 192px;
-    background: #C3C4C7;
-}
-
-.edit_image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 192px;
-    height: 192px;
-    line-height: 192px;
-    text-align: center;
-    background: rgba(51, 51, 51, .4);
-    text-decoration: none;
-    color: rgba(255, 255, 255, 1);
-    cursor: pointer;
-    transition: all .3s;
 }
 
 .profile_image img {
@@ -41,13 +25,47 @@
     height: 192px;
 }
 
-.profile_content_list {
-    padding-bottom: 16px;
+.before_image_title {
+    position: relative;
+    height: 40px;
+    margin-bottom: 32px;
+    margin-top: 56px;
 }
 
+.before_image_title::after {
+    position: absolute;
+    content: '';
+    width: 64px;
+    height: 1px;
+    background: #333;
+    left: 0;
+    bottom: 0;
+}
+
+/*********************************
+	button
+*********************************/
+.button {
+    font-weight: 600;
+    width: 192px;
+    font-size: 14px;
+    display: block;
+    padding: 8px;
+    margin-top: 16px;
+}
+
+.button.edit_image {
+    padding: 4px;
+    width: 96px;
+    border-radius: 4px;
+    margin-top: 8px;
+}
+
+/*********************************
+	profile_content_item
+*********************************/
 .profile_content_item {
     list-style: none;
-    border-bottom: 1px solid #333;
     padding-bottom: 2px;
     vertical-align: bottom;
 }
@@ -58,10 +76,17 @@
     margin-left: 32px;
 }
 
+.profile_content_item.border_bottom {
+    border-bottom: 1px solid #333;
+}
+
 .profile_content_item:not(:first-child) {
     margin-top: 16px;
 }
 
+/*********************************
+	profile_text
+*********************************/
 .profile_text {
     margin-top: 32px;
 }
@@ -82,15 +107,6 @@
     bottom: 0;
 }
 
-.button {
-    font-weight: 600;
-    width: 192px;
-    font-size: 14px;
-    display: block;
-    padding: 8px;
-    margin-top: 16px;
-}
-
 .profile_content_item .input {
     font-weight: 400;
     font-size: 16px;
@@ -98,6 +114,9 @@
     margin-left: 0;
 }
 
+/*********************************
+	form
+*********************************/
 input {
     width: 100%;
     height: 32px;

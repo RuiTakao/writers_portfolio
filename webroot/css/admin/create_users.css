@@ -1,18 +1,17 @@
-.header {
-    height: 50px;
-    background: #333;
-}
-
+/*********************************
+	header
+*********************************/
 .header_title {
     line-height: 50px;
     margin-left: 16px;
-    color: #fff;
     font-weight: 600;
     font-size: 18px;
 }
 
+/*********************************
+	main
+*********************************/
 .main {
-    background: #F0F0F1;
     height: calc(100vh - 50px);
 }
 
@@ -23,6 +22,9 @@
     padding-top: 144px;
 }
 
+/*********************************
+	form
+*********************************/
 label {
     display: block;
     font-size: 22px;
@@ -49,59 +51,23 @@ input {
     font-size: 16px;
 }
 
-input:focus {
-    outline: 1px solid #8FBBFC;
-    box-shadow: 0px 0px 6px #8FBBFC;
-}
-
-.info_text {
-    margin-bottom: 32px;
-}
-
-.caution_text {
-    color: #DC3545;
-}
-
-.submit {
+/*********************************
+	button
+*********************************/
+.button {
     margin-top: 4px;
 }
 
-.submit input {
-    border: none;
-    background: #0284BB;
-    color: #fff;
-    font-weight: 600;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-.submit input:hover {
-    opacity: .8;
-}
-
-.error-message {
-    color: #DC3545;
-}
-
-.back_button {
-    border: 1px solid #C3C4C7;
-    background: #fff;
-    color: #333;
-    font-weight: 600;
-    cursor: pointer;
+.button.back {
     width: 100%;
-    font-size: 14px;
-    text-decoration: none;
     display: block;
-    padding: 8px;
+    padding: 4px;
     margin-top: 16px;
-    text-align: center;
 }
 
-.back_button:hover {
-    background: #efefef;
-}
-
+/*********************************
+	other
+*********************************/
 .confirm_text {
     margin-bottom: 48px;
     font-size: 18px;
@@ -111,4 +77,12 @@ input:focus {
 
 .confirm_text span {
     margin-left: 32px;
+}
+
+.info_text {
+    margin-bottom: 32px;
+}
+
+.caution_text {
+    color: #DC3545;
 }

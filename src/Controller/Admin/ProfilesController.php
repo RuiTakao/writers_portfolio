@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Controller\Admin\AppController;
 use App\Model\Table\ProfilesTable;
+use Cake\Database\Exception\DatabaseException;
 use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
 
@@ -29,18 +30,25 @@ class ProfilesController extends AppController
     }
 
     /**
-     * Index method
+     * プロフィール管理画面
      *
-     * @return Response|void 
+     * @return Response|void|null
      */
     public function index()
     {
         // ログインidからデータ取得
         $profile = $this->Profiles->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])->first();
 
+        // viewに渡すデータセット
         $this->set('profile', $profile);
     }
 
+    /**
+     * プロフィール編集画面
+     * 
+     * @return Response|void|null
+     * @throws DatabaseException
+     */
     public function edit()
     {
         // ログインidからデータ取得
@@ -52,6 +60,16 @@ class ProfilesController extends AppController
             // requestデータ取得
             $data = $this->request->getData();
 
+            // エンティティにデータセット
+            $profile = $this->Profiles->patchEntity($profile, $data);
+
+            // バリデーション処理
+            if ($profile->getErrors()) {
+                $this->session->write('message', ProfilesTable::INVALID_INPUT_MESSEGE);
+                $this->set('profile', $profile);
+                return;
+            }
+
             try {
 
                 // トランザクション開始
@@ -64,19 +82,10 @@ class ProfilesController extends AppController
                     ->epilog('FOR UPDATE')
                     ->first();
 
-                // エンティティにデータセット
-                $profile = $this->Profiles->patchEntity($profile, $data);
-
-                // バリデーション処理
-                if ($profile->getErrors()) {
-                    $this->set('profile', $profile);
-                    return;
-                }
-
                 // 登録処理
                 $ret = $this->Profiles->save($profile);
                 if (!$ret) {
-                    throw new DatabaseException('プロフィールの変更に失敗しました。');
+                    throw new DatabaseException;
                 }
 
                 // コミット
@@ -85,19 +94,28 @@ class ProfilesController extends AppController
 
                 // ロールバック
                 $this->connection->rollback();
-                $this->session->write('message', $e);
-                return $this->redirect('/');
+                $this->session->write('message', ProfilesTable::INVALID_MESSAGE);
+                return $this->redirect(['action' => 'index']);
             }
 
-            $this->session->write('message', 'プロフィールを変更しました。');
+            // 完了画面へリダイレクト
+            $this->session->write('message', ProfilesTable::SUCCESS_MESSAGE);
             return $this->redirect(['action' => 'index']);
         }
 
+        // viewに渡すデータセット
         $this->set('profile', $profile);
     }
 
+    /**
+     * プロフィール画像編集画面
+     * 
+     * @return Response|void|null
+     * @throws DatabaseException
+     */
     public function editImage()
     {
+
         // ログインidからデータ取得
         $profile = $this->Profiles->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])->first();
 
@@ -107,13 +125,34 @@ class ProfilesController extends AppController
             // requestデータ取得
             $data = $this->request->getData();
 
+            // 画像がアップロードされているか確認
             if ($data['image_path']->getClientFilename() == '' || $data['image_path']->getClientMediaType() == '') {
-                $this->session->write('message', 'プロフィールを変更しました。');
+
+                // アップロードされていなければ処理せず変更完了
+                $this->session->write('message', ProfilesTable::SUCCESS_IMAGE_MESSAGE);
                 return $this->redirect(['action' => 'index']);
             }
 
+            // 画像データを変数に格納
             $image = $data['image_path'];
+
+            // 画像名をリクエストデータに代入
             $data['image_path'] = $data['image_path']->getClientFilename();
+
+            // バリデーション
+            if (!in_array(pathinfo($data['image_path'])['extension'], ProfilesTable::EXTENTIONS)) {
+                $profile->setError('image_path', [ProfilesTable::INVALID_EXTENSION_MESSAGE]);
+                $this->session->write('message', ProfilesTable::INVALID_INPUT_MESSEGE);
+                $this->set('profile', $profile);
+                return;
+            }
+
+            // エンティティにデータセット
+            $profile = $this->Profiles->patchEntity($profile, $data);
+            if ($profile->getErrors()) {
+                $this->session->write('message', ProfilesTable::INVALID_MESSAGE);
+                return $this->redirect(['action' => 'index']);
+            }
 
             try {
 
@@ -127,22 +166,19 @@ class ProfilesController extends AppController
                     ->epilog('FOR UPDATE')
                     ->first();
 
-                // エンティティにデータセット
-                $profile = $this->Profiles->patchEntity($profile, $data);
-
-                // バリデーション処理
-                if ($profile->getErrors()) {
-                    $this->set('profile', $profile);
-                    return;
-                }
-
                 // 登録処理
                 $ret = $this->Profiles->save($profile);
                 if (!$ret) {
-                    throw new DatabaseException('プロフィールの変更に失敗しました。');
+                    throw new DatabaseException;
                 }
 
-                $image->moveTo(WWW_ROOT . 'img/users/profiles/' . $this->AuthUser->username . '/' . $data['image_path']);
+                // ディレクトリに画像保存
+                $path = ProfilesTable::ROOT_PROFILE_IMAGE_PATH . $this->AuthUser->username;
+                if (file_exists($path)) {
+                    $image->moveTo($path . '/' . $data['image_path']);
+                } else {
+                    throw new DatabaseException;
+                }
 
                 // コミット
                 $this->connection->commit();
@@ -150,15 +186,16 @@ class ProfilesController extends AppController
 
                 // ロールバック
                 $this->connection->rollback();
-                $this->session->write('message', $e);
-                return $this->redirect('/');
+                $this->session->write('message', ProfilesTable::INVALID_MESSAGE);
+                return $this->redirect(['action' => 'index']);
             }
 
-            $this->session->write('message', 'プロフィールを変更しました。');
+            // 完了画面へリダイレクト
+            $this->session->write('message', ProfilesTable::SUCCESS_MESSAGE);
             return $this->redirect(['action' => 'index']);
         }
 
-
+        // viewに渡すデータセット
         $this->set('profile', $profile);
     }
 }
