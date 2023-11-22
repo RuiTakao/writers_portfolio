@@ -12,10 +12,6 @@
         font-weight: 600;
         margin-bottom: 64px;
     }
-
-    .back_button {
-        margin-top: 4px;
-    }
 </style>
 <?php $this->end() ?>
 
@@ -25,4 +21,4 @@
 <p class="confirm_text">パスワード：<span>・・・・・・</span></p>
 
 <p>再度ログインしてください</p>
-<?= $this->Html->link('ログイン画面へ', ['controller' => 'Users', 'action' => 'logout'], ['class' => 'back_button']) ?>
+<?= $this->Html->link('ログイン画面へ', ['controller' => 'Users', 'action' => 'logout'], ['class' => 'button back', 'style' => 'margin-top: 4px;']) ?>
