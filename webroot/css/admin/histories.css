@@ -1,0 +1,79 @@
+/*********************************
+	flex
+*********************************/
+.flex {
+    display: flex;
+}
+
+.align-center {
+    align-items: center;
+}
+
+/*********************************
+	table
+*********************************/
+table {
+    width: 100%;
+}
+
+th {
+    background: #F6F7F7;
+    width: 10%;
+    font-size: 14px;
+}
+
+table tr th {
+    text-align: left;
+}
+
+table tr th,
+table tr td {
+    padding: 8px;
+}
+
+/*********************************
+	button
+*********************************/
+.button {
+    font-weight: 600;
+    width: 192px;
+    font-size: 14px;
+    display: block;
+    padding: 8px;
+    margin-top: 16px;
+}
+
+.table_button {
+    width: 56px;
+    margin: 0;
+}
+
+input[type=text] {
+    width: 100%;
+    height: 32px;
+}
+
+.textarea textarea {
+    width: 100%;
+    height: 72px;
+    display: block;
+}
+
+select {
+    display: block;
+    border: 1px solid #C3C4C7;
+    padding: 4px;
+}
+
+/*********************************
+	機関の入力フォームのスタイル
+*********************************/
+.history_span_input {
+    gap: 16px;
+}
+
+.history_span_input input {
+    width: 104px;
+    height: 24px;
+    font-size: 14px;
+}

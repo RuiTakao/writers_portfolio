@@ -1,0 +1,131 @@
+/*********************************
+	flex
+*********************************/
+.flex {
+    display: flex;
+}
+
+.align-center {
+    align-items: center;
+}
+
+
+/*********************************
+	table
+*********************************/
+table {
+    width: 100%;
+}
+
+th {
+    background: #F6F7F7;
+}
+
+table tr th {
+    width: 20%;
+    text-align: left;
+}
+
+table tr th,
+table tr td {
+    padding: 8px;
+}
+
+.image_table {
+    margin-top: 56px;
+}
+
+/*********************************
+	form
+*********************************/
+input,
+textarea {
+    width: 100%;
+    padding: 4px;
+}
+
+textarea {
+    height: 114px;
+}
+
+/*********************************
+	button
+*********************************/
+.button {
+    font-weight: 600;
+    width: 192px;
+    font-size: 14px;
+    display: block;
+    padding: 8px;
+}
+
+.button.edit_iamge {
+    display: inline-block;
+    margin: 0;
+    margin-left: 32px;
+    padding: 2px;
+    width: 80px;
+    border-radius: 4px;
+}
+
+/*********************************
+	image
+*********************************/
+.image_table img {
+    margin: 0 auto;
+    display: block;
+}
+
+.header_image img {
+    height: 192px;
+}
+
+.favicon_image img {
+    width: 192px;
+    height: 192px;
+}
+
+.before_image_title {
+    position: relative;
+    height: 40px;
+    margin-bottom: 32px;
+    margin-top: 56px;
+}
+
+.before_image_title::after {
+    position: absolute;
+    content: '';
+    width: 64px;
+    height: 1px;
+    background: #333;
+    left: 0;
+    bottom: 0;
+}
+
+
+
+
+
+.justify-end {
+    justify-content: flex-end;
+}
+
+.card {
+    background: #fff;
+    padding: 16px;
+    border: 1px solid #C3C4C7;
+}
+
+li {
+    list-style: none;
+}
+
+.card:not(:first-child) {
+    margin-top: 32px;
+}
+
+.list-button {
+    display: inline;
+    padding: 2px 8px;
+    margin-left: 16px;
+}

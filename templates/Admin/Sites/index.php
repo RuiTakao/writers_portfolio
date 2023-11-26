@@ -36,6 +36,25 @@ if (is_null($site->header_image_path) || !file_exists(SitesTable::ROOT_HEADER_IM
         <th>ディスクリプション</th>
         <td><?= nl2br(h($site->site_description)) ?></td>
     </tr>
+    <tr>
+        <th colspan="2" style="text-align: center;padding: 0;">表示ステータス</th>
+    </tr>
+    <tr>
+        <th>日付のフォーマット</th>
+        <td>yyyy/mm/dd</td>
+    </tr>
+    <tr>
+        <th>経歴</th>
+        <td>表示</td>
+    </tr>
+    <tr>
+        <th>実績</th>
+        <td>表示</td>
+    </tr>
+    <tr>
+        <th>仕事について</th>
+        <td>表示</td>
+    </tr>
 </table>
 <?= $this->Html->link('編集', ['action' => 'edit'], ['class' => 'button']) ?>
 
