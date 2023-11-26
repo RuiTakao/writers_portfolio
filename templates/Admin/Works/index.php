@@ -14,7 +14,7 @@ use App\Model\Table\WorksTable;
 
 <div class="flex" style="gap: 16px">
     <?= $this->Html->link('実績の追加', ['action' => 'add'], ['class' => 'button']) ?>
-    <?= $this->Html->link('並び順変更', ['action' => 'add'], ['class' => 'button']) ?>
+    <?= $this->Html->link('並び順変更', ['action' => 'order'], ['class' => 'button']) ?>
 </div>
 
 <ul style="margin-top: 32px;">

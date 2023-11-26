@@ -232,4 +232,47 @@ class WorksController extends AppController
         }
         return $this->redirect(['action' => 'index']);
     }
+
+    public function order()
+    {
+        $works = $this->Works->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])->order(['works_order' => 'asc']);
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $data = $this->request->getData();
+
+            // 更新データ作成
+            $save_data = [];
+            foreach ($data['id'] as $index => $item) {
+                $save_data[] =  [
+                    'id' => $item,
+                    'works_order' => $data['order'][$index]
+                ];
+            }
+
+            try {
+                $this->connection->begin();
+
+                // 排他制御
+                $works->modifier('SQL_NO_CACHE')->epilog('FOR UPDATE')->toArray();
+
+                // 一括更新
+                $works = $this->Works->patchEntities($works, $save_data);
+                $works = $this->Works->saveMany($works);
+                if (!$works) {
+                    throw new DatabaseException();
+                }
+
+                $this->connection->commit();
+
+                $this->session->write('message', '設定を反映しました。');
+                return $this->redirect(['action' => 'order']);
+            } catch (DatabaseException $e) {
+                $this->connection->rollback();
+                $this->session->write('message', '設定の更新が失敗しました。');
+                return $this->redirect(['action' => 'index']);
+            }
+        }
+
+        $this->set('works', $works);
+    }
 }
