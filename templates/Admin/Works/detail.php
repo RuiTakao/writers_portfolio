@@ -2,7 +2,7 @@
 
 /** ページタイトル */ ?>
 <?php $this->start('page_title') ?>
-実績 編集
+<?= $this->Html->link('実績の設定', ['action' => 'index']) ?> > 詳細
 <?php $this->end() ?>
 
 <?php /** css */ ?>
@@ -12,15 +12,27 @@
     .button {
         width: 80px;
     }
+
+    .content_title {
+        margin: 0;
+    }
+
+    .mt32 {
+        margin-top: 32px;
+    }
 </style>
 <?php $this->end() ?>
 
-<div class="flex justify-end" style="gap: 16px">
-    <?= $this->Html->link('編集', ['action' => 'edit'], ['class' => 'button']) ?>
-    <?= $this->Html->link('削除', ['action' => 'delete'], ['class' => 'button delete']) ?>
+<div class="flex justify-between align-center mt32">
+    <p class="content_title">実績の追加<?= $this->Html->link('< 戻る', ['action' => 'index']) ?></p>
+    <div class="flex" style="gap: 16px">
+        <?= $this->Html->link('編集', ['action' => 'edit', $work->id], ['class' => 'button']) ?>
+        <?= $this->Form->postLink('削除', ['controller' => 'Works', 'action' => 'delete', $work->id], ['class' => 'button delete']) ?>
+    </div>
+
 </div>
 
-<p style="border-bottom: 1px solid #333; padding-bottom: 8px;margin-top:16px;"><?= h($work->title) ?></p>
+<p class="mt32" style="border-bottom: 1px solid #333; padding-bottom: 8px;margin-top:48px;"><?= h($work->title) ?></p>
 <p style="margin-top: 32px;"><?= nl2br(h($work->overview)) ?></p>
 
 <table style="margin-top: 56px;">

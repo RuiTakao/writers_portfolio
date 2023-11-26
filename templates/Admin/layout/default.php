@@ -27,6 +27,7 @@
                 <li class="aside_navi_item"><?= $this->Html->link('プロフィール設定', ['controller' => 'Profiles', 'action' => 'index']) ?></li>
                 <li class="aside_navi_item"><?= $this->Html->link('サイト設定', ['controller' => 'Sites', 'action' => 'index']) ?></li>
                 <li class="aside_navi_item"><?= $this->Html->link('経歴', ['controller' => 'Histories', 'action' => 'index']) ?></li>
+                <li class="aside_navi_item"><?= $this->Html->link('実績', ['controller' => 'Works', 'action' => 'index']) ?></li>
             </ul>
         </nav>
     </aside>

@@ -14,7 +14,7 @@ $image_path = WorksTable::WORKS_IMAGE_PATH . $self_path;
 
 $data_default_file = null;
 if (!is_null($work->image_path) && $work->image_path != '' && file_exists($root_image_path)) {
-    $data_default_file = '../../../img/'.$image_path;
+    $data_default_file = $this->Url->image($image_path);
 }
 ?>
 
@@ -66,7 +66,7 @@ if (!is_null($work->image_path) && $work->image_path != '' && file_exists($root_
 ]) ?>
 <?php $this->end() ?>
 
-<?= $this->Form->create($work, ['url' => ['controller' => 'Works', 'action' => 'editImage'], 'type' => 'file']) ?>
+<?= $this->Form->create($work, ['url' => ['controller' => 'Works', 'action' => 'editImage', $work->id], 'type' => 'file']) ?>
 <?= $this->Form->control('image_path', ['class' => 'dropify mb16', 'type' => 'file', 'label' => false, 'data-default-file' =>h($data_default_file)]) ?>
 <?= $this->Form->control('url', ['label' => 'URL']) ?>
 <?= $this->Form->control('url_path', ['label' => 'URL名']) ?>

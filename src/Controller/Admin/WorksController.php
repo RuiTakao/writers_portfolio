@@ -108,6 +108,128 @@ class WorksController extends AppController
             return $this->redirect(['action' => 'index']);
         }
 
+        if ($this->request->is(['post', 'patch', 'put'])) {
+
+            // リクエストデータ取得
+            $data = $this->request->getData();
+
+            $image = $data['image_path'];
+            $data['image_path'] = $data['image_path']->getClientFilename();
+
+            try {
+
+                // トランザクション開始
+                $this->connection->begin();
+
+                // 登録処理
+                $work = $this->Works->patchEntity($work, $data);
+                $ret = $this->Works->save($work);
+                if (!$ret) {
+                    throw new DatabaseException;
+                }
+
+                // ディレクトリに画像保存
+                $path = WorksTable::ROOT_WORKS_IMAGE_PATH . $this->AuthUser->username;
+                if (file_exists($path)) {
+                    mkdir($path . '/' . $work->id);
+                    $image->moveTo($path . '/' . $work->id . '/' . $data['image_path']);
+                } else {
+                    throw new DatabaseException;
+                }
+
+                // コミット
+                $this->connection->commit();
+            } catch (DatabaseException $e) {
+                // ロールバック
+                $this->connection->rollback();
+                return $this->redirect(['action' => 'detail', $work->id]);
+            }
+
+            return $this->redirect(['action' => 'detail', $work->id]);
+        }
+
         $this->set('work', $work);
+    }
+
+    public function edit($id)
+    {
+        // idとログインユーザーidから実績のレコードを取得
+        $work = $this->Works->find('all', ['conditions' => ['id' => $id, 'user_id' => $this->AuthUser->id]])->first();
+
+        // 不正なアクセスの場合は一覧画面へリダイレクト
+        if (!$work) {
+            return $this->redirect(['action' => 'index']);
+        }
+
+        if ($this->request->is(['post', 'patch', 'put'])) {
+
+            // リクエストデータ取得
+            $data = $this->request->getData();
+
+            try {
+
+                // トランザクション開始
+                $this->connection->begin();
+
+                // 登録処理
+                $work = $this->Works->patchEntity($work, $data);
+                $ret = $this->Works->save($work);
+                if (!$ret) {
+                    throw new DatabaseException;
+                }
+
+                // コミット
+                $this->connection->commit();
+            } catch (DatabaseException $e) {
+                // ロールバック
+                $this->connection->rollback();
+                return $this->redirect(['action' => 'detail', $work->id]);
+            }
+
+            return $this->redirect(['action' => 'detail', $work->id]);
+        }
+
+        $this->set('work', $work);
+    }
+
+    public function delete($id)
+    {
+        // idとログインユーザーidから実績のレコードを取得
+        $work = $this->Works->find('all', ['conditions' => ['id' => $id, 'user_id' => $this->AuthUser->id]])->first();
+
+        // 不正なアクセスの場合は一覧画面へリダイレクト
+        if (!$work) {
+            return $this->redirect(['action' => 'index']);
+        }
+
+        if ($this->request->is(['post', 'patch', 'put'])) {
+            try {
+
+                // トランザクション開始
+                $this->connection->begin();
+
+                // 排他制御
+                $this->Works
+                    ->find('all', ['conditions' => ['id' => $work->id]])
+                    ->modifier('SQL_NO_CACHE')
+                    ->epilog('FOR UPDATE')
+                    ->first();
+
+                // 削除処理
+                $ret = $this->Works->delete($work);
+                if (!$ret) {
+                    throw new DatabaseException;
+                }
+
+                // コミット
+                $this->connection->commit();
+            } catch (DatabaseException $e) {
+
+                // ロールバック
+                $this->connection->rollback();
+                return $this->redirect(['action' => 'index']);
+            }
+        }
+        return $this->redirect(['action' => 'index']);
     }
 }
