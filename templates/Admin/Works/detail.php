@@ -27,7 +27,7 @@
     <p class="content_title">実績の追加<?= $this->Html->link('< 戻る', ['action' => 'index']) ?></p>
     <div class="flex" style="gap: 16px">
         <?= $this->Html->link('編集', ['action' => 'edit', $work->id], ['class' => 'button']) ?>
-        <?= $this->Form->postLink('削除', ['controller' => 'Works', 'action' => 'delete', $work->id], ['class' => 'button delete']) ?>
+        <?= $this->Form->postLink('削除', ['controller' => 'Works', 'action' => 'delete', $work->id], ['class' => 'button delete', 'confirm' => '削除しますか？']) ?>
     </div>
 
 </div>

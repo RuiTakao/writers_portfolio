@@ -97,14 +97,12 @@ class WorksTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->scalar('title')
-            ->maxLength('title', 50)
-            ->allowEmptyString('title');
+            ->maxLength('title', 50, 'タイトルは50文字以内で入力してください。')
+            ->notBlank('title', 'タイトルは必須です。');
 
         $validator
-            ->scalar('overview')
-            ->maxLength('overview', 255)
-            ->allowEmptyString('overview');
+            ->maxLength('overview', 255, '概要は255文字以内で入力してください。')
+            ->notBlank('overview', '概要は必須です。');
 
         $validator
             ->scalar('image_path')
@@ -120,15 +118,6 @@ class WorksTable extends Table
             ->scalar('url_path')
             ->maxLength('url_path', 255)
             ->allowEmptyString('url_path');
-
-        $validator
-            ->scalar('works_order')
-            ->maxLength('works_order', 5)
-            ->allowEmptyString('works_order');
-
-        $validator
-            ->integer('user_id')
-            ->notEmptyString('user_id');
 
         return $validator;
     }

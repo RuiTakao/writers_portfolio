@@ -7,6 +7,7 @@ namespace App\Controller\Admin;
 use App\Controller\Admin\AppController;
 use App\Model\Table\WorksTable;
 use Cake\Database\Exception\DatabaseException;
+use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -17,6 +18,9 @@ use Cake\ORM\TableRegistry;
 class WorksController extends AppController
 {
 
+    /**
+     * @return void
+     */
     public function initialize(): void
     {
         parent::initialize();
@@ -28,6 +32,11 @@ class WorksController extends AppController
         $this->connection = $this->Works->getConnection();
     }
 
+    /**
+     * 一覧表示
+     * 
+     * @return Response|void|null
+     */
     public function index()
     {
         $works = $this->Works->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])->order(['works_order' => 'asc']);
@@ -35,6 +44,11 @@ class WorksController extends AppController
         $this->set('works', $works);
     }
 
+    /**
+     * 追加
+     * 
+     * @return Response|void|null
+     */
     public function add()
     {
         $work = $this->Works->newEmptyEntity();
@@ -49,14 +63,27 @@ class WorksController extends AppController
 
             // 並び順の最後尾を検索し、最後尾の最後の順番を追加
             $works = $this->Works->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])->order(['works_order' => 'asc']);
-            $works_order_array = [];
+            $order_array = [];
             foreach ($works as $value) {
-                array_push($works_order_array, intval($value->works_order));
+                // 比較用にothers_orderの数値を全て配列に格納
+                array_push($order_array, intval($value->works_order));
             }
-            if (empty($works_order_array)) {
+            if (empty($order_array)) {
+                // データが無い場合は1を追加する
                 $data['works_order'] = 1;
             } else {
-                $data['works_order'] = max($works_order_array) + 1;
+                // データの最大値+1を追加する
+                $data['works_order'] = max($order_array) + 1;
+            }
+
+            // エンティティにデータセット
+            $work = $this->Works->patchEntity($work, $data);
+
+            // バリデーション処理
+            if ($work->getErrors()) {
+                $this->session->write('message', '入力に不備があります。');
+                $this->set('work', $work);
+                return;
             }
 
             try {
@@ -65,7 +92,6 @@ class WorksController extends AppController
                 $this->connection->begin();
 
                 // 登録処理
-                $work = $this->Works->patchEntity($work, $data);
                 $ret = $this->Works->save($work);
                 if (!$ret) {
                     throw new DatabaseException;
@@ -74,18 +100,31 @@ class WorksController extends AppController
                 // コミット
                 $this->connection->commit();
             } catch (DatabaseException $e) {
+
                 // ロールバック
                 $this->connection->rollback();
+
+                // 一覧画面へリダイレクト
+                $this->session->write('message', '登録に失敗しました。');
                 return $this->redirect(['action' => 'index']);
             }
 
+             // 詳細へリダイレクト
+             $this->session->write('message', '実績を一件、追加しました。');
             return $this->redirect(['action' => 'detail', $work->id]);
         }
 
         $this->set('work', $work);
     }
 
-    public function detail($id)
+    /**
+     * 詳細
+     * 
+     * @param int $id
+     * 
+     * @return Response|void|null
+     */
+    public function detail($id = null)
     {
         // idとログインユーザーidから実績のレコードを取得
         $work = $this->Works->find('all', ['conditions' => ['id' => $id, 'user_id' => $this->AuthUser->id]])->first();
@@ -98,7 +137,14 @@ class WorksController extends AppController
         $this->set('work', $work);
     }
 
-    public function editImage($id)
+    /**
+     * 画像編集
+     * 
+     * @param int $id
+     * 
+     * @return Response|void|null
+     */
+    public function editImage($id = null)
     {
         // idとログインユーザーidから実績のレコードを取得
         $work = $this->Works->find('all', ['conditions' => ['id' => $id, 'user_id' => $this->AuthUser->id]])->first();
@@ -109,6 +155,7 @@ class WorksController extends AppController
         }
 
         if ($this->request->is(['post', 'patch', 'put'])) {
+            // postの場合
 
             // リクエストデータ取得
             $data = $this->request->getData();
@@ -151,7 +198,14 @@ class WorksController extends AppController
         $this->set('work', $work);
     }
 
-    public function edit($id)
+    /**
+     * 編集
+     * 
+     * @param int $id
+     * 
+     * @return Response|void|null
+     */
+    public function edit($id = null)
     {
         // idとログインユーザーidから実績のレコードを取得
         $work = $this->Works->find('all', ['conditions' => ['id' => $id, 'user_id' => $this->AuthUser->id]])->first();
@@ -166,13 +220,22 @@ class WorksController extends AppController
             // リクエストデータ取得
             $data = $this->request->getData();
 
+            // エンティティにデータセット
+            $work = $this->Works->patchEntity($work, $data);
+
+            // バリデーション処理
+            if ($work->getErrors()) {
+                $this->session->write('message', '入力に不備があります。');
+                $this->set('work', $work);
+                return;
+            }
+
             try {
 
                 // トランザクション開始
                 $this->connection->begin();
 
                 // 登録処理
-                $work = $this->Works->patchEntity($work, $data);
                 $ret = $this->Works->save($work);
                 if (!$ret) {
                     throw new DatabaseException;
@@ -181,18 +244,31 @@ class WorksController extends AppController
                 // コミット
                 $this->connection->commit();
             } catch (DatabaseException $e) {
+
                 // ロールバック
                 $this->connection->rollback();
+
+                // 一覧画面へリダイレクト
+                $this->session->write('message', '変更に失敗しました。');
                 return $this->redirect(['action' => 'detail', $work->id]);
             }
 
+            // 詳細へリダイレクト
+            $this->session->write('message', '実績を変更しました。');
             return $this->redirect(['action' => 'detail', $work->id]);
         }
 
         $this->set('work', $work);
     }
 
-    public function delete($id)
+    /**
+     * 削除
+     * 
+     * @param int $id
+     * 
+     * @return Response|void|null
+     */
+    public function delete($id = null)
     {
         // idとログインユーザーidから実績のレコードを取得
         $work = $this->Works->find('all', ['conditions' => ['id' => $id, 'user_id' => $this->AuthUser->id]])->first();
@@ -227,12 +303,23 @@ class WorksController extends AppController
 
                 // ロールバック
                 $this->connection->rollback();
+
+                // 一覧画面へリダイレクト
+                $this->session->write('message', '削除に失敗しました。');
                 return $this->redirect(['action' => 'index']);
             }
         }
+
+         // 一覧画面へリダイレクト
+         $this->session->write('message', '実績を一件、削除しました。');
         return $this->redirect(['action' => 'index']);
     }
 
+    /**
+     * 順序入れ替え
+     * 
+     * @return Response|void|null
+     */
     public function order()
     {
         $works = $this->Works->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])->order(['works_order' => 'asc']);

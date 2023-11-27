@@ -163,6 +163,13 @@ class OthersController extends AppController
                 // トランザクション開始
                 $this->connection->begin();
 
+                // 排他制御
+                $this->Others
+                    ->find('all', ['conditions' => ['id' => $id]])
+                    ->modifier('SQL_NO_CACHE')
+                    ->epilog('FOR UPDATE')
+                    ->first();
+
                 // 登録処理
                 $ret = $this->Others->save($other);
                 if (!$ret) {
@@ -234,7 +241,11 @@ class OthersController extends AppController
                 // コミット
                 $this->connection->commit();
             } catch (DatabaseException $e) {
+
+                // ロールバック
                 $this->connection->rollback();
+
+                // 一覧画面へ遷移
                 $this->session->write('message', '設定の更新が失敗しました。');
                 return $this->redirect(['action' => 'index']);
             }
@@ -244,6 +255,7 @@ class OthersController extends AppController
             return $this->redirect(['action' => 'order']);
         }
 
+        // viewに渡すデータセット
         $this->set('others', $others);
     }
 
