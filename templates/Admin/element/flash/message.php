@@ -17,6 +17,15 @@
         }
     }
 
+    <?php /** 追加確認用モーダル */ ?>
+    function checkAdd() {
+        if (confirm(`この内容で追加しますか？`)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     <?php /** 削除確認用モーダル */ ?>
     function checkDelete() {
         if (confirm(`削除しますか？`)) {

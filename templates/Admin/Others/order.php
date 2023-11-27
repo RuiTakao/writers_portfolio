@@ -26,10 +26,11 @@
 <?php $this->end() ?>
 
 <p class="content_title">実績の編集<?= $this->Html->link('< 戻る', ['action' => 'index']) ?></p>
+
 <?= $this->Form->create($others,['url' => ['controller' => 'Others', 'action' => 'order']]) ?>
 <div class="flex" style="width: 100%;">
-    <div class="product_order_container" style="width: 70%; padding-right: 16px; border-right: 1px solid #333;">
-        <ul id="productOrderList" class="product_order_list">
+    <div style="width: 70%; padding-right: 16px; border-right: 1px solid #333;">
+        <ul id="productOrderList">
             <?php foreach ($others as $key => $item) : ?>
                 <li class="product_order_item">
                     <div class="js-productOrder" draggable="true">

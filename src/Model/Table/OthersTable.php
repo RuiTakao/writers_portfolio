@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Table;
@@ -62,70 +63,18 @@ class OthersTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->scalar('title')
-            ->maxLength('title', 50)
-            ->requirePresence('title', 'create')
-            ->notEmptyString('title');
+            ->maxLength('title', 50, 'タイトルは50文字以内で入力してください。')
+            ->notBlank('title', 'タイトルは必須です。');
 
         $validator
-            ->scalar('content1')
-            ->maxLength('content1', 50)
-            ->allowEmptyString('content1');
+            ->maxLength('content1', 50, '項目は50文字以内で入力してください。')
+            ->notBlank('content1', '項目の一行目は必須です。');
 
-        $validator
-            ->scalar('content2')
-            ->maxLength('content2', 50)
-            ->allowEmptyString('content2');
-
-        $validator
-            ->scalar('content3')
-            ->maxLength('content3', 50)
-            ->allowEmptyString('content3');
-
-        $validator
-            ->scalar('content4')
-            ->maxLength('content4', 50)
-            ->allowEmptyString('content4');
-
-        $validator
-            ->scalar('content5')
-            ->maxLength('content5', 50)
-            ->allowEmptyString('content5');
-
-        $validator
-            ->scalar('content6')
-            ->maxLength('content6', 50)
-            ->allowEmptyString('content6');
-
-        $validator
-            ->scalar('content7')
-            ->maxLength('content7', 50)
-            ->allowEmptyString('content7');
-
-        $validator
-            ->scalar('content8')
-            ->maxLength('content8', 50)
-            ->allowEmptyString('content8');
-
-        $validator
-            ->scalar('content9')
-            ->maxLength('content9', 50)
-            ->allowEmptyString('content9');
-
-        $validator
-            ->scalar('content10')
-            ->maxLength('content10', 50)
-            ->allowEmptyString('content10');
-
-        $validator
-            ->scalar('others_order')
-            ->maxLength('others_order', 5)
-            ->requirePresence('others_order', 'create')
-            ->notEmptyString('others_order');
-
-        $validator
-            ->integer('user_id')
-            ->notEmptyString('user_id');
+        for ($i = 2; $i <= 10; $i++) {
+            $validator
+                ->maxLength('content' . $i, 50, '項目は50文字以内で入力してください。')
+                ->allowEmptyString('content' . $i);
+        }
 
         return $validator;
     }

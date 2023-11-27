@@ -12,15 +12,18 @@
 
 <div class="flex justify-between align-center">
     <p class="content_title">その他の編集<?= $this->Html->link('< 戻る', ['action' => 'index']) ?></p>
-    <?= $this->Form->postLink('削除', ['controller' => 'Others', 'action' => 'delete', $other->id], ['class' => 'button delete']) ?>
+    <?= $this->Form->postLink('削除', ['controller' => 'Others', 'action' => 'delete', $other->id], ['class' => 'button delete', 'confirm' => '削除しますか？']) ?>
 </div>
 
-<?= $this->Form->create($other, ['url' => ['controller' => 'Others', 'action' => 'edit', $other->id]]) ?>
-<?= $this->Form->control('title', ['label' => 'タイトル', 'style' => 'margin-bottom: 16px']) ?>
-<p>項目</p>
+<?= $this->Form->create($other, [
+    'url' => ['controller' => 'Others', 'action' => 'edit', $other->id],
+    'onSubmit' => 'return checkEdit()'
+]) ?>
+<?= $this->Form->control('title', ['label' => 'タイトル', 'required' => false]) ?>
+<p style="margin-top: 16px">項目</p>
 <div class="other_content_list">
     <?php for ($i = 1; $i <= 10; $i++) : ?>
-        <?= $this->Form->control('content' . $i, ['label' => false]) ?>
+        <?= $this->Form->control('content' . $i, ['label' => false, 'required' => false]) ?>
     <?php endfor; ?>
 </div>
 <?= $this->Form->submit('設定を保存', ['class' => 'button', 'style' => 'margin-top: 16px;']) ?>

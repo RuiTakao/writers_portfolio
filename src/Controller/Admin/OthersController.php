@@ -67,28 +67,37 @@ class OthersController extends AppController
             // ログインユーザーのIDを追加
             $data['user_id'] = $this->AuthUser->id;
 
-             // 並び順の最後尾を検索し、最後尾の最後の順番を追加
-             $others = $this->Others->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])->order(['others_order' => 'asc']);
-             $order_array = [];
-             foreach ($others as $value) {
+            // 並び順の最後尾を検索し、最後尾の最後の順番を追加
+            $others = $this->Others->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])->order(['others_order' => 'asc']);
+            $order_array = [];
+            foreach ($others as $value) {
                 // 比較用にothers_orderの数値を全て配列に格納
-                 array_push($order_array, intval($value->others_order));
-             }
-             if (empty($order_array)) {
+                array_push($order_array, intval($value->others_order));
+            }
+            if (empty($order_array)) {
                 // データが無い場合は1を追加する
-                 $data['others_order'] = 1;
-             } else {
+                $data['others_order'] = 1;
+            } else {
                 // データの最大値+1を追加する
-                 $data['others_order'] = max($order_array) + 1;
-             }
+                $data['others_order'] = max($order_array) + 1;
+            }
 
-             try {
+            // エンティティにデータをセット
+            $other = $this->Others->patchEntity($other, $data);
+
+            // バリデーション処理
+            if ($other->getErrors()) {
+                $this->session->write('message', '入力に不備があります。');
+                $this->set('other', $other);
+                return;
+            }
+
+            try {
 
                 // トランザクション開始
                 $this->connection->begin();
 
                 // 登録処理
-                $other = $this->Others->patchEntity($other, $data);
                 $ret = $this->Others->save($other);
                 if (!$ret) {
                     throw new DatabaseException;
@@ -99,9 +108,14 @@ class OthersController extends AppController
             } catch (DatabaseException $e) {
                 // ロールバック
                 $this->connection->rollback();
+
+                // 一覧画面へリダイレクト
+                $this->session->write('message', '登録に失敗しました。');
                 return $this->redirect(['action' => 'index']);
             }
 
+            // 一覧画面へリダイレクト
+            $this->session->write('message', 'その他を一件、追加しました。');
             return $this->redirect(['action' => 'index']);
         }
 
@@ -134,13 +148,22 @@ class OthersController extends AppController
             // リクエストデータ取得
             $data = $this->request->getData();
 
-             try {
+            // エンティティにデータをセット
+            $other = $this->Others->patchEntity($other, $data);
+
+            // バリデーション処理
+            if ($other->getErrors()) {
+                $this->session->write('message', '入力に不備があります。');
+                $this->set('other', $other);
+                return;
+            }
+
+            try {
 
                 // トランザクション開始
                 $this->connection->begin();
 
                 // 登録処理
-                $other = $this->Others->patchEntity($other, $data);
                 $ret = $this->Others->save($other);
                 if (!$ret) {
                     throw new DatabaseException;
@@ -151,10 +174,15 @@ class OthersController extends AppController
             } catch (DatabaseException $e) {
                 // ロールバック
                 $this->connection->rollback();
+
+                // 一覧画面へリダイレクト
+                $this->session->write('message', '変更に失敗しました。');
                 return $this->redirect(['action' => 'index']);
             }
 
-            return $this->redirect(['action' => 'index']);
+            // 一覧画面へリダイレクト
+            $this->session->write('message', 'その他を変更しました。');
+            return $this->redirect(['action' => 'edit', $id]);
         }
 
         // viewに渡すデータセット
@@ -200,18 +228,20 @@ class OthersController extends AppController
                 $others = $this->Others->patchEntities($others, $save_data);
                 $others = $this->Others->saveMany($others);
                 if (!$others) {
-                    throw new DatabaseException();
+                    throw new DatabaseException;
                 }
 
                 // コミット
                 $this->connection->commit();
-                $this->session->write('message', '設定を反映しました。');
-                return $this->redirect(['action' => 'order']);
             } catch (DatabaseException $e) {
                 $this->connection->rollback();
                 $this->session->write('message', '設定の更新が失敗しました。');
                 return $this->redirect(['action' => 'index']);
             }
+
+            // 並び順変更ページに遷移
+            $this->session->write('message', '設定を反映しました。');
+            return $this->redirect(['action' => 'order']);
         }
 
         $this->set('others', $others);
@@ -261,9 +291,15 @@ class OthersController extends AppController
 
                 // ロールバック
                 $this->connection->rollback();
+
+                // 一覧画面へリダイレクト
+                $this->session->write('message', '削除に失敗しました。');
                 return $this->redirect(['action' => 'index']);
             }
         }
+
+        // 一覧画面へリダイレクト
+        $this->session->write('message', 'その他を一件、削除しました。');
         return $this->redirect(['action' => 'index']);
     }
 }
