@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Table;
@@ -54,6 +55,8 @@ class WorksTable extends Table
     const WORKS_IMAGE_PATH = 'users/works/';
     // ルートからの相対パス
     const ROOT_WORKS_IMAGE_PATH = WWW_ROOT . 'img/' . self::WORKS_IMAGE_PATH;
+    // ブランク画像のパス
+    const BLANK_WORKS_IMAGE_PATH = 'blank/works/works_blank_image.jpg';
 
     /**
      * 画像の拡張子
@@ -110,14 +113,13 @@ class WorksTable extends Table
             ->allowEmptyFile('image_path');
 
         $validator
-            ->scalar('url')
-            ->maxLength('url', 255)
-            ->allowEmptyString('url');
+            ->maxLength('url_path', 255)
+            ->url('url_path', 'URLを入力してください。')
+            ->allowEmptyString('url_path');
 
         $validator
-            ->scalar('url_path')
-            ->maxLength('url_path', 255)
-            ->allowEmptyString('url_path');
+            ->maxLength('url_name', 255);
+
 
         return $validator;
     }

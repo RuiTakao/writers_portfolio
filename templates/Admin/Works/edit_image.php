@@ -20,7 +20,7 @@ if (!is_null($work->image_path) && $work->image_path != '' && file_exists($root_
 
 <?php /** ページタイトル */ ?>
 <?php $this->start('page_title') ?>
-実績 画像の編集
+<?= $this->Html->link('実績の設定', ['action' => 'index']) ?> > <?= $this->Html->link('詳細', ['action' => 'detail', $work->id]) ?> > 画像の編集
 <?php $this->end() ?>
 
 <?php /** css */ ?>
@@ -66,13 +66,17 @@ if (!is_null($work->image_path) && $work->image_path != '' && file_exists($root_
 ]) ?>
 <?php $this->end() ?>
 
-<?= $this->Form->create($work, ['url' => ['controller' => 'Works', 'action' => 'editImage', $work->id], 'type' => 'file']) ?>
-<?= $this->Form->control('image_path', ['class' => 'dropify mb16', 'type' => 'file', 'label' => false, 'data-default-file' =>h($data_default_file)]) ?>
-<?= $this->Form->control('url', ['label' => 'URL']) ?>
-<?= $this->Form->control('url_path', ['label' => 'URL名']) ?>
+<p class="content_title">画像の編集<?= $this->Html->link('< 戻る', ['action' => 'detail', $work->id]) ?></p>
+
+<?= $this->Form->create($work, [
+    'url' => ['controller' => 'Works', 'action' => 'editImage', $work->id],
+    'type' => 'file',
+    'onSubmit' => 'return checkEdit()'
+]) ?>
+<?= $this->Form->control('image_path', ['class' => 'dropify mb16', 'type' => 'file', 'label' => false, 'data-default-file' => h($data_default_file)]) ?>
 <div class="flex mt32" style="gap: 16px; width: 50%">
     <?= $this->Form->submit('設定を保存', ['class' => 'button']) ?>
-    <?= $this->Form->postLink('画像の削除', ['controller' => 'Works', 'action' => 'deleteImage', $work->id], ['block' => true, 'class' => 'button delete']) ?>
+    <?= $this->Form->postLink('画像の削除', ['controller' => 'Works', 'action' => 'deleteImage', $work->id], ['block' => true, 'class' => 'button delete', 'confirm' => '削除しますか？']) ?>
 </div>
 <?= $this->Form->end() ?>
 <?= $this->fetch('postLink') ?>

@@ -12,7 +12,7 @@ use Cake\ORM\Entity;
  * @property string|null $title
  * @property string|null $overview
  * @property string|null $image_path
- * @property string|null $url
+ * @property string|null $url_name
  * @property string|null $url_path
  * @property string|null $order
  * @property int $user_id
@@ -36,7 +36,7 @@ class Work extends Entity
         'title' => true,
         'overview' => true,
         'image_path' => true,
-        'url' => true,
+        'url_name' => true,
         'url_path' => true,
         'works_order' => true,
         'user_id' => true,

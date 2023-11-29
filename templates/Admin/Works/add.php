@@ -12,6 +12,13 @@
     .input.textarea {
         margin-top: 16px;
     }
+    .url {
+        margin-top: 16px;
+    }
+
+    .url .input:not(:first-child) {
+        margin-top: 8px;
+    }
 </style>
 <?php $this->end() ?>
 
@@ -23,5 +30,10 @@
 ]) ?>
 <?= $this->Form->control('title', ['label' => 'タイトル', 'required' => false]) ?>
 <?= $this->Form->control('overview', ['type' => 'textarea', 'label' => '概要', 'required' => false]) ?>
-<?= $this->Form->submit('設定を保存', ['class' => 'button', 'style' => 'margin-top: 16px;']) ?>
+<p style="border-bottom: 1px solid #333; padding-bottom: 8px;margin-top:32px;">関連リンク</p>
+<div class="url">
+    <?= $this->Form->control('url_path', ['label' => '関連リンク', 'required' => false]) ?>
+    <?= $this->Form->control('url_name', ['label' => 'リンク名', 'required' => false]) ?>
+</div>
+<?= $this->Form->submit('設定を保存', ['class' => 'button', 'style' => 'margin-top: 32px;']) ?>
 <?= $this->Form->end() ?>

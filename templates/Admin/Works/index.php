@@ -19,7 +19,7 @@ use App\Model\Table\WorksTable;
 
 <ul style="margin-top: 32px;">
     <?php foreach ($works as $item) : ?>
-        
+
         <?php
         /**
          * 画像パス
@@ -33,22 +33,30 @@ use App\Model\Table\WorksTable;
         ?>
 
         <li class="card">
+            <div class="flex" style="border-bottom: 1px solid #333; padding-bottom: 8px;">
+                <p style="font-weight: 600; "><?= h($item->title) ?><?= $this->Html->link('詳細', ['action' => 'detail', $item->id], ['class' => 'button list-button']) ?></p>
+            </div>
             <div class="flex">
                 <div class="flex-left" style="width: 70%;">
-                    <div class="flex">
-                        <p style="font-weight: 600;"><?= h($item->title) ?><?= $this->Html->link('詳細', ['action' => 'detail', $item->id], ['class' => 'button list-button']) ?></p>
-                    </div>
-                    <p style="margin-top: 32px; line-height:1.8em;"><?= nl2br(h($item->overview)) ?></p>
+
+                    <?php if (!empty($item->url_path)) : ?>
+                        <p style="margin-top: 16px; font-size:14px;">関連リンク：
+                            <?php if (!empty($item->url_name)) : ?>
+                                <a href="<?= h($item->url_path) ?>"><?= h($item->url_name) ?></a>（<?= h($item->url_path) ?>）
+                            <?php else : ?>
+                                <a href="<?= h($item->url_path) ?>"><?= h($item->url_path) ?></a>
+                            <?php endif; ?>
+                        </p>
+                    <?php endif; ?>
+
+                    <p style="margin-top: 16px; line-height:1.8em;"><?= nl2br(h($item->overview)) ?></p>
                 </div>
 
                 <?php if (!is_null($item->image_path) && $item->image_path != '' && file_exists($root_image_path)) : ?>
                     <div class="flex-right" style="width: 30%;">
-                        <div class="">
-                            <?= $this->Html->image($image_path, ['style' => 'width: 80%; height:auto; display: block;']) ?>
+                        <div style="margin-top: 16px;">
+                            <?= $this->Html->image($image_path, ['style' => 'width: 80%; height: auto; max-height:192px; display: block;']) ?>
                         </div>
-                        <p style="margin-top: 8px;">
-                            <?= $this->html->link($item->url, ['url' => '#']) ?>
-                        </p>
                     </div>
                 <?php endif; ?>
 
