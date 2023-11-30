@@ -36,7 +36,7 @@
     <tr>
         <th>追加位置</th>
         <td colspan="3">
-            <?= $this->Form->select('add_place', $add_order, ['label' => false]) ?>
+            <?= $this->Form->select('add_place', $add_place, ['label' => false]) ?>
         </td>
     </tr>
 </table>

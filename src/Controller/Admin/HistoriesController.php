@@ -33,81 +33,62 @@ class HistoriesController extends AppController
      */
     public function index()
     {
+
+        // 登録用のエンティティ
         $historie = $this->Histories->newEmptyEntity();
-        $histories = $this->Histories
-            ->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])
-            ->order(['history_order' => 'asc']);
 
         if ($this->request->is('post')) {
 
             // リクエストデータ取得
             $data = $this->request->getData();
 
-            // ログインユーザーのIDを追加
-            // $data['user_id'] = $this->AuthUser->id;
+            $data['user_id'] = $this->AuthUser->id;
 
-            if ($data['add_place'] == "end") {
-                // 末尾に追加の場合
+            // 更新用の履歴データを取得
+            $histories = $this->Histories
+                ->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])
+                ->order(['history_order' => 'asc'])
+                ->toArray();
 
-                $history_order_array = [];
-                foreach ($histories as $value) {
-                    array_push($history_order_array, intval($value->history_order));
-                }
-            } else {
-                // 行数指定の場合
-
-                $history_order_array = [];
-                foreach ($histories as $key => $value) {
-                    $history_order_array[] = [
-                        'id' => $value->id,
-                        'history_order' => $key + 1
-                    ];
-                }
-                foreach ($history_order_array as $key => $value) {
-                    if (intval($value['history_order']) > intval($data['add_place'])) {
-                        $value['history_order']++;
-                        $history_order_array[$key]['history_order'] = $value['history_order'];
-                    }
-                }
-                $data['history_order'] = $data['add_place'];
-                $data['user_id'] = $this->AuthUser->id;
-                $historie = $this->Histories->patchEntity($historie, $data);
-                $this->Histories->save($historie);
-                $histories = $this->Histories->patchEntities($histories , $history_order_array);
-                $this->Histories->saveMany($histories);
+            // 履歴データのオーダー順を整列させる
+            for ($i = 0; $i < count($histories); $i++) {
+                $histories[$i]['history_order'] = $i + 1;
             }
 
-            
+            // 追加位置が指定の場合は追加位置を飛ばして整列し直す
+            if (is_numeric($data['add_place'])) {
+                for ($i = 0; $i < count($histories); $i++) {
+                    if (intval($data['add_place']) <= intval($histories[$i]['history_order'])) {
+                        $histories[$i]['history_order']++;
+                    }
+                }
 
-            // try {
-            //     $this->connection->begin();
+                $data['history_order'] = $data['add_place'];
+            } else if ($data['add_place'] == "end") {
+                $data['history_order'] = count($histories) + 1;
+            }
 
-            //     $historie = $this->Histories->patchEntity($historie, $data);
-            //     $ret = $this->Histories->save($historie);
-            //     if (!$ret) {
-            //         throw new DatabaseException;
-            //     }
-
-            //     $this->connection->commit();
-            // } catch (DatabaseException $e) {
-
-            //     // ロールバック
-            //     $this->connection->rollback();
-            //     $this->session->write('message', '');
-            //     return $this->redirect(['action' => 'index']);
-            // }
+            unset($data['add_place']);
+            array_push($histories, $this->Histories->patchEntity($historie, $data));
+            $ret = $this->Histories->saveMany($histories);
 
             return $this->redirect(['action' => 'index']);
         }
 
-        $add_order["end"] = "末尾に追加";
+        // 表示用に履歴一覧取得
+        $histories = $this->Histories
+            ->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])
+            ->order(['history_order' => 'asc']);
+
+        // 挿入箇所指定用
+        $add_place["end"] = "末尾に追加";
         foreach ($histories as $key => $value) {
-            $add_order[$key + 1] = $key + 1 . "行目に追加";
+            $add_place[$key + 1] = $key + 1 . "行目に追加";
         }
-        array_pop($add_order);
-        $this->set('add_order', $add_order);
+
         $this->set('historie', $historie);
         $this->set('histories', $histories);
+        $this->set('add_place', $add_place);
     }
 
     public function add()
