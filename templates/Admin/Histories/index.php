@@ -30,7 +30,7 @@
             <div class="flex align-center history_span_input">
                 <?= $this->Form->control('start', ['label' => false]) ?>～<?= $this->Form->control('end', ['label' => false]) ?>
             </div>
-            <?= $this->Form->checkbox('to_now',['id' => 'to_now']) ?><label for="to_now">現在まで</label>
+            <?= $this->Form->checkbox('to_now', ['id' => 'to_now']) ?><label for="to_now">現在まで</label>
         </td>
     </tr>
     <tr>
@@ -62,7 +62,12 @@
             <td>
                 <div class="flex" style="gap: 4px">
                     <a href="" class="button table_button">編集</a>
-                    <a href="" class="button table_button delete">削除</a>
+                    <?php $confirm_text = $key + 1 . '行目の経歴を削除しますか？' ?>
+                    <?= $this->Form->postLink(
+                        '削除',
+                        ['controller' => 'Histories', 'action' => 'delete', $value->id],
+                        ['class' => 'button table_button delete', 'confirm' => $confirm_text]
+                    ) ?>
                 </div>
             </td>
         </tr>

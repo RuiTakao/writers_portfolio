@@ -136,4 +136,29 @@ class HistoriesController extends AppController
     public function edit()
     {
     }
+
+    public function delete($id = null)
+    {
+        // idとログインユーザーidから実績のレコードを取得
+        $historie = $this->Histories->find('all', ['conditions' => ['id' => $id, 'user_id' => $this->AuthUser->id]])->first();
+
+        // 更新用の履歴データを取得
+        $histories = $this->Histories
+            ->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])
+            ->toArray();
+
+        for ($i = 0; $i < count($histories); $i++) {
+            if (intval($historie->history_order) <= intval($histories[$i]['history_order'])) {
+                $histories[$i]['history_order'] = intval($histories[$i]['history_order']) - 1;
+            }
+        }
+
+        $ret = $this->Histories->saveMany($histories);
+
+        // 削除処理
+        $ret = $this->Histories->delete($historie);
+
+        $this->session->write('message', '削除されました。');
+        return $this->redirect(['action' => 'index']);
+    }
 }
