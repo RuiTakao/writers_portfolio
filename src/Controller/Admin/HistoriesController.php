@@ -69,8 +69,46 @@ class HistoriesController extends AppController
             }
 
             unset($data['add_place']);
-            array_push($histories, $this->Histories->patchEntity($historie, $data));
-            $ret = $this->Histories->saveMany($histories);
+
+            // エンティティにデータをセット
+            $historie = $this->Histories->patchEntity($historie, $data);
+
+            // バリデーション処理
+            if ($historie->getErrors()) {
+                $this->session->write('message', '入力に不備があります。');
+                return $this->redirect(['action' => 'index']);
+            }
+
+            array_push($histories, $historie);
+
+            try {
+
+                // トランザクション開始
+                $this->connection->begin();
+
+                // 排他制御
+                $this->Histories
+                    ->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])
+                    ->modifier('SQL_NO_CACHE')
+                    ->epilog('FOR UPDATE')
+                    ->toArray();
+
+                $ret = $this->Histories->saveMany($histories);
+                if (!$ret) {
+                    throw new DatabaseException;
+                }
+
+                // コミット
+                $this->connection->commit();
+            } catch (DatabaseException $e) {
+
+                // ロールバック
+                $this->connection->rollback();
+
+                // 一覧画面へリダイレクト
+                $this->session->write('message', '登録に失敗しました。');
+                return $this->redirect(['action' => 'index']);
+            }
 
             return $this->redirect(['action' => 'index']);
         }
