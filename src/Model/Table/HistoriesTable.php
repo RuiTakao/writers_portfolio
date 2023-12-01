@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Table;
@@ -62,20 +63,20 @@ class HistoriesTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->maxLength('title', 50)
-            ->allowEmptyString('title');
+            ->maxLength('title', 50, 'タイトルは50文字以内で入力してください。')
+            ->notBlank('title', 'タイトルは必須です。');
 
         $validator
-            ->maxLength('overview', 255)
-            ->allowEmptyString('overview');
+            ->maxLength('overview', 255, '概要は50文字以内で入力してください。')
+            ->notBlank('overview', '概要は必須です。');
 
         $validator
             ->maxLength('start', 50)
-            ->allowEmptyString('start');
+            ->notBlank('start', '期間（開始）は必須です。');
 
         $validator
             ->maxLength('end', 50)
-            ->allowEmptyString('end');
+            ->notBlank('end', '期間（終了）は必須です。');
 
         return $validator;
     }

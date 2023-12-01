@@ -15,20 +15,20 @@
             タイトル
         </th>
         <td style="width: 25%;">
-            <?= $this->Form->control('title', ['label' => false]) ?>
+            <?= $this->Form->control('title', ['label' => false, 'required' => false]) ?>
         </td>
         <th>
-            説明
+            概要
         </th>
         <td>
-            <?= $this->Form->control('overview', ['type' => 'textarea', 'label' => false]) ?>
+            <?= $this->Form->control('overview', ['type' => 'textarea', 'label' => false, 'required' => false]) ?>
         </td>
     </tr>
     <tr>
         <th>期間</th>
         <td colspan="3" class="histories_span">
             <div class="flex align-center history_span_input">
-                <?= $this->Form->control('start', ['label' => false]) ?>～<?= $this->Form->control('end', ['label' => false]) ?>
+                <?= $this->Form->control('start', ['type' => 'date', 'label' => false, 'required' => false]) ?>～<?= $this->Form->control('end', ['type' => 'date', 'label' => false, 'required' => false]) ?>
             </div>
             <?= $this->Form->checkbox('to_now', ['id' => 'to_now']) ?><label for="to_now">現在まで</label>
         </td>

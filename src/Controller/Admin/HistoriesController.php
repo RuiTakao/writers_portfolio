@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Controller\Admin\AppController;
 use App\Model\Table\HistoriesTable;
 use Cake\Database\Exception\DatabaseException;
+use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -27,15 +28,26 @@ class HistoriesController extends AppController
     }
 
     /**
-     * Index method
+     * 一覧画面
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return Response|null|void
      */
     public function index()
     {
 
         // 登録用のエンティティ
         $historie = $this->Histories->newEmptyEntity();
+
+        // 表示用に履歴一覧取得
+        $histories = $this->Histories
+            ->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])
+            ->order(['history_order' => 'asc']);
+
+        // 挿入箇所指定用
+        $add_place["end"] = "末尾に追加";
+        foreach ($histories as $key => $value) {
+            $add_place[$key + 1] = $key + 1 . "行目に追加";
+        }
 
         if ($this->request->is('post')) {
 
@@ -75,8 +87,11 @@ class HistoriesController extends AppController
 
             // バリデーション処理
             if ($historie->getErrors()) {
+                $this->set('historie', $historie);
+                $this->set('histories', $histories);
+                $this->set('add_place', $add_place);
                 $this->session->write('message', '入力に不備があります。');
-                return $this->redirect(['action' => 'index']);
+                return;
             }
 
             array_push($histories, $historie);
@@ -113,20 +128,13 @@ class HistoriesController extends AppController
             return $this->redirect(['action' => 'index']);
         }
 
-        // 表示用に履歴一覧取得
-        $histories = $this->Histories
-            ->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])
-            ->order(['history_order' => 'asc']);
-
-        // 挿入箇所指定用
-        $add_place["end"] = "末尾に追加";
-        foreach ($histories as $key => $value) {
-            $add_place[$key + 1] = $key + 1 . "行目に追加";
-        }
-
         $this->set('historie', $historie);
         $this->set('histories', $histories);
         $this->set('add_place', $add_place);
+    }
+
+    private function validate()
+    {
     }
 
     public function add()
@@ -137,26 +145,64 @@ class HistoriesController extends AppController
     {
     }
 
+    /**
+     * 削除
+     * 
+     * @property int $id
+     * 
+     * @return Response|void|null
+     */
     public function delete($id = null)
     {
         // idとログインユーザーidから実績のレコードを取得
         $historie = $this->Histories->find('all', ['conditions' => ['id' => $id, 'user_id' => $this->AuthUser->id]])->first();
 
-        // 更新用の履歴データを取得
-        $histories = $this->Histories
-            ->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])
-            ->toArray();
+        try {
 
-        for ($i = 0; $i < count($histories); $i++) {
-            if (intval($historie->history_order) <= intval($histories[$i]['history_order'])) {
-                $histories[$i]['history_order'] = intval($histories[$i]['history_order']) - 1;
+            // トランザクション開始
+            $this->connection->begin();
+
+            // 更新用の履歴データを取得
+            $histories = $this->Histories
+                ->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])
+                ->toArray();
+
+            // 排他制御
+            $this->Histories
+                ->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])
+                ->modifier('SQL_NO_CACHE')
+                ->epilog('FOR UPDATE')
+                ->toArray();
+
+            for ($i = 0; $i < count($histories); $i++) {
+                if (intval($historie->history_order) <= intval($histories[$i]['history_order'])) {
+                    $histories[$i]['history_order'] = intval($histories[$i]['history_order']) - 1;
+                }
             }
+
+            // 順番の更新
+            $ret = $this->Histories->saveMany($histories);
+            if (!$ret) {
+                throw new DatabaseException;
+            }
+
+            // 削除処理
+            $ret = $this->Histories->delete($historie);
+            if (!$ret) {
+                throw new DatabaseException;
+            }
+
+            // コミット
+            $this->connection->commit();
+        } catch (DatabaseException $e) {
+
+            // ロールバック
+            $this->connection->rollback();
+
+            // 一覧画面へリダイレクト
+            $this->session->write('message', '削除に失敗しました。');
+            return $this->redirect(['action' => 'index']);
         }
-
-        $ret = $this->Histories->saveMany($histories);
-
-        // 削除処理
-        $ret = $this->Histories->delete($historie);
 
         $this->session->write('message', '削除されました。');
         return $this->redirect(['action' => 'index']);
