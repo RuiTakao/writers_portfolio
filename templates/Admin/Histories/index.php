@@ -15,28 +15,28 @@
             タイトル
         </th>
         <td style="width: 25%;">
-            <?= $this->Form->control('title', ['label' => false]) ?>
+            <?= $this->Form->control('title', ['label' => false, 'required' => false]) ?>
         </td>
         <th>
-            説明
+            概要
         </th>
         <td>
-            <?= $this->Form->control('overview', ['type' => 'textarea', 'label' => false]) ?>
+            <?= $this->Form->control('overview', ['type' => 'textarea', 'label' => false, 'required' => false]) ?>
         </td>
     </tr>
     <tr>
         <th>期間</th>
         <td colspan="3" class="histories_span">
             <div class="flex align-center history_span_input">
-                <?= $this->Form->control('start', ['label' => false]) ?>～<?= $this->Form->control('end', ['label' => false]) ?>
+                <?= $this->Form->control('start', ['type' => 'date', 'label' => false, 'required' => false]) ?>～<?= $this->Form->control('end', ['type' => 'date', 'label' => false, 'required' => false]) ?>
             </div>
-            <?= $this->Form->checkbox('to_now',['id' => 'to_now']) ?><label for="to_now">現在まで</label>
+            <?= $this->Form->checkbox('to_now', ['id' => 'to_now']) ?><label for="to_now">現在まで</label>
         </td>
     </tr>
     <tr>
         <th>追加位置</th>
         <td colspan="3">
-            <?= $this->Form->select('add_place', $add_order, ['label' => false]) ?>
+            <?= $this->Form->select('add_place', $add_place, ['label' => false]) ?>
         </td>
     </tr>
 </table>
@@ -62,7 +62,12 @@
             <td>
                 <div class="flex" style="gap: 4px">
                     <a href="" class="button table_button">編集</a>
-                    <a href="" class="button table_button delete">削除</a>
+                    <?php $confirm_text = $key + 1 . '行目の経歴を削除しますか？' ?>
+                    <?= $this->Form->postLink(
+                        '削除',
+                        ['controller' => 'Histories', 'action' => 'delete', $value->id],
+                        ['class' => 'button table_button delete', 'confirm' => $confirm_text]
+                    ) ?>
                 </div>
             </td>
         </tr>

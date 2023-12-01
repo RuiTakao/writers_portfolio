@@ -1,8 +1,22 @@
 <?php
 
-/** ページタイトル */ ?>
+use App\Model\Table\WorksTable;
+
+// プロフィール画像が設定されているか判定
+if (
+    is_null($work->image_path) ||
+    $work->image_path == "" ||
+    !file_exists(WorksTable::ROOT_WORKS_IMAGE_PATH)
+) {
+    $work_image_path = WorksTable::BLANK_WORKS_IMAGE_PATH;
+} else {
+    $work_image_path = WorksTable::WORKS_IMAGE_PATH . $auth->username . '/' . $work->id . '/' . $work->image_path;
+}
+?>
+
+<?php /** ページタイトル */ ?>
 <?php $this->start('page_title') ?>
-実績 編集
+<?= $this->Html->link('実績の設定', ['action' => 'index']) ?> > 詳細
 <?php $this->end() ?>
 
 <?php /** css */ ?>
@@ -12,16 +26,43 @@
     .button {
         width: 80px;
     }
+
+    .content_title {
+        margin: 0;
+    }
+
+    .mt32 {
+        margin-top: 32px;
+    }
+
+    .button {
+        padding: 4px;
+    }
 </style>
 <?php $this->end() ?>
 
-<div class="flex justify-end" style="gap: 16px">
-    <?= $this->Html->link('編集', ['action' => 'edit'], ['class' => 'button']) ?>
-    <?= $this->Html->link('削除', ['action' => 'delete'], ['class' => 'button delete']) ?>
+<div class="flex justify-between align-center mt32">
+    <p class="content_title">詳細画面<?= $this->Html->link('< 戻る', ['action' => 'index']) ?></p>
+    <div class="flex" style="gap: 16px">
+        <?= $this->Html->link('編集', ['action' => 'edit', $work->id], ['class' => 'button']) ?>
+        <?= $this->Form->postLink('削除', ['controller' => 'Works', 'action' => 'delete', $work->id], ['class' => 'button delete', 'confirm' => '削除しますか？']) ?>
+    </div>
+
 </div>
 
-<p style="border-bottom: 1px solid #333; padding-bottom: 8px;margin-top:16px;"><?= h($work->title) ?></p>
-<p style="margin-top: 32px;"><?= nl2br(h($work->overview)) ?></p>
+<p class="mt32" style="border-bottom: 1px solid #333; padding-bottom: 8px;margin-top:48px;"><?= h($work->title) ?></p>
+<?php if (!empty($work->url_path)) : ?>
+    <p style="margin-top: 16px; font-size:14px;">関連リンク：
+        <?php if (!empty($work->url_name)) : ?>
+            <a href="<?= h($work->url_path) ?>"><?= h($work->url_name) ?></a>（<?= h($work->url_path) ?>）
+        <?php else : ?>
+            <a href="<?= h($work->url_path) ?>"><?= h($work->url_path) ?></a>
+        <?php endif; ?>
+    </p>
+    <p style="margin-top: 16px;"><?= nl2br(h($work->overview)) ?></p>
+<?php else : ?>
+    <p style="margin-top: 32px;"><?= nl2br(h($work->overview)) ?></p>
+<?php endif; ?>
 
 <table style="margin-top: 56px;">
     <tr>
@@ -30,11 +71,8 @@
     <tr>
         <td>
             <div class="">
-                <?= $this->Html->image('users/works/' . $auth->username . '/' . $work->id . '/' . $work->image_path, ['style' => 'height:180px; display: block;']) ?>
+                <?= $this->Html->image($work_image_path, ['style' => 'height:180px; display: block; margin:0 auto;']) ?>
             </div>
-            <p style="margin-top: 8px;">
-                <?= $this->html->link($work->url, ['url' => '#']) ?>
-            </p>
         </td>
     </tr>
 </table>

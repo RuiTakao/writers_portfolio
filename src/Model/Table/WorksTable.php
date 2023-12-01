@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Table;
@@ -54,6 +55,8 @@ class WorksTable extends Table
     const WORKS_IMAGE_PATH = 'users/works/';
     // ルートからの相対パス
     const ROOT_WORKS_IMAGE_PATH = WWW_ROOT . 'img/' . self::WORKS_IMAGE_PATH;
+    // ブランク画像のパス
+    const BLANK_WORKS_IMAGE_PATH = 'blank/works/works_blank_image.jpg';
 
     /**
      * 画像の拡張子
@@ -97,14 +100,12 @@ class WorksTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->scalar('title')
-            ->maxLength('title', 50)
-            ->allowEmptyString('title');
+            ->maxLength('title', 50, 'タイトルは50文字以内で入力してください。')
+            ->notBlank('title', 'タイトルは必須です。');
 
         $validator
-            ->scalar('overview')
-            ->maxLength('overview', 255)
-            ->allowEmptyString('overview');
+            ->maxLength('overview', 255, '概要は255文字以内で入力してください。')
+            ->notBlank('overview', '概要は必須です。');
 
         $validator
             ->scalar('image_path')
@@ -112,23 +113,13 @@ class WorksTable extends Table
             ->allowEmptyFile('image_path');
 
         $validator
-            ->scalar('url')
-            ->maxLength('url', 255)
-            ->allowEmptyString('url');
-
-        $validator
-            ->scalar('url_path')
             ->maxLength('url_path', 255)
+            ->url('url_path', 'URLを入力してください。')
             ->allowEmptyString('url_path');
 
         $validator
-            ->scalar('works_order')
-            ->maxLength('works_order', 5)
-            ->allowEmptyString('works_order');
+            ->maxLength('url_name', 255);
 
-        $validator
-            ->integer('user_id')
-            ->notEmptyString('user_id');
 
         return $validator;
     }
