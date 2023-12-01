@@ -134,6 +134,9 @@ class CreateUsersController extends AppController
                 return $this->redirect('/');
             }
 
+            // 実績画像保存ディレクトリ作成処理
+            $this->createWork();
+
             // ユーザー作成に使用したセッションデータ削除
             $this->session->delete(self::DATA_CREATE_USER);
 
@@ -160,7 +163,9 @@ class CreateUsersController extends AppController
      * ユーザーテーブル更新、認証済にする
      * 
      * @param array $data
+     * 
      * @return bool
+     * 
      * @throws DatabaseException
      */
     private function createUser($data)
@@ -209,6 +214,7 @@ class CreateUsersController extends AppController
      * プロフィールテーブル作成
      * 
      * @return bool
+     * 
      * @throws DatabaseException
      */
     private function createProfile()
@@ -239,10 +245,7 @@ class CreateUsersController extends AppController
             }
 
             // ユーザープロフィール画像保存用ディレクトリ作成
-            $mkdir = mkdir(WWW_ROOT . 'img/users/profiles/' . $this->AuthUser->username);
-            if (!$mkdir) {
-                throw new DatabaseException(UsersTable::INVALID_CREATE_DIR);
-            }
+            mkdir(WWW_ROOT . 'img/users/profiles/' . $this->AuthUser->username);
 
             // コミット
             $connection->commit();
@@ -261,6 +264,7 @@ class CreateUsersController extends AppController
      * サイトテーブル作成
      * 
      * @return bool
+     * 
      * @throws DatabaseException
      */
     private function createSite()
@@ -291,16 +295,10 @@ class CreateUsersController extends AppController
             }
 
             // ファビコン画像保存用ディレクトリ作成
-            $mkdir = mkdir(WWW_ROOT . 'img/users/sites/favicons/' . $this->AuthUser->username);
-            if (!$mkdir) {
-                throw new DatabaseException(UsersTable::INVALID_CREATE_DIR);
-            }
+            mkdir(WWW_ROOT . 'img/users/sites/favicons/' . $this->AuthUser->username);
 
             // ヘッダー画像保存用ディレクトリ作成
-            $mkdir = mkdir(WWW_ROOT . 'img/users/sites/headers/' . $this->AuthUser->username);
-            if (!$mkdir) {
-                throw new DatabaseException(UsersTable::INVALID_CREATE_DIR);
-            }
+            mkdir(WWW_ROOT . 'img/users/sites/headers/' . $this->AuthUser->username);
 
             // コミット
             $connection->commit();
@@ -313,6 +311,17 @@ class CreateUsersController extends AppController
         }
 
         return true;
+    }
+
+    /**
+     * 実績画像保存ディレクトリ作成
+     * 
+     * @return void
+     */
+    private function createWork()
+    {
+        // 実績画像保存用ディレクトリ作成
+        mkdir(WWW_ROOT . 'img/users/works/' . $this->AuthUser->username);
     }
 
     /**
