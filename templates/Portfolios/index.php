@@ -1,3 +1,7 @@
+<?php
+
+use Cake\I18n\FrozenTime;
+?>
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -33,34 +37,23 @@
         <div class="container">
             <h2 class="section_title">経歴</h2>
             <ul class="career_list">
-                <li class="career_item">
-                    <div class="career_item_title">
-                        <p class="career_term">2012/4 ~ 2016/3</p>
-                        <p class="career_work">慶応大学医学部在籍</p>
-                    </div>
-                    <p class="career_detail">学生時代は医学を学び、主に○○について勉強していました。<br />○○の論文を発表し○○賞を受賞しました</p>
-                </li>
-                <li class="career_item">
-                    <div class="career_item_title">
-                        <p class="career_term">2012/7 ~ 2016/2</p>
-                        <p class="career_work">飲食業（アルバイト）</p>
-                    </div>
-                    <p class="career_detail">学生時代にスターバックスでアルバイトをしていました。</p>
-                </li>
-                <li class="career_item">
-                    <div class="career_item_title">
-                        <p class="career_term">2016/4 ~ 2022/7</p>
-                        <p class="career_work">○○病院○○科勤務</p>
-                    </div>
-                    <p class="career_detail">○○科で医師をしていました。主に○○な患者と関わっていたため、○○についての知識はあります。</p>
-                </li>
-                <li class="career_item">
-                    <div class="career_item_title">
-                        <p class="career_term">2022/7</p>
-                        <p class="career_work">Webライター</p>
-                    </div>
-                    <p class="career_detail">現在はWebライターとして、前職の知識を活かし、医療系のジャンルの記事を執筆しています。</p>
-                </li>
+
+                <?php foreach ($histories as $history) : ?>
+
+                    <?php
+                    $start = new FrozenTime($history->start);
+                    $end = new FrozenTime($history->end);
+                    ?>
+
+                    <li class="career_item">
+                        <div class="career_item_title">
+                            <p class="career_term"><?= $start->i18nFormat('yyyy/MM') ?> ~ <?= $end->i18nFormat('yyyy/MM') ?></p>
+                            <p class="career_work"><?= $history->title ?></p>
+                        </div>
+                        <p class="career_detail"><?= $history->overview ?></p>
+                    </li>
+                <?php endforeach; ?>
+
             </ul>
         </div>
     </div>
@@ -68,24 +61,16 @@
         <div class="container">
             <h2 class="section_title">実績</h2>
             <ul class="works_content_list">
-                <li class="works_content_item">
-                    <h3 class="content_title">朝活メディア記事</h3>
-                    <div class="works_content_image"><img src="img/Mask group.png" alt=""></div>
-                    <p class="works_content_link">出典：『<a href="#">レッツ朝活サロン</a>』</p>
-                    <p class="works_content_detail">
-                        レッツ朝活サロンの記事です。早起きできるコツなどを解説しています。<br />
-                        その他、在宅フリーランスが多く在籍しているので、在宅フリーランスの悩みである「孤独」を解消する方法も解説しています。
-                    </p>
-                </li>
-                <li class="works_content_item">
-                    <h3 class="content_title">朝活メディア記事</h3>
-                    <div class="works_content_image"><img src="img/Mask group.png" alt=""></div>
-                    <p class="works_content_link">出典：『<a href="#">レッツ朝活サロン</a>』</p>
-                    <p class="works_content_detail">
-                        レッツ朝活サロンの記事です。早起きできるコツなどを解説しています。<br />
-                        その他、在宅フリーランスが多く在籍しているので、在宅フリーランスの悩みである「孤独」を解消する方法も解説しています。
-                    </p>
-                </li>
+
+                <?php foreach ($works as $work) : ?>
+                    <li class="works_content_item">
+                        <h3 class="content_title"><?= $work->title ?></h3>
+                        <div class="works_content_image"></div>
+                        <p class="works_content_link">出典：『<a href="#">レッツ朝活サロン</a>』</p>
+                        <p class="works_content_detail"><?= $work->overview ?></p>
+                    </li>
+                <?php endforeach; ?>
+
             </ul>
         </div>
     </div>
@@ -93,41 +78,17 @@
         <div class="container">
             <h2 class="section_title">仕事について</h2>
             <div class="work_style_content">
-                <div class="work_style_content_item">
-                    <h3 class="content_title">対応可能な仕事</h3>
-                    <ul class="work_style_content_list">
-                        <li>記事構成案作成</li>
-                        <li>記事作成</li>
-                    </ul>
-                </div>
-                <div class="work_style_content_item">
-                    <h3 class="content_title">特意なジャンル</h3>
-                    <ul class="work_style_content_list">
-                        <li>医療法人の記事</li>
-                        <li>副業についての記事</li>
-                    </ul>
-                </div>
-                <div class="work_style_content_item">
-                    <h3 class="content_title">単価</h3>
-                    <ul class="work_style_content_list">
-                        <li>文字単価20円</li>
-                    </ul>
-                </div>
-                <div class="work_style_content_item">
-                    <h3 class="content_title">保有資格</h3>
-                    <ul class="work_style_content_list">
-                        <li>英検1級</li>
-                        <li>漢検1級</li>
-                    </ul>
-                </div>
-                <div class="work_style_content_item">
-                    <h3 class="content_title">活動時間</h3>
-                    <ul class="work_style_content_list">
-                        <li>平日：9時～17時</li>
-                        <li>土日：18時～22時</li>
-                    </ul>
-                </div>
-                </ul>
+
+                <?php foreach ($others as $other) : ?>
+                    <div class="work_style_content_item">
+                        <h3 class="content_title"><?= $other->title ?></h3>
+                        <ul class="work_style_content_list">
+                            <li>医療法人の記事</li>
+                            <li>副業についての記事</li>
+                        </ul>
+                    </div>
+                <?php endforeach; ?>
+
             </div>
         </div>
     </div>

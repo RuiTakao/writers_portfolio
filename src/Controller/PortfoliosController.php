@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Model\Table\HistoriesTable;
+use App\Model\Table\OthersTable;
 use App\Model\Table\ProfilesTable;
 use App\Model\Table\SitesTable;
 use App\Model\Table\UsersTable;
+use App\Model\Table\WorksTable;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -15,6 +18,9 @@ use Cake\ORM\TableRegistry;
  * @param UsersTable $Users
  * @param ProfilesTable $Profiles
  * @param SitesTable $Sites
+ * @param HistoriesTable $Histories
+ * @param WorksTable $Works
+ * @param OthersTable $Others
  */
 class PortfoliosController extends AppController
 {
@@ -27,6 +33,9 @@ class PortfoliosController extends AppController
         $this->Users = TableRegistry::getTableLocator()->get('Users');
         $this->Profiles = TableRegistry::getTableLocator()->get('Profiles');
         $this->Sites = TableRegistry::getTableLocator()->get('Sites');
+        $this->Histories = TableRegistry::getTableLocator()->get('Histories');
+        $this->Works = TableRegistry::getTableLocator()->get('Works');
+        $this->Others = TableRegistry::getTableLocator()->get('Others');
     }
 
     /**
@@ -48,22 +57,32 @@ class PortfoliosController extends AppController
 
         $site = $this->Sites->find('all', ['conditions' => ['user_id' => $user->id]])->first();
 
+        $histories = $this->Histories->find('all', ['conditions' => ['user_id' => $user->id]])->order(['history_order' => 'asc']);
+
+        $works = $this->Works->find('all', ['conditions' => ['user_id' => $user->id]])->order(['works_order' => 'asc']);
+
+        $others = $this->Others->find('all', ['conditions' => ['user_id' => $user->id]])->order(['others_order' => 'asc']);
+
         // viewに渡すデータセット
         $this->set('profile', $profile);
         $this->set('site', $site);
+        $this->set('histories', $histories);
+        $this->set('works', $works);
+        $this->set('others', $others);
         $this->set('username', $username);
         // 画像のパス
         $this->set('profile_image', $this->profile_image($profile, $username));
         $this->set('favicon', $this->favicon($site, $username));
         $this->set('header_image', $this->header_image($site, $username));
+
     }
 
     /**
      * プロフィール画像
-     * 
+     *
      * @param object $entity
      * @param string $username
-     * 
+     *
      * @return string
      */
     private function profile_image($entity, $username)
@@ -77,10 +96,10 @@ class PortfoliosController extends AppController
 
     /**
      * ファビコン
-     * 
+     *
      * @param object $entity
      * @param string $username
-     * 
+     *
      * @return string|null
      */
     private function favicon($entity, $username)
@@ -94,10 +113,10 @@ class PortfoliosController extends AppController
 
     /**
      * ヘッダー画像
-     * 
+     *
      * @param object $entity
      * @param string $username
-     * 
+     *
      * @return string
      */
     private function header_image($entity, $username)
