@@ -204,8 +204,23 @@ class WorksController extends AppController
                 // ディレクトリに画像保存
                 $path = WorksTable::ROOT_WORKS_IMAGE_PATH . $this->AuthUser->username;
                 if (file_exists($path)) {
-                    mkdir($path . '/' . $work->id);
-                    $image->moveTo($path . '/' . $work->id . '/' . $data['image_path']);
+
+                    // 保存ディレクトリを取得
+                    $path = $path . '/' . $work->id;
+                    if (!file_exists($path)) {
+
+                        // ディレクトリが無ければ作成
+                        mkdir($path);
+                    } else {
+
+                        // ディレクトリがあれば画像があるか確認し、あれば削除
+                        foreach (glob($path . '/*') as $old_file) {
+                            unlink($old_file);
+                        }
+                    }
+
+                    // 画像保存
+                    $image->moveTo($path . '/' . $data['image_path']);
                 } else {
                     throw new DatabaseException;
                 }
@@ -411,6 +426,15 @@ class WorksController extends AppController
                 if (!$ret) {
                     throw new DatabaseException;
                 }
+
+                 // 画像削除処理
+                 $path = WorksTable::ROOT_WORKS_IMAGE_PATH . $this->AuthUser->username . '/' . $work->id;
+                 if (file_exists($path)) {
+                     foreach (glob($path . '/*') as $file) {
+                         unlink($file);
+                     }
+                     rmdir($path);
+                 }
 
                 // コミット
                 $this->connection->commit();

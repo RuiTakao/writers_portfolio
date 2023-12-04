@@ -175,6 +175,10 @@ class ProfilesController extends AppController
                 // ディレクトリに画像保存
                 $path = ProfilesTable::ROOT_PROFILE_IMAGE_PATH . $this->AuthUser->username;
                 if (file_exists($path)) {
+                    // 既に画像がある場合は削除
+                    foreach (glob($path . '/*') as $old_file) {
+                        unlink($old_file);
+                    }
                     $image->moveTo($path . '/' . $data['image_path']);
                 } else {
                     throw new DatabaseException;
