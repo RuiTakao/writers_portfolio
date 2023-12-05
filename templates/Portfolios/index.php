@@ -50,7 +50,7 @@ use Cake\I18n\FrozenTime;
                             <p class="career_term"><?= h($start->i18nFormat('yyyy/MM')) ?> ~ <?= h($end->i18nFormat('yyyy/MM')) ?></p>
                             <p class="career_work"><?= h($history->title) ?></p>
                         </div>
-                        <p class="career_detail"><?= h($history->overview) ?></p>
+                        <p class="career_detail"><?= nl2br(h($history->overview)) ?></p>
                     </li>
                 <?php endforeach; ?>
 

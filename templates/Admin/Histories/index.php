@@ -63,7 +63,7 @@ use Cake\I18n\FrozenTime;
                         <p style="margin-top: 4px; font-weight: 600; font-size: 18px;"><?= h($value->title) ?></p>
                     </div>
                     <div class="flex_right">
-                        <p style="font-size: 14px; padding-top:8px;"><?= h(nl2br($value->overview)) ?></p>
+                        <p style="font-size: 14px; padding-top:8px;"><?= nl2br(h($value->overview)) ?></p>
                     </div>
                 </div>
             </td>

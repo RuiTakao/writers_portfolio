@@ -125,6 +125,8 @@ class HistoriesController extends AppController
                 return $this->redirect(['action' => 'index']);
             }
 
+             // 一覧画面へリダイレクト
+             $this->session->write('message', '経歴を追加しました。');
             return $this->redirect(['action' => 'index']);
         }
 
