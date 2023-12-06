@@ -13,7 +13,7 @@ use App\Model\Table\WorksTable;
 <?php $this->end() ?>
 
 <div class="flex" style="gap: 16px">
-    <?= $this->Html->link('実績の追加', ['action' => 'add'], ['class' => 'button']) ?>
+    <?= $this->Html->link('実績の追加', ['action' => 'edit'], ['class' => 'button']) ?>
     <?= $this->Html->link('並び順変更', ['action' => 'order'], ['class' => 'button']) ?>
 </div>
 
@@ -30,11 +30,20 @@ use App\Model\Table\WorksTable;
         $root_image_path = WorksTable::ROOT_WORKS_IMAGE_PATH . $self_path;
         // webrootからのパス
         $image_path = WorksTable::WORKS_IMAGE_PATH . $self_path;
+
+        /**
+         * 削除メッセージ
+         */
+        $delete_message = $item->title . 'を削除しますか？';
         ?>
 
         <li class="card">
             <div class="flex" style="border-bottom: 1px solid #333; padding-bottom: 8px;">
-                <p style="font-weight: 600; "><?= h($item->title) ?><?= $this->Html->link('詳細', ['action' => 'detail', $item->id], ['class' => 'button list-button']) ?></p>
+                <p style="font-weight: 600; "><?= h($item->title) ?></p>
+                <div class="flex" style="gap: 8px; margin-left: 16px">
+                    <?= $this->Html->link('編集', ['action' => 'edit', $item->id], ['class' => 'button list-button', 'style' => 'width: auto; margin: 0;']) ?>
+                    <?= $this->Form->postLink('削除', ['controller' => 'Works', 'action' => 'delete', $item->id], ['class' => 'button list-button delete', 'confirm' => $delete_message, 'style' => 'width: auto; margin: 0;']) ?>
+                </div>
             </div>
             <div class="flex">
                 <div class="flex-left" style="width: 70%;">

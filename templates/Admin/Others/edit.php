@@ -10,11 +10,6 @@
 <?= $this->Html->css('admin/others') ?>
 <?php $this->end() ?>
 
-<div class="flex justify-between align-center">
-    <p class="content_title">その他の編集<?= $this->Html->link('< 戻る', ['action' => 'index']) ?></p>
-    <?= $this->Form->postLink('削除', ['controller' => 'Others', 'action' => 'delete', $other->id], ['class' => 'button delete', 'confirm' => '削除しますか？']) ?>
-</div>
-
 <?= $this->Form->create($other, [
     'url' => ['controller' => 'Others', 'action' => 'edit', $other->id],
     'onSubmit' => 'return checkEdit()'

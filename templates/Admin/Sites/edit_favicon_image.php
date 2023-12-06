@@ -26,7 +26,6 @@ if (is_null($site->favicon_path) || !file_exists(SitesTable::ROOT_FAVICON_PATH))
 <?= $this->Html->script('sites/favicon') ?>
 <?php $this->end() ?>
 
-<p class="content_title">ファビコン画像編集<?= $this->Html->link('< 戻る', ['action' => 'index']) ?></p>
 <?= $this->Form->create($site, [
     'url' => ['controller' => 'Sites', 'action' => 'editFaviconImage'],
     'type' => 'file',

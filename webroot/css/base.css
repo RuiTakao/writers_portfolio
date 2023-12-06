@@ -92,6 +92,12 @@ textarea:focus {
     background: #efefef;
 }
 
+.list-button-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+}
+
 /*********************************
 	table
 *********************************/

@@ -1,10 +1,8 @@
 <?php
 
-/** ページタイトル */
-
 use Cake\I18n\FrozenTime;
-
- ?>
+?>
+<?php /* ページタイトル */ ?>
 <?php $this->start('page_title') ?>
 経歴
 <?php $this->end() ?>
@@ -69,7 +67,7 @@ use Cake\I18n\FrozenTime;
             </td>
             <td style="width: 136px;">
                 <div class="flex justify-between">
-                    <a href="" class="button table_button">編集</a>
+                    <?= $this->Html->link('編集', ['action' => 'edit',  $value->id], ['class' => 'button table_button']) ?>
                     <?php $confirm_text = $key + 1 . '行目の経歴を削除しますか？' ?>
                     <?= $this->Form->postLink(
                         '削除',
