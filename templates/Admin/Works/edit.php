@@ -58,7 +58,7 @@ if (!is_null($work->image_path) && $work->image_path != '' && file_exists($root_
 <?php $this->end() ?>
 
 <?= $this->Form->create($work, [
-    'url' => ['controller' => 'Works', 'action' => 'add'],
+    'url' => ['controller' => 'Works', 'action' => 'edit', $work->id],
     'type' => 'file',
     'onSubmit' => 'return checkAdd()'
 ]) ?>

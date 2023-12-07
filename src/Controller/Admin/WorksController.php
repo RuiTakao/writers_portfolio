@@ -77,21 +77,27 @@ class WorksController extends AppController
             // ログインユーザーのIDを追加
             $data['user_id'] = $this->AuthUser->id;
 
-            // 並び順の最後尾を検索し、最後尾の最後の順番を追加
-            $works = $this->Works->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])->order(['works_order' => 'asc']);
-            $order_array = [];
-            foreach ($works as $value) {
-                // 比較用にothers_orderの数値を全て配列に格納
-                array_push($order_array, intval($value->works_order));
-            }
-            if (empty($order_array)) {
-                // データが無い場合は1を追加する
-                $data['works_order'] = 1;
-            } else {
-                // データの最大値+1を追加する
-                $data['works_order'] = max($order_array) + 1;
+            if (is_null($id)) {
+                // 並び順の最後尾を検索し、最後尾の最後の順番を追加
+                $works = $this->Works->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])->order(['works_order' => 'asc']);
+                $order_array = [];
+                foreach ($works as $value) {
+                    // 比較用にothers_orderの数値を全て配列に格納
+                    array_push($order_array, intval($value->works_order));
+                }
+                if (empty($order_array)) {
+                    // データが無い場合は1を追加する
+                    $data['works_order'] = 1;
+                } else {
+                    // データの最大値+1を追加する
+                    $data['works_order'] = max($order_array) + 1;
+                }
             }
 
+            /**
+             * 画像のバリデーション
+             */
+            $image_error = '';
             // 画像がアップロードされているか確認
             if ($data['image_path']->getClientFilename() != '' || $data['image_path']->getClientMediaType() != '') {
 
@@ -103,7 +109,7 @@ class WorksController extends AppController
 
                 // 拡張子の確認
                 if (!in_array(pathinfo($data['image_path'])['extension'],  ['jpg', 'png', 'jpeg', 'webp'])) {
-                    $work->setError('image_path', ['無効な拡張子です。']);
+                    $image_error = '無効な拡張子です。';
                 }
             } else {
                 $data['image_path'] = null;
@@ -112,8 +118,12 @@ class WorksController extends AppController
             // エンティティにデータセット
             $work = $this->Works->patchEntity($work, $data);
 
+            if ($image_error != '') {
+                $work->setError('image_path', [$image_error]);
+            }
+
             // バリデーション処理
-            if ($work->getErrors()) {
+            if ($work->getErrors() || $work->hasErrors()) {
                 $this->session->write('message', '入力に不備があります。');
                 $this->set('work', $work);
                 return;
@@ -258,8 +268,8 @@ class WorksController extends AppController
             }
 
             // 詳細へリダイレクト
-            $this->session->write('message', '実績を変更しました。');
-            return $this->redirect(['action' => 'add', $work->id]);
+            $this->session->write('message', '画像を削除しました。');
+            return $this->redirect(['action' => 'edit', $work->id]);
         }
     }
 
