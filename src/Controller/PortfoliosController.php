@@ -74,6 +74,8 @@ class PortfoliosController extends AppController
         $this->set('profile_image', $this->profile_image($profile, $username));
         $this->set('favicon', $this->favicon($site, $username));
         $this->set('header_image', $this->header_image($site, $username));
+        $this->set('works_image_path', WorksTable::WORKS_IMAGE_PATH);
+        $this->set('root_works_image_path', WorksTable::ROOT_WORKS_IMAGE_PATH);
 
     }
 

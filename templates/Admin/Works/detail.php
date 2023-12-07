@@ -31,12 +31,45 @@ if (
         margin: 0;
     }
 
+    .content_title_sub {
+        font-weight: 600;
+        border-bottom: 1px solid #333;
+        padding: 2px 4px;
+        font-size: 18px;
+    }
+
     .mt32 {
         margin-top: 32px;
     }
 
     .button {
         padding: 4px;
+    }
+
+    .works_content_image {
+        width: 768px;
+        height: auto;
+        max-height: 368px;
+        margin-top: 16px;
+    }
+
+    .works_content_image img {
+        display: block;
+        width: 100%;
+        height: auto;
+        max-height: 368px;
+    }
+
+    .works_content_link {
+        margin-top: 16px;
+        font-size: 14px;
+    }
+
+    .works_content_detail {
+        font-size: 16px;
+        letter-spacing: .2em;
+        line-height: 1.8em;
+        margin-top: 32px;
     }
 </style>
 <?php $this->end() ?>
@@ -50,29 +83,22 @@ if (
 
 </div>
 
-<p class="mt32" style="border-bottom: 1px solid #333; padding-bottom: 8px;margin-top:48px;"><?= h($work->title) ?></p>
-<?php if (!empty($work->url_path)) : ?>
-    <p style="margin-top: 16px; font-size:14px;">関連リンク：
-        <?php if (!empty($work->url_name)) : ?>
-            <a href="<?= h($work->url_path) ?>"><?= h($work->url_name) ?></a>（<?= h($work->url_path) ?>）
-        <?php else : ?>
-            <a href="<?= h($work->url_path) ?>"><?= h($work->url_path) ?></a>
-        <?php endif; ?>
-    </p>
-    <p style="margin-top: 16px;"><?= nl2br(h($work->overview)) ?></p>
-<?php else : ?>
-    <p style="margin-top: 32px;"><?= nl2br(h($work->overview)) ?></p>
+<h3 class="content_title_sub" style="margin-top: 48px;"><?= h($work->title) ?></h3>
+
+<?php /** 画像パス */ ?>
+<?php $path = $auth->username . '/' . $work->id . '/' . $work->image_path; ?>
+<?php if (!is_null($work->image_path) && $work->image_path != '' && file_exists(WorksTable::ROOT_WORKS_IMAGE_PATH . $path)) : ?>
+    <div class="works_content_image"><?= $this->Html->image(WorksTable::WORKS_IMAGE_PATH . $path) ?></div>
 <?php endif; ?>
 
-<table style="margin-top: 56px;">
-    <tr>
-        <th>画像<?= $this->Html->link('画像の設定', ['action' => 'editImage', $work->id], ['class' => 'button list-button']) ?></th>
-    </tr>
-    <tr>
-        <td>
-            <div class="">
-                <?= $this->Html->image($work_image_path, ['style' => 'height:180px; display: block; margin:0 auto;']) ?>
-            </div>
-        </td>
-    </tr>
-</table>
+<?php if (!empty($work->url_path)) : ?>
+    <p class="works_content_link">関連リンク：
+        <?php if (!empty($work->url_name)) : ?>
+            <a href="<?= h($work->url_path) ?>"><?= !empty($work->url_name) ? h($work->url_name) : h($work->url_path) ?></a>（<?= h($work->url_path) ?>）
+        <?php else : ?>
+            <a href="<?= h($work->url_path) ?>"><?= !empty($work->url_name) ? h($work->url_name) : h($work->url_path) ?></a>
+        <?php endif; ?>
+    </p>
+<?php endif; ?>
+
+<p class="works_content_detail"><?= h($work->overview) ?></p>

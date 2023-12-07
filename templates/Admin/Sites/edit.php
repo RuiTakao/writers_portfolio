@@ -9,7 +9,6 @@
 <?= $this->Html->css('admin/sites') ?>
 <?php $this->end() ?>
 
-<p class="content_title">サイト設定編集<?= $this->Html->link('< 戻る', ['action' => 'index']) ?></p>
 <?= $this->Form->create($site, [
     'url' => ['controller' => 'Sites', 'action' => 'edit'],
     'onSubmit' => 'return checkEdit()'

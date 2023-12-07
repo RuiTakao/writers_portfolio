@@ -25,7 +25,6 @@
 <?= $this->Html->script('order') ?>
 <?php $this->end() ?>
 
-<p class="content_title">実績の編集<?= $this->Html->link('< 戻る', ['action' => 'index']) ?></p>
 <?= $this->Form->create($works,['url' => ['controller' => 'Works', 'action' => 'order']]) ?>
 <div class="flex" style="width: 100%;">
     <div class="product_order_container" style="width: 70%; padding-right: 16px; border-right: 1px solid #333;">

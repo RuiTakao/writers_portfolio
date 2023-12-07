@@ -108,11 +108,6 @@ class WorksTable extends Table
             ->notBlank('overview', '概要は必須です。');
 
         $validator
-            ->scalar('image_path')
-            ->maxLength('image_path', 255)
-            ->allowEmptyFile('image_path');
-
-        $validator
             ->maxLength('url_path', 255)
             ->url('url_path', 'URLを入力してください。')
             ->allowEmptyString('url_path');

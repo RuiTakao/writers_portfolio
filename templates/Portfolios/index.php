@@ -42,15 +42,22 @@ use Cake\I18n\FrozenTime;
 
                     <?php
                     $start = new FrozenTime($history->start);
-                    $end = new FrozenTime($history->end);
+                    $start = $start->i18nFormat('yyyy/M');
+
+                    if ($history->to_now == "1") {
+                        $end = "現在まで";
+                    } else {
+                        $end = new FrozenTime($history->end);
+                        $end = $end->i18nFormat('yyyy/M');
+                    }
                     ?>
 
                     <li class="career_item">
                         <div class="career_item_title">
-                            <p class="career_term"><?= $start->i18nFormat('yyyy/MM') ?> ~ <?= $end->i18nFormat('yyyy/MM') ?></p>
-                            <p class="career_work"><?= $history->title ?></p>
+                            <p class="career_term"><?= h($start) ?> ～ <?= h($end) ?></p>
+                            <p class="career_work"><?= h($history->title) ?></p>
                         </div>
-                        <p class="career_detail"><?= $history->overview ?></p>
+                        <p class="career_detail"><?= nl2br(h($history->overview)) ?></p>
                     </li>
                 <?php endforeach; ?>
 
@@ -63,28 +70,42 @@ use Cake\I18n\FrozenTime;
             <ul class="works_content_list">
 
                 <?php foreach ($works as $work) : ?>
+
                     <li class="works_content_item">
-                        <h3 class="content_title"><?= $work->title ?></h3>
-                        <div class="works_content_image"></div>
-                        <p class="works_content_link">出典：『<a href="#">レッツ朝活サロン</a>』</p>
-                        <p class="works_content_detail"><?= $work->overview ?></p>
+
+                        <h3 class="content_title"><?= h($work->title) ?></h3>
+
+                        <?php /** 画像パス */ ?>
+                        <?php $path = $username . '/' . $work->id . '/' . $work->image_path; ?>
+                        <?php if (!is_null($work->image_path) && $work->image_path != '' && file_exists($root_works_image_path . $path)) : ?>
+                            <div class="works_content_image"><?= $this->Html->image($works_image_path . $path) ?></div>
+                        <?php endif; ?>
+
+                        <?php if (!empty($work->url_path)) : ?>
+                            <p class="works_content_link">関連リンク：<a href="<?= h($work->url_path) ?>"><?= !empty($work->url_name) ? h($work->url_name) : h($work->url_path) ?></a></p>
+                        <?php endif; ?>
+
+                        <p class="works_content_detail"><?= h($work->overview) ?></p>
                     </li>
                 <?php endforeach; ?>
 
             </ul>
         </div>
     </div>
-    <div class="work_style section">
+    <div class="work_style section" style="padding-bottom: 160px;">
         <div class="container">
             <h2 class="section_title">仕事について</h2>
             <div class="work_style_content">
 
                 <?php foreach ($others as $other) : ?>
                     <div class="work_style_content_item">
-                        <h3 class="content_title"><?= $other->title ?></h3>
+                        <h3 class="content_title"><?= h($other->title) ?></h3>
                         <ul class="work_style_content_list">
-                            <li>医療法人の記事</li>
-                            <li>副業についての記事</li>
+                            <?php for ($i = 1; $i <= 10; $i++) : ?>
+                                <?php if (!is_null($other['content' . $i]) && $other['content' . $i] != '') : ?>
+                                    <li><?= h($other['content' . $i]) ?></li>
+                                <?php endif; ?>
+                            <?php endfor; ?>
                         </ul>
                     </div>
                 <?php endforeach; ?>
@@ -92,14 +113,14 @@ use Cake\I18n\FrozenTime;
             </div>
         </div>
     </div>
-    <div class="contact section">
+    <!-- <div class="contact section">
         <div class="container">
             <h2 class="section_title">お問い合わせ</h2>
             <div class="_blank">
                 未定
             </div>
         </div>
-    </div>
+    </div> -->
     <footer class="footer">
         <div class="container">
             <div class="footer_copy">©Takao Folio inc</div>

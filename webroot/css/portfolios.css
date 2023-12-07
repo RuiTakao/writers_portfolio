@@ -46,12 +46,12 @@
 	ファーストビュー
 *********************************/
 .fv {
-    height: 368px;
+    height: 432px;
     position: relative;
 }
 
 .fv_bg {
-    height: 336px;
+    height: 400px;
     position: absolute;
     width: 100%;
     top: 0;
@@ -62,7 +62,7 @@
 }
 
 .fv_bg_cover {
-    height: 336px;
+    height: 400px;
     position: absolute;
     width: 100%;
     top: 0;
@@ -185,7 +185,7 @@
 
 .career_detail {
     line-height: 28px;
-    width: 60%;
+    width: 80%;
     font-size: 14px;
     padding-top: 8px;
 }

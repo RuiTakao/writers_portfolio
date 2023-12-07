@@ -26,7 +26,6 @@ if (is_null($site->header_image_path) || !file_exists(SitesTable::ROOT_HEADER_IM
 <?= $this->Html->script('sites/header') ?>
 <?php $this->end() ?>
 
-<p class="content_title">ヘッダー画像編集<?= $this->Html->link('< 戻る', ['action' => 'index']) ?></p>
 <?= $this->Form->create($site, [
     'url' => ['controller' => 'Sites', 'action' => 'editHeaderImage'],
     'type' => 'file',

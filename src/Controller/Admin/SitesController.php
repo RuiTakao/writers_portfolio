@@ -173,6 +173,10 @@ class SitesController extends AppController
                 // ディレクトリに画像保存
                 $path = SitesTable::ROOT_FAVICON_PATH . $this->AuthUser->username;
                 if (file_exists($path)) {
+                    // 既に画像がある場合は削除
+                    foreach (glob($path . '/*') as $old_file) {
+                        unlink($old_file);
+                    }
                     $image->moveTo($path . '/' . $data['favicon_path']);
                 } else {
                     throw new DatabaseException;
@@ -257,6 +261,10 @@ class SitesController extends AppController
                 // ディレクトリに画像保存
                 $path = SitesTable::ROOT_HEADER_IMAGE_PATH . $this->AuthUser->username;
                 if (file_exists($path)) {
+                    // 既に画像がある場合は削除
+                    foreach (glob($path . '/*') as $old_file) {
+                        unlink($old_file);
+                    }
                     $image->moveTo($path . '/' . $data['header_image_path']);
                 } else {
                     throw new DatabaseException;
