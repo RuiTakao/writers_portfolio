@@ -34,6 +34,13 @@
             <?= $this->Form->end() ?>
         </div>
     </main>
+    <script>
+        <?php if ($session->read('message')) : ?>
+        <?php /** 処理結果通知モーダル */ ?>
+        window.onload = () => alert('<?= $session->read('message') ?>');
+        <?php $session->delete('message') ?>
+    <?php endif; ?>
+    </script>
 </body>
 
 </html>
