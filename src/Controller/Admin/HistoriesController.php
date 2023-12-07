@@ -226,10 +226,12 @@ class HistoriesController extends AppController
                 $this->session->write('message', '登録に失敗しました。');
                 return $this->redirect(['action' => 'index']);
             }
+
+            // 一覧画面へリダイレクト
+            $this->session->write('message', '変更を保存しました。');
+            return $this->redirect(['action' => 'index']);
         }
 
-        // 一覧画面へリダイレクト
-        $this->session->write('message', '変更を保存しました。');
         $this->set('historie', $historie);
     }
 

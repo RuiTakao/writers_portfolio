@@ -5,7 +5,7 @@ use Cake\I18n\FrozenTime;
 
 <?php /* ページタイトル */ ?>
 <?php $this->start('page_title') ?>
-経歴
+経歴の設定
 <?php $this->end() ?>
 
 <?php $this->start('css') ?>

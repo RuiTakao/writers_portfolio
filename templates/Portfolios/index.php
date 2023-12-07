@@ -92,7 +92,7 @@ use Cake\I18n\FrozenTime;
             </ul>
         </div>
     </div>
-    <div class="work_style section">
+    <div class="work_style section" style="padding-bottom: 160px;">
         <div class="container">
             <h2 class="section_title">仕事について</h2>
             <div class="work_style_content">
@@ -113,14 +113,14 @@ use Cake\I18n\FrozenTime;
             </div>
         </div>
     </div>
-    <div class="contact section">
+    <!-- <div class="contact section">
         <div class="container">
             <h2 class="section_title">お問い合わせ</h2>
             <div class="_blank">
                 未定
             </div>
         </div>
-    </div>
+    </div> -->
     <footer class="footer">
         <div class="container">
             <div class="footer_copy">©Takao Folio inc</div>

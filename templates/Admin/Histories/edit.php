@@ -2,7 +2,7 @@
 
 /** ページタイトル */ ?>
 <?php $this->start('page_title') ?>
-経歴
+<?= $this->Html->link('経歴の設定', ['action' => 'index']) ?> > 編集
 <?php $this->end() ?>
 <?php $this->start('css') ?>
 <?= $this->Html->css('admin/histories') ?>

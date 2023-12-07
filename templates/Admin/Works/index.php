@@ -4,7 +4,7 @@ use App\Model\Table\WorksTable;
 ?>
 <?php /** ページタイトル */ ?>
 <?php $this->start('page_title') ?>
-実績
+実績の設定
 <?php $this->end() ?>
 
 <?php /** css */ ?>

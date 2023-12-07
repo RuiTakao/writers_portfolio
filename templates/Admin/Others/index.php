@@ -2,7 +2,7 @@
 
 /** ページタイトル */ ?>
 <?php $this->start('page_title') ?>
-その他
+その他の設定
 <?php $this->end() ?>
 
 <?php /** css */ ?>
@@ -37,7 +37,7 @@
                     ) ?>
                 </div>
             </div>
-            <ul style="margin-top: 8px;">
+            <ul style="margin-top: 8px; padding-left: 8px;">
                 <?php for ($i = 1; $i <= 10; $i++) : ?>
                     <?php if (!is_null($item['content' . $i]) && $item['content' . $i] != '') : ?>
                         <li style="list-style: inside;"><?= $item['content' . $i] ?></li>
