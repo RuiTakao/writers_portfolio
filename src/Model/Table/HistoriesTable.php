@@ -70,14 +70,6 @@ class HistoriesTable extends Table
             ->maxLength('overview', 255, '概要は50文字以内で入力してください。')
             ->notBlank('overview', '概要は必須です。');
 
-        $validator
-            ->maxLength('start', 50)
-            ->notBlank('start', '期間（開始）は必須です。');
-
-        $validator
-            ->maxLength('end', 50)
-            ->notBlank('end', '期間（終了）は必須です。');
-
         return $validator;
     }
 

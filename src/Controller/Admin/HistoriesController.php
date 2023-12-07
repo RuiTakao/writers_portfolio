@@ -82,8 +82,24 @@ class HistoriesController extends AppController
 
             unset($data['add_place']);
 
+            if ($data['to_now'] == "1") {
+                $data['end'] = date('Y-m');
+            }
+
             // エンティティにデータをセット
             $historie = $this->Histories->patchEntity($historie, $data);
+
+            /**
+             * 日付のバリデーション
+             */
+            if ($data['start'] == "" ||  $data['end'] == "") {
+                $historie->setError('start', ['日付が未入力です。']);
+            } elseif (
+                strtotime($data['start']) > strtotime($data['end']) ||
+                strtotime($data['end']) > strtotime(date('Y-m'))
+            ) {
+                $historie->setError('start', ['日付が無効です。']);
+            }
 
             // バリデーション処理
             if ($historie->getErrors()) {
@@ -125,8 +141,8 @@ class HistoriesController extends AppController
                 return $this->redirect(['action' => 'index']);
             }
 
-             // 一覧画面へリダイレクト
-             $this->session->write('message', '経歴を追加しました。');
+            // 一覧画面へリダイレクト
+            $this->session->write('message', '経歴を追加しました。');
             return $this->redirect(['action' => 'index']);
         }
 
@@ -135,16 +151,86 @@ class HistoriesController extends AppController
         $this->set('add_place', $add_place);
     }
 
-    private function validate()
+    /**
+     * 編集
+     * 
+     * @return Response|void|null
+     */
+    public function edit($id)
     {
-    }
 
-    public function add()
-    {
-    }
+        // idとログインユーザーidから実績のレコードを取得
+        $historie = $this->Histories->find('all', ['conditions' => ['id' => $id, 'user_id' => $this->AuthUser->id]])->first();
 
-    public function edit()
-    {
+        // 不正なアクセスの場合は一覧画面へリダイレクト
+        if (!$historie) {
+            return $this->redirect(['action' => 'index']);
+        }
+
+        if ($this->request->is(['post', 'patch', 'put'])) {
+
+            // リクエストデータ取得
+            $data = $this->request->getData();
+
+            if ($data['to_now'] == "1") {
+                $data['end'] = date('Y-m');
+            }
+
+            // エンティティにデータをセット
+            $historie = $this->Histories->patchEntity($historie, $data);
+
+            /**
+             * 日付のバリデーション
+             */
+            if ($data['start'] == "" ||  $data['end'] == "") {
+                $historie->setError('start', ['日付が未入力です。']);
+            } elseif (
+                strtotime($data['start']) > strtotime($data['end']) ||
+                strtotime($data['end']) > strtotime(date('Y-m'))
+            ) {
+                $historie->setError('start', ['日付が無効です。']);
+            }
+
+            // バリデーション処理
+            if ($historie->getErrors()) {
+                $this->set('historie', $historie);
+                $this->session->write('message', '入力に不備があります。');
+                return;
+            }
+
+            try {
+
+                // トランザクション開始
+                $this->connection->begin();
+
+                // 排他制御
+                $this->Histories
+                    ->find('all', ['conditions' => ['id' => $historie->id]])
+                    ->modifier('SQL_NO_CACHE')
+                    ->epilog('FOR UPDATE')
+                    ->first();
+
+                $ret = $this->Histories->save($historie);
+                if (!$ret) {
+                    throw new DatabaseException;
+                }
+
+                // コミット
+                $this->connection->commit();
+            } catch (DatabaseException $e) {
+
+                // ロールバック
+                $this->connection->rollback();
+
+                // 一覧画面へリダイレクト
+                $this->session->write('message', '登録に失敗しました。');
+                return $this->redirect(['action' => 'index']);
+            }
+        }
+
+        // 一覧画面へリダイレクト
+        $this->session->write('message', '変更を保存しました。');
+        $this->set('historie', $historie);
     }
 
     /**

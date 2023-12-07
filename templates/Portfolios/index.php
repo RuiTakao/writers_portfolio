@@ -42,12 +42,19 @@ use Cake\I18n\FrozenTime;
 
                     <?php
                     $start = new FrozenTime($history->start);
-                    $end = new FrozenTime($history->end);
+                    $start = $start->i18nFormat('yyyy/M');
+
+                    if ($history->to_now == "1") {
+                        $end = "現在まで";
+                    } else {
+                        $end = new FrozenTime($history->end);
+                        $end = $end->i18nFormat('yyyy/M');
+                    }
                     ?>
 
                     <li class="career_item">
                         <div class="career_item_title">
-                            <p class="career_term"><?= h($start->i18nFormat('yyyy/MM')) ?> ~ <?= h($end->i18nFormat('yyyy/MM')) ?></p>
+                            <p class="career_term"><?= h($start) ?> ～ <?= h($end) ?></p>
                             <p class="career_work"><?= h($history->title) ?></p>
                         </div>
                         <p class="career_detail"><?= nl2br(h($history->overview)) ?></p>
