@@ -1,6 +1,7 @@
 <?php
 
 use App\Model\Table\SitesTable;
+use Cake\Core\Configure;
 
 // ファビコン画像が設定されているか判定
 if (is_null($site->favicon_path) || !file_exists(SitesTable::ROOT_FAVICON_PATH)) {
@@ -10,7 +11,7 @@ if (is_null($site->favicon_path) || !file_exists(SitesTable::ROOT_FAVICON_PATH))
 }
 ?>
 
-<?php /** ページタイトル */ ?>
+<?php /* ページタイトル */ ?>
 <?php $this->start('page_title') ?>
 <?= $this->Html->link('サイト設定', ['action' => 'index']) ?> > ファビコン画像編集
 <?php $this->end() ?>
@@ -34,7 +35,7 @@ if (is_null($site->favicon_path) || !file_exists(SitesTable::ROOT_FAVICON_PATH))
 <div class="profile">
     <?= $this->Form->control('favicon_path', ['type' => 'file', 'class' => 'dropify', 'label' => false]) ?>
 </div>
-<?= $this->Form->submit('この内容で変更する',  ['class' => 'button']) ?>
+<?= $this->Form->submit(Configure::read('button.save'), ['class' => 'button']) ?>
 <?= $this->Form->end() ?>
 
 <p class="before_image_title">現在の画像</p>

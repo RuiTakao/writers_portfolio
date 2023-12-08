@@ -1,13 +1,16 @@
 <?php
 
 use App\Model\Table\WorksTable;
+use Cake\Core\Configure;
+
 ?>
-<?php /** ページタイトル */ ?>
+
+<?php /* ページタイトル */ ?>
 <?php $this->start('page_title') ?>
 実績の設定
 <?php $this->end() ?>
 
-<?php /** css */ ?>
+<?php /* css */ ?>
 <?php $this->start('css') ?>
 <?= $this->Html->css('admin/works') ?>
 <?php $this->end() ?>
@@ -41,8 +44,8 @@ use App\Model\Table\WorksTable;
             <div class="flex" style="border-bottom: 1px solid #333; padding-bottom: 8px;">
                 <p style="font-weight: 600; "><?= h($item->title) ?></p>
                 <div class="flex" style="gap: 8px; margin-left: 16px">
-                    <?= $this->Html->link('編集', ['action' => 'edit', $item->id], ['class' => 'button list-button', 'style' => 'width: auto; margin: 0;']) ?>
-                    <?= $this->Form->postLink('削除', ['controller' => 'Works', 'action' => 'delete', $item->id], ['class' => 'button list-button delete', 'confirm' => $delete_message, 'style' => 'width: auto; margin: 0;']) ?>
+                    <?= $this->Html->link(Configure::read('button.edit'), ['action' => 'edit', $item->id], ['class' => 'button list-button', 'style' => 'width: auto; margin: 0;']) ?>
+                    <?= $this->Form->postLink(Configure::read('button.delete'), ['controller' => 'Works', 'action' => 'delete', $item->id], ['class' => 'button list-button delete', 'confirm' => $delete_message, 'style' => 'width: auto; margin: 0;']) ?>
                 </div>
             </div>
             <div class="flex">

@@ -1,11 +1,14 @@
 <?php
 
-/** ページタイトル */ ?>
+use Cake\Core\Configure;
+?>
+
+<?php /* ページタイトル */ ?>
 <?php $this->start('page_title') ?>
 その他の設定
 <?php $this->end() ?>
 
-<?php /** css */ ?>
+<?php /* css */ ?>
 <?php $this->start('css') ?>
 <?= $this->Html->css('admin/others') ?>
 <?php $this->end() ?>
@@ -29,9 +32,9 @@
             <div class="other_title flex" style="padding-bottom: 8px;">
                 <?= h($item->title) ?>
                 <div class="flex" style="gap: 8px; margin-left: 16px">
-                    <?= $this->Html->link('編集', ['action' => 'edit', $item->id], ['class' => 'button list-button', 'style' => 'width: auto; margin: 0;']) ?>
+                    <?= $this->Html->link(Configure::read('button.edit'), ['action' => 'edit', $item->id], ['class' => 'button list-button', 'style' => 'width: auto; margin: 0;']) ?>
                     <?= $this->Form->postLink(
-                        '削除',
+                        Configure::read('button.delete'),
                         ['controller' => 'Others', 'action' => 'delete', $item->id],
                         ['class' => 'button list-button delete', 'confirm' => $delete_message, 'style' => 'width: auto; margin: 0;']
                     ) ?>

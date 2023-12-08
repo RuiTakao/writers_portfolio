@@ -1,5 +1,6 @@
 <?php
 
+use Cake\Core\Configure;
 use Cake\I18n\FrozenTime;
 ?>
 
@@ -75,7 +76,7 @@ use Cake\I18n\FrozenTime;
         </td>
     </tr>
 </table>
-<?= $this->Form->submit('経歴を追加', ['class' => 'button']) ?>
+<?= $this->Form->submit(Configure::read('button.add'), ['class' => 'button']) ?>
 <?= $this->Form->end() ?>
 
 <table style="margin-top: 56px;">
@@ -108,10 +109,10 @@ use Cake\I18n\FrozenTime;
             </td>
             <td style="width: 136px;">
                 <div class="flex justify-between">
-                    <?= $this->Html->link('編集', ['action' => 'edit',  $value->id], ['class' => 'button table_button']) ?>
+                    <?= $this->Html->link(Configure::read('button.edit'), ['action' => 'edit',  $value->id], ['class' => 'button table_button']) ?>
                     <?php $confirm_text = $key + 1 . '行目の経歴を削除しますか？' ?>
                     <?= $this->Form->postLink(
-                        '削除',
+                        Configure::read('button.delete'),
                         ['controller' => 'Histories', 'action' => 'delete', $value->id],
                         ['class' => 'button table_button delete', 'confirm' => $confirm_text]
                     ) ?>

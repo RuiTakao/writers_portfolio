@@ -15,20 +15,20 @@
     </header>
     <main class="main">
         <div class="container">
-            <?php /** form */ ?>
+            <?php /* form */ ?>
             <?= $this->Form->create() ?>
             <p class="login_title">ログイン画面</p>
             <div class="card">
-                <?php /** username */ ?>
+                <?php /* username */ ?>
                 <?= $this->Form->control('username', [
                     'label' => 'ユーザー名'
                 ]) ?>
-                <?php /** password */ ?>
+                <?php /* password */ ?>
                 <?= $this->Form->control('password', [
                     'type' => 'password',
                     'label' => 'パスワード'
                 ]) ?>
-                <?php /** submit */ ?>
+                <?php /* submit */ ?>
                 <?= $this->Form->submit('ログイン'); ?>
             </div>
             <?= $this->Form->end() ?>
@@ -36,7 +36,7 @@
     </main>
     <?php if ($session->read('message')) : ?>
         <script>
-            <?php /** 処理結果通知モーダル */ ?>
+            <?php /* 処理結果通知モーダル */ ?>
             window.onload = () => alert('<?= $session->read('message') ?>');
             <?php $session->delete('message') ?>
         </script>

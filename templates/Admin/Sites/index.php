@@ -1,6 +1,7 @@
 <?php
 
 use App\Model\Table\SitesTable;
+use Cake\Core\Configure;
 
 // ファビコン画像が設定されているか判定
 if (is_null($site->favicon_path) || !file_exists(SitesTable::ROOT_FAVICON_PATH)) {
@@ -17,12 +18,12 @@ if (is_null($site->header_image_path) || !file_exists(SitesTable::ROOT_HEADER_IM
 }
 ?>
 
-<?php /** ページタイトル */ ?>
+<?php /* ページタイトル */ ?>
 <?php $this->start('page_title') ?>
 サイト設定
 <?php $this->end() ?>
 
-<?php /** css */ ?>
+<?php /* css */ ?>
 <?php $this->start('css') ?>
 <?= $this->Html->css('admin/sites') ?>
 <?php $this->end() ?>
@@ -56,11 +57,11 @@ if (is_null($site->header_image_path) || !file_exists(SitesTable::ROOT_HEADER_IM
         <td>表示</td>
     </tr> -->
 </table>
-<?= $this->Html->link('編集', ['action' => 'edit'], ['class' => 'button']) ?>
+<?= $this->Html->link(Configure::read('button.edit'), ['action' => 'edit'], ['class' => 'button']) ?>
 
 <table class="favicon_image_table image_table">
     <tr>
-        <th>ファビコン<?= $this->Html->link('編集', ['action' => 'editFaviconImage'], ['class' => 'button edit_iamge']) ?></th>
+        <th>ファビコン<?= $this->Html->link(Configure::read('button.image_edit'), ['action' => 'editFaviconImage'], ['class' => 'button edit_iamge']) ?></th>
     </tr>
     <tr>
         <td>
@@ -73,7 +74,7 @@ if (is_null($site->header_image_path) || !file_exists(SitesTable::ROOT_HEADER_IM
 
 <table class="header_image_table image_table">
     <tr>
-        <th>ヘッダー画像<?= $this->Html->link('編集', ['action' => 'editHeaderImage'], ['class' => 'button edit_iamge']) ?></th>
+        <th>ヘッダー画像<?= $this->Html->link(Configure::read('button.image_edit'), ['action' => 'editHeaderImage'], ['class' => 'button edit_iamge']) ?></th>
     </tr>
     <tr>
         <td>

@@ -10,7 +10,7 @@
         'base',
         'admin/layout'
     ]) ?>
-    <?php /** css 各ページ */ ?>
+    <?php /* css 各ページ */ ?>
     <?= $this->fetch('css') ?>
 </head>
 
@@ -41,7 +41,7 @@
         </div>
     </main>
     <?= $this->element('flash/message') ?>
-    <?php /** js 各ページ */ ?>
+    <?php /* js 各ページ */ ?>
     <?= $this->fetch('script') ?>
 </body>
 

@@ -1,11 +1,14 @@
 <?php
 
-/** ページタイトル */ ?>
+use Cake\Core\Configure;
+?>
+
+<?php /* ページタイトル */ ?>
 <?php $this->start('page_title') ?>
-<?= $this->Html->link('その他の設定', ['action' => 'index']) ?> > 編集
+<?= $this->Html->link('その他の設定', ['action' => 'index']) ?> > <?= empty($other->id) ? '追加' : '編集' ?>
 <?php $this->end() ?>
 
-<?php /** css */ ?>
+<?php /* css */ ?>
 <?php $this->start('css') ?>
 <?= $this->Html->css('admin/others') ?>
 <?php $this->end() ?>
@@ -21,5 +24,8 @@
         <?= $this->Form->control('content' . $i, ['label' => false, 'required' => false]) ?>
     <?php endfor; ?>
 </div>
-<?= $this->Form->submit('設定を保存', ['class' => 'button', 'style' => 'margin-top: 16px;']) ?>
+<?= $this->Form->submit(
+    empty($other->id) ? Configure::read('button.add') : Configure::read('button.save'),
+    ['class' => 'button', 'style' => 'margin-top: 16px;']
+) ?>
 <?= $this->Form->end() ?>

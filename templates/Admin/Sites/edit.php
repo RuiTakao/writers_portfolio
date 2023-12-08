@@ -1,6 +1,9 @@
 <?php
 
-/** ページタイトル */ ?>
+use Cake\Core\Configure;
+?>
+
+<?php /* ページタイトル */ ?>
 <?php $this->start('page_title') ?>
 <?= $this->Html->link('サイト設定', ['action' => 'index']) ?> > 編集
 <?php $this->end() ?>
@@ -23,5 +26,5 @@
         <td><?= $this->Form->control('site_description',['type' => 'textarea', 'label' => false, 'value' => $site->site_description]) ?></td>
     </tr>
 </table>
-<?= $this->Form->submit('この内容で変更する',  ['class' => 'button']) ?>
+<?= $this->Form->submit(Configure::read('button.save'), ['class' => 'button']) ?>
 <?= $this->Form->end() ?>

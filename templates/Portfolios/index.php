@@ -75,7 +75,7 @@ use Cake\I18n\FrozenTime;
 
                         <h3 class="content_title"><?= h($work->title) ?></h3>
 
-                        <?php /** 画像パス */ ?>
+                        <?php /* 画像パス */ ?>
                         <?php $path = $username . '/' . $work->id . '/' . $work->image_path; ?>
                         <?php if (!is_null($work->image_path) && $work->image_path != '' && file_exists($root_works_image_path . $path)) : ?>
                             <div class="works_content_image"><?= $this->Html->image($works_image_path . $path) ?></div>
