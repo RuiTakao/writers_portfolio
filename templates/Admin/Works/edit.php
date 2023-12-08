@@ -1,6 +1,7 @@
 <?php
 
 use App\Model\Table\WorksTable;
+use Cake\Core\Configure;
 
 /**
  * 画像パス
@@ -20,7 +21,7 @@ if (!is_null($work->image_path) && $work->image_path != '' && file_exists($root_
 
 <?php /* ページタイトル */ ?>
 <?php $this->start('page_title') ?>
-<?= $this->Html->link('実績の設定', ['action' => 'index']) ?> > <?php if (empty($work->id)) : ?>追加<?php else : ?>編集<?php endif; ?>
+<?= $this->Html->link('実績の設定', ['action' => 'index']) ?> > <?= empty($work->id) ? '追加' : '編集' ?>
 <?php $this->end() ?>
 
 <?php /* css */ ?>
@@ -82,6 +83,9 @@ if (!is_null($work->image_path) && $work->image_path != '' && file_exists($root_
 </div>
 <?= $this->Form->control('image_path', ['class' => 'dropify', 'type' => 'file', 'label' => false, 'data-default-file' => h($data_default_file)]) ?>
 
-<?= $this->Form->submit('設定を保存', ['class' => 'button', 'style' => 'margin-top: 32px;']) ?>
+<?= $this->Form->submit(
+    empty($work->id) ? Configure::read('button.add') : Configure::read('button.save'),
+    ['class' => 'button', 'style' => 'margin-top: 32px;']
+) ?>
 <?= $this->Form->end() ?>
 <?= $this->fetch('postLink') ?>

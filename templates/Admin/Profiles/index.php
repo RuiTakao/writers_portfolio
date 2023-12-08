@@ -1,6 +1,7 @@
 <?php
 
 use App\Model\Table\ProfilesTable;
+use Cake\Core\Configure;
 
 // プロフィール画像が設定されているか判定
 if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IMAGE_PATH)) {
@@ -10,7 +11,7 @@ if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IM
 }
 ?>
 
-<?php /** ページタイトル */ ?>
+<?php /* ページタイトル */ ?>
 <?php $this->start('page_title') ?>
 プロフィール設定
 <?php $this->end() ?>
@@ -25,7 +26,7 @@ if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IM
             <div class="profile_image">
                 <?= $this->Html->image($profile_image_path) ?>
             </div>
-            <?= $this->Html->link('画像の編集', ['action' => 'edit_image'], ['class' => 'button edit_image']) ?>
+            <?= $this->Html->link(Configure::read('button.image_edit'), ['action' => 'edit_image'], ['class' => 'button edit_image']) ?>
         </div>
         <div class="flex_right" style="padding-bottom: 48px;">
             <ul class="profile_content_list">
@@ -43,7 +44,13 @@ if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IM
         <p class="text"><?= nl2br(h($profile->profile_text)) ?></p>
     </div>
 </div>
-<?= $this->Html->link('編集する', ['controller' => 'Profiles', 'action' => 'edit'], [
-    'class' => 'button',
-    'style' => 'margin-top: 32px;'
-]) ?>
+<?= $this->Html->link(
+    Configure::read('button.edit'),
+    [
+        'controller' => 'Profiles', 'action' => 'edit'
+    ],
+    [
+        'class' => 'button',
+        'style' => 'margin-top: 32px;'
+    ]
+) ?>

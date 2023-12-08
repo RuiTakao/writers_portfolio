@@ -1,6 +1,7 @@
 <?php
 
 use App\Model\Table\ProfilesTable;
+use Cake\Core\Configure;
 
 // プロフィール画像が設定されているか判定
 if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IMAGE_PATH)) {
@@ -10,7 +11,7 @@ if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IM
 }
 ?>
 
-<?php /** ページタイトル */ ?>
+<?php /* ページタイトル */ ?>
 <?php $this->start('page_title') ?>
 <?= $this->Html->link('プロフィール設定', ['action' => 'index']) ?> > 編集
 <?php $this->end() ?>
@@ -55,5 +56,5 @@ if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IM
         ]) ?>
     </div>
 </div>
-<?= $this->Form->submit('この内容で変更する',  ['class' => 'button']) ?>
+<?= $this->Form->submit(Configure::read('button.save'),  ['class' => 'button']) ?>
 <?= $this->Form->end() ?>

@@ -1,13 +1,19 @@
 <?php
 
-/** ページタイトル */ ?>
+use Cake\Core\Configure;
+?>
+
+<?php /* ページタイトル */ ?>
 <?php $this->start('page_title') ?>
 <?= $this->Html->link('経歴の設定', ['action' => 'index']) ?> > 編集
 <?php $this->end() ?>
+
+<?php /* css */ ?>
 <?php $this->start('css') ?>
 <?= $this->Html->css('admin/histories') ?>
 <?php $this->end() ?>
 
+<?php /* js */ ?>
 <?php $this->start('script') ?>
 <script>
     const to_now = document.getElementById('to_now');
@@ -65,5 +71,5 @@
         </td>
     </tr>
 </table>
-<?= $this->Form->submit('経歴を編集', ['class' => 'button']) ?>
+<?= $this->Form->submit(Configure::read('button.save'), ['class' => 'button']) ?>
 <?= $this->Form->end() ?>
