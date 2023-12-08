@@ -3,7 +3,7 @@
 }
 
 .product {
-    background: #fff;
+    /* background: rgba(255, 255, 255, 1); */
     width: 100%;
     border-radius: 8px;
     height: 96px;
@@ -21,7 +21,15 @@
 }
 
 .js-dropZone.is-active {
-    height: 56px;
+    height: 40px;
     width: 100%;
     background: #ddd;
+}
+
+.card {
+    background: rgba(255, 255, 255, 1);
+    padding: 0px;
+    height: 40px;
+    padding-left: 8px;
+    line-height: 40px;
 }

@@ -9,15 +9,6 @@
 <?php $this->start('css') ?>
 <?= $this->Html->css('admin/others') ?>
 <?= $this->Html->css('order') ?>
-<style>
-    .card {
-        padding: 8px;
-    }
-
-    .card:not(:first-child) {
-        margin-top: 8px;
-    }
-</style>
 <?php $this->end() ?>
 
 <?php /** js */ ?>
