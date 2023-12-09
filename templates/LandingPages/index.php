@@ -83,6 +83,21 @@
             color: #fff;
             margin-top: 80px;
         }
+
+        @media screen and (max-width:640px) {
+            .fv {
+                height: 320px;
+                background-position: 50% 0px;
+            }
+
+            .fv_title {
+                font-size: 56px;
+            }
+
+            .container {
+                width: 90%;
+            }
+        }
     </style>
 </head>
 
