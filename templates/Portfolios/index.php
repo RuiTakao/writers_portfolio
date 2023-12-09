@@ -123,7 +123,7 @@ use Cake\I18n\FrozenTime;
     </div> -->
     <footer class="footer">
         <div class="container">
-            <div class="footer_copy">©Takao Folio inc</div>
+            <div class="footer_copy">©Writers Portfolio inc</div>
         </div>
     </footer>
 </body>
