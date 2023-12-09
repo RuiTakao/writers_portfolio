@@ -96,7 +96,10 @@
                 サイトの外観、ヘッダー画像、アイコン設定、その他、実績や経歴等を設定したら、あなたのプロフィールサイトが作成されます。<br />
                 型に当てはめて作成するだけなので、Webの知識は不要です。<br />
                 サーバー、ドメインの取得も不要、こちらのURLからアクセスできます。<br />
-                転職活動や商談にご使用ください。
+                転職活動や商談にご使用ください。<br />
+            </p>
+            <p style="margin-top: 24px;">
+                <span style="font-weight: 600;">作成例：</span> <?= $this->Html->link($this->Url->build('/example', ['fullBase' => true]), ['controller' => 'Portfolios', 'action' => 'index', 'example'], ['target' => '_blank']) ?>
             </p>
             <p class="exp_text">このアプリケーションでできること</p>
             <p class="content_title">経歴の設定</p>
