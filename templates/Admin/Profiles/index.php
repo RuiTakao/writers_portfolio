@@ -41,7 +41,7 @@ if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IM
     </div>
     <div class="profile_text">
         <p class="title">プロフィール文</p>
-        <p class="text"><?= nl2br(h($profile->profile_text)) ?></p>
+        <p class="text"><?= !empty($profile->profile_text) ? nl2br(h($profile->profile_text)) : '' ?></p>
     </div>
 </div>
 <?= $this->Html->link(

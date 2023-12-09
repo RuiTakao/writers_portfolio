@@ -35,7 +35,7 @@ if (is_null($site->header_image_path) || !file_exists(SitesTable::ROOT_HEADER_IM
     </tr>
     <tr>
         <th>ディスクリプション</th>
-        <td><?= nl2br(h($site->site_description)) ?></td>
+        <td><?= !empty($site->site_description) ? nl2br(h($site->site_description)) : '' ?></td>
     </tr>
     <!-- <tr>
         <th colspan="2" style="text-align: center;padding: 0;">表示ステータス</th>
