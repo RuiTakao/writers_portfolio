@@ -61,7 +61,7 @@ use Cake\Core\Configure;
                         </p>
                     <?php endif; ?>
 
-                    <p style="margin-top: 16px; line-height:1.8em;"><?= nl2br(h($item->overview)) ?></p>
+                    <p style="margin-top: 16px; line-height:1.8em;"><?= !empty($item->overview) ? nl2br(h($item->overview)) : '' ?></p>
                 </div>
 
                 <?php if (!is_null($item->image_path) && $item->image_path != '' && file_exists($root_image_path)) : ?>

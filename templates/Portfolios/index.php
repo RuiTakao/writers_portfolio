@@ -30,7 +30,7 @@ use Cake\I18n\FrozenTime;
     </div>
     <div class="pr">
         <div class="container">
-            <div class="pr_content"><?= nl2br(h($profile->profile_text)) ?></div>
+            <div class="pr_content"><?= !empty($profile->profile_text) ? nl2br(h($profile->profile_text)) : '' ?></div>
         </div>
     </div>
     <div class="career section">
@@ -57,7 +57,7 @@ use Cake\I18n\FrozenTime;
                             <p class="career_term"><?= h($start) ?> ～ <?= h($end) ?></p>
                             <p class="career_work"><?= h($history->title) ?></p>
                         </div>
-                        <p class="career_detail"><?= nl2br(h($history->overview)) ?></p>
+                        <p class="career_detail"><?= !empty($history->overview) ? nl2br(h($history->overview)) : '' ?></p>
                     </li>
                 <?php endforeach; ?>
 
@@ -85,7 +85,7 @@ use Cake\I18n\FrozenTime;
                             <p class="works_content_link">関連リンク：<a href="<?= h($work->url_path) ?>"><?= !empty($work->url_name) ? h($work->url_name) : h($work->url_path) ?></a></p>
                         <?php endif; ?>
 
-                        <p class="works_content_detail"><?= h($work->overview) ?></p>
+                        <p class="works_content_detail"><?= !empty($work->overview) ? nl2br(h($work->overview)) : '' ?></p>
                     </li>
                 <?php endforeach; ?>
 
