@@ -46,7 +46,9 @@
 
     <?php if ($session->read('message')) : ?>
         <?php /* 処理結果通知モーダル */ ?>
-        window.onload = () => alert('<?= $session->read('message') ?>');
+        setTimeout(() => {
+            window.onload = () => alert('<?= $session->read('message') ?>');
+        }, 500);
         <?php $session->delete('message') ?>
     <?php endif; ?>
 </script>
