@@ -112,6 +112,18 @@
 }
 
 @media screen and (max-width:640px) {
+    .fv {
+        height: 272px;
+    }
+
+    .fv_bg_cover {
+        height: 240px;
+    }
+
+    .fv_bg {
+        height: 240px;
+    }
+
     .fv_container {
         gap: 32px;
     }
@@ -291,5 +303,4 @@
     height: 56px;
     line-height: 56px;
     color: #fff;
-    text-align: right;
 }
