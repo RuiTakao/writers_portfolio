@@ -28,7 +28,7 @@
             height: 480px;
             background-image: url('<?= $this->Url->image('LandingPages/LandingPagesBg.webp') ?>');
             background-size: cover;
-            background-position: 50% -240px;
+            background-position: 50% -180px;
             position: relative;
         }
 
