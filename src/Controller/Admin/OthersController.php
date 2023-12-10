@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Controller\Admin\AppController;
 use App\Model\Table\OthersTable;
+use Cake\Core\Configure;
 use Cake\Database\Exception\DatabaseException;
 use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
@@ -102,7 +103,7 @@ class OthersController extends AppController
 
             // バリデーション処理
             if ($other->getErrors()) {
-                $this->session->write('message', '入力に不備があります。');
+                $this->session->write('message', Configure::read('alert_message.input_faild'));
                 $this->set('other', $other);
                 return;
             }
@@ -136,12 +137,12 @@ class OthersController extends AppController
                 $this->connection->rollback();
 
                 // 一覧画面へリダイレクト
-                $this->session->write('message', '登録に失敗しました。');
+                $this->session->write('message', Configure::read('alert_message.system_faild'));
                 return $this->redirect(['action' => 'index']);
             }
 
             // 一覧画面へリダイレクト
-            $this->session->write('message', 'その他を一件、追加しました。');
+            $this->session->write('message', 'その他' . Configure::read('alert_message.add'));
             return $this->redirect(['action' => 'index']);
         }
 
@@ -199,12 +200,12 @@ class OthersController extends AppController
                 $this->connection->rollback();
 
                 // 一覧画面へ遷移
-                $this->session->write('message', '設定の更新が失敗しました。');
+                $this->session->write('message', Configure::read('alert_message.system_faild'));
                 return $this->redirect(['action' => 'index']);
             }
 
             // 並び順変更ページに遷移
-            $this->session->write('message', '設定を反映しました。');
+            $this->session->write('message', Configure::read('alert_message.complete'));
             return $this->redirect(['action' => 'order']);
         }
 
@@ -261,7 +262,7 @@ class OthersController extends AppController
                 $this->connection->rollback();
 
                 // 一覧画面へリダイレクト
-                $this->session->write('message', '削除に失敗しました。');
+                $this->session->write('message', Configure::read('alert_message.system_faild'));
                 return $this->redirect(['action' => 'index']);
             }
 
@@ -298,7 +299,7 @@ class OthersController extends AppController
         }
 
         // 一覧画面へリダイレクト
-        $this->session->write('message', 'その他を一件、削除しました。');
+        $this->session->write('message', Configure::read('alert_message.delete'));
         return $this->redirect(['action' => 'index']);
     }
 }

@@ -7,6 +7,7 @@ namespace App\Controller\Admin;
 use App\Controller\Admin\AppController;
 use App\Model\Table\ProfilesTable;
 use App\Model\Table\SitesTable;
+use Cake\Core\Configure;
 use Cake\Database\Exception\DatabaseException;
 use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
@@ -68,7 +69,7 @@ class SitesController extends AppController
 
             // バリデーション処理
             if ($site->getErrors()) {
-                $this->session->write('message', SitesTable::INVALID_INPUT_MESSEGE);
+                $this->session->write('message', Configure::read('alert_message.input_faild'));
                 $this->set('site', $site);
                 return;
             }
@@ -97,12 +98,12 @@ class SitesController extends AppController
 
                 // ロールバック
                 $this->connection->rollback();
-                $this->session->write('message', SitesTable::INVALID_MESSAGE);
+                $this->session->write('message', Configure::read('alert_message.system_faild'));
                 return $this->redirect(['action' => 'index']);
             }
 
             // 完了画面へリダイレクト
-            $this->session->write('message', SitesTable::SUCCESS_MESSAGE);
+            $this->session->write('message', Configure::read('alert_message.complete'));
             return $this->redirect(['action' => 'index']);
         }
 
@@ -130,7 +131,7 @@ class SitesController extends AppController
             if ($data['favicon_path']->getClientFilename() == '' || $data['favicon_path']->getClientMediaType() == '') {
 
                 // アップロードされていなければ処理せず変更完了
-                $this->session->write('message', SitesTable::SUCCESS_FAVICON_MESSAGE);
+                $this->session->write('message', Configure::read('alert_message.complete'));
                 return $this->redirect(['action' => 'index']);
             }
 
@@ -141,9 +142,9 @@ class SitesController extends AppController
             $data['favicon_path'] = $data['favicon_path']->getClientFilename();
 
             // バリデーション
-            if (!in_array(pathinfo($data['favicon_path'])['extension'], SitesTable::FAVICON_EXTENTIONS)) {
+            if (!in_array(pathinfo($data['favicon_path'])['extension'],  Configure::read('extensions'))) {
                 $site->setError('favicon_path', [SitesTable::INVALID_EXTENSION_MESSAGE]);
-                $this->session->write('message', SitesTable::INVALID_INPUT_MESSEGE);
+                $this->session->write('message', Configure::read('alert_message.input_faild'));
                 $this->set('site', $site);
                 return;
             }
@@ -151,7 +152,7 @@ class SitesController extends AppController
             // エンティティにデータセット
             $site = $this->Sites->patchEntity($site, $data);
             if ($site->getErrors()) {
-                $this->session->write('message', SitesTable::INVALID_MESSAGE);
+                $this->session->write('message', Configure::read('alert_message.input_faild'));
                 return $this->redirect(['action' => 'index']);
             }
 
@@ -191,12 +192,12 @@ class SitesController extends AppController
 
                 // ロールバック
                 $this->connection->rollback();
-                $this->session->write('message', SitesTable::INVALID_FAVICON_MESSAGE);
+                $this->session->write('message', Configure::read('alert_message.system_faild'));
                 return $this->redirect(['action' => 'index']);
             }
 
             // 完了画面へリダイレクト
-            $this->session->write('message', SitesTable::SUCCESS_FAVICON_MESSAGE);
+            $this->session->write('message', Configure::read('alert_message.complete'));
             return $this->redirect(['action' => 'index']);
         }
 
@@ -204,6 +205,13 @@ class SitesController extends AppController
         $this->set('site', $site);
     }
 
+    /**
+     * ヘッダー画像の設定
+     * 
+     * @return Response|void|null
+     * 
+     * @throws DatabaseException;
+     */
     public function editHeaderImage()
     {
         // ログインidからデータ取得
@@ -218,7 +226,7 @@ class SitesController extends AppController
             if ($data['header_image_path']->getClientFilename() == '' || $data['header_image_path']->getClientMediaType() == '') {
 
                 // アップロードされていなければ処理せず変更完了
-                $this->session->write('message', SitesTable::SUCCESS_HEADER_IMAGE_MESSAGE);
+                $this->session->write('message', Configure::read('alert_message.complete'));
                 return $this->redirect(['action' => 'index']);
             }
 
@@ -229,9 +237,9 @@ class SitesController extends AppController
             $data['header_image_path'] = $data['header_image_path']->getClientFilename();
 
             // バリデーション
-            if (!in_array(pathinfo($data['header_image_path'])['extension'], SitesTable::EXTENTIONS)) {
+            if (!in_array(pathinfo($data['header_image_path'])['extension'], Configure::read('extensions'))) {
                 $site->setError('header_image_path', [SitesTable::INVALID_EXTENSION_MESSAGE]);
-                $this->session->write('message', SitesTable::INVALID_INPUT_MESSEGE);
+                $this->session->write('message', Configure::read('alert_message.input_faild'));
                 $this->set('site', $site);
                 return;
             }
@@ -239,7 +247,7 @@ class SitesController extends AppController
             // エンティティにデータセット
             $site = $this->Sites->patchEntity($site, $data);
             if ($site->getErrors()) {
-                $this->session->write('message', SitesTable::INVALID_MESSAGE);
+                $this->session->write('message', Configure::read('alert_message.input_faild'));
                 return $this->redirect(['action' => 'index']);
             }
 
@@ -279,12 +287,12 @@ class SitesController extends AppController
 
                 // ロールバック
                 $this->connection->rollback();
-                $this->session->write('message', SitesTable::INVALID_HEADER_IMAGE_MESSAGE);
+                $this->session->write('message', Configure::read('alert_message.system_faild'));
                 return $this->redirect(['action' => 'index']);
             }
 
             // 完了画面へリダイレクト
-            $this->session->write('message', SitesTable::SUCCESS_HEADER_IMAGE_MESSAGE);
+            $this->session->write('message', Configure::read('alert_message.complete'));
             return $this->redirect(['action' => 'index']);
         }
 
@@ -292,6 +300,13 @@ class SitesController extends AppController
         $this->set('site', $site);
     }
 
+    /**
+     * ヘッダー画像の設定（詳細）
+     * 
+     * @return Response|void|null
+     * 
+     * @throws DatabaseException
+     */
     public function settingHeaderImage()
     {
         $this->viewBuilder()->disableAutoLayout();
@@ -309,7 +324,7 @@ class SitesController extends AppController
             // エンティティにデータセット
             $site = $this->Sites->patchEntity($site, $data);
             if ($site->getErrors()) {
-                $this->session->write('message', SitesTable::INVALID_MESSAGE);
+                $this->session->write('message', Configure::read('alert_message.input_faild'));
                 return $this->redirect(['action' => 'index']);
             }
 
@@ -337,10 +352,10 @@ class SitesController extends AppController
 
                 // ロールバック
                 $this->connection->rollback();
-                $this->session->write('message', SitesTable::INVALID_HEADER_IMAGE_MESSAGE);
+                $this->session->write('message', Configure::read('alert_message.system_faild'));
                 return $this->redirect(['action' => 'index']);
             }
-            $this->session->write('message', '変更を保存しました。');
+            $this->session->write('message', Configure::read('alert_message.complete'));
         }
 
         // viewに渡すデータセット

@@ -36,13 +36,6 @@ class SitesTable extends Table
     /**
      * メッセージ
      */
-    const SUCCESS_MESSAGE = 'サイトの設定を変更しました。';
-    const SUCCESS_FAVICON_MESSAGE = 'ファビコンを変更しました。';
-    const SUCCESS_HEADER_IMAGE_MESSAGE = 'ヘッダー画像を変更しました。';
-    const INVALID_MESSAGE = 'サイトの設定の変更に失敗しました。';
-    const INVALID_FAVICON_MESSAGE = 'ファビコンの変更に失敗しました。';
-    const INVALID_HEADER_IMAGE_MESSAGE = 'ヘッダー画像の変更に失敗しました。';
-    const INVALID_INPUT_MESSEGE = '入力に不備があります。';
     const INVALID_EXTENSION_MESSAGE = '拡張子が無効です。';
 
     /**
@@ -58,28 +51,6 @@ class SitesTable extends Table
     const BLANK_FAVICON_PATH = 'blank/sites/favicons/favicon_blank.jpg';
     const BLANK_HEADER_IMAGE_PATH = 'blank/sites/headers/header_blank_image.jpg';
     const BLANK_HEADER_ADMIN_IMAGE_PATH = 'blank/sites/headers/header_admin_blank_image.jpg';
-
-    /**
-     * 画像の拡張子
-     */
-    const EXTENTIONS = [
-        'jpg',
-        'png',
-        'jpeg',
-        'webp'
-    ];
-
-    /**
-     * ファビコンの拡張子
-     */
-    const FAVICON_EXTENTIONS = [
-        'jpg',
-        'png',
-        'jpeg',
-        'webp',
-        'ico',
-        'svg'
-    ];
 
     /**
      * Initialize method

@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Controller\Admin\AppController;
 use App\Model\Table\HistoriesTable;
+use Cake\Core\Configure;
 use Cake\Database\Exception\DatabaseException;
 use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
@@ -106,7 +107,7 @@ class HistoriesController extends AppController
                 $this->set('historie', $historie);
                 $this->set('histories', $histories);
                 $this->set('add_place', $add_place);
-                $this->session->write('message', '入力に不備があります。');
+                $this->session->write('message', Configure::read('alert_message.input_faild'));
                 return;
             }
 
@@ -137,12 +138,12 @@ class HistoriesController extends AppController
                 $this->connection->rollback();
 
                 // 一覧画面へリダイレクト
-                $this->session->write('message', '登録に失敗しました。');
+                $this->session->write('message', Configure::read('alert_message.system_faild'));
                 return $this->redirect(['action' => 'index']);
             }
 
             // 一覧画面へリダイレクト
-            $this->session->write('message', '経歴を追加しました。');
+            $this->session->write('message', '経歴' . Configure::read('alert_message.add'));
             return $this->redirect(['action' => 'index']);
         }
 
@@ -194,7 +195,7 @@ class HistoriesController extends AppController
             // バリデーション処理
             if ($historie->getErrors()) {
                 $this->set('historie', $historie);
-                $this->session->write('message', '入力に不備があります。');
+                $this->session->write('message', Configure::read('alert_message.input_faild'));
                 return;
             }
 
@@ -223,12 +224,12 @@ class HistoriesController extends AppController
                 $this->connection->rollback();
 
                 // 一覧画面へリダイレクト
-                $this->session->write('message', '登録に失敗しました。');
+                $this->session->write('message', Configure::read('alert_message.system_faild'));
                 return $this->redirect(['action' => 'index']);
             }
 
             // 一覧画面へリダイレクト
-            $this->session->write('message', '変更を保存しました。');
+            $this->session->write('message', Configure::read('alert_message.complete'));
             return $this->redirect(['action' => 'index']);
         }
 
@@ -290,11 +291,11 @@ class HistoriesController extends AppController
             $this->connection->rollback();
 
             // 一覧画面へリダイレクト
-            $this->session->write('message', '削除に失敗しました。');
+            $this->session->write('message', Configure::read('alert_message.system_faild'));
             return $this->redirect(['action' => 'index']);
         }
 
-        $this->session->write('message', '削除されました。');
+        $this->session->write('message', Configure::read('alert_message.delete'));
         return $this->redirect(['action' => 'index']);
     }
 }
