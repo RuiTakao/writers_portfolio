@@ -17,7 +17,7 @@
 
 <p class="title">ユーザーが作成されました</p>
 <p class="confirm_text">ユーザー名：<span><?= $user->username ?></span></p>
-<p class="confirm_text">ポートフォリオアドレス：<span><?= $_SERVER['HTTP_REFERER'] . $user->username ?></span></p>
+<p class="confirm_text">ポートフォリオアドレス：<span><?= $_SERVER['HTTP_HOST'] . '/' . $user->username ?></span></p>
 <p class="confirm_text">パスワード：<span>・・・・・・</span></p>
 
 <p>再度ログインしてください</p>
