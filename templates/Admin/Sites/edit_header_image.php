@@ -30,8 +30,10 @@ if (is_null($site->header_image_path) || !file_exists(SitesTable::ROOT_HEADER_IM
 
 <?php $this->start('script') ?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<?= $this->Html->script('dropify/dropify.min.js') ?>
-<?= $this->Html->script('sites/header') ?>
+<?= $this->Html->script([
+    'dropify/dropify.min.js',
+    'dropify/header',
+]) ?>
 <?php $this->end() ?>
 
 <?= $this->Form->create($site, [
@@ -44,7 +46,7 @@ if (is_null($site->header_image_path) || !file_exists(SitesTable::ROOT_HEADER_IM
 </div>
 <div class="flex" style="gap: 16px">
     <?= $this->Form->submit(Configure::read('button.save'),  ['class' => 'button']) ?>
-    <?= $this->Html->link('ヘッダー画像の設定', ['action' => 'settingHeaderImage'], ['class' => 'button', 'target' => '_blank','style' => $setting_button]) ?>
+    <?= $this->Html->link('ヘッダー画像の設定', ['action' => 'settingHeaderImage'], ['class' => 'button', 'target' => '_blank', 'style' => $setting_button]) ?>
 </div>
 <?= $this->Form->end() ?>
 

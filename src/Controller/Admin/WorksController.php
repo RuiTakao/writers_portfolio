@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Controller\Admin\AppController;
 use App\Model\Table\WorksTable;
+use Cake\Core\Configure;
 use Cake\Database\Exception\DatabaseException;
 use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
@@ -108,7 +109,7 @@ class WorksController extends AppController
                 $data['image_path'] = $data['image_path']->getClientFilename();
 
                 // 拡張子の確認
-                if (!in_array(pathinfo($data['image_path'])['extension'],  ['jpg', 'png', 'jpeg', 'webp'])) {
+                if (!in_array(pathinfo($data['image_path'])['extension'], Configure::read('extensions'))) {
                     $image_error = '無効な拡張子です。';
                 }
             } else {
@@ -124,7 +125,7 @@ class WorksController extends AppController
 
             // バリデーション処理
             if ($work->getErrors() || $work->hasErrors()) {
-                $this->session->write('message', '入力に不備があります。');
+                $this->session->write('message', Configure::read('alert_message.input_faild'));
                 $this->set('work', $work);
                 return;
             }
@@ -185,12 +186,12 @@ class WorksController extends AppController
                 $this->connection->rollback();
 
                 // 一覧画面へリダイレクト
-                $this->session->write('message', '登録に失敗しました。');
+                $this->session->write('message', Configure::read('alert_message.system_faild'));
                 return $this->redirect(['action' => 'index']);
             }
 
             // 詳細へリダイレクト
-            $this->session->write('message', '実績を一件、追加しました。');
+            $this->session->write('message', '実績' . Configure::read('alert_message.add'));
             return $this->redirect(['action' => 'index']);
         }
 
@@ -263,12 +264,12 @@ class WorksController extends AppController
                 $this->connection->rollback();
 
                 // 一覧画面へリダイレクト
-                $this->session->write('message', '変更に失敗しました。');
+                $this->session->write('message', Configure::read('alert_message.system_faild'));
                 return $this->redirect(['action' => 'index']);
             }
 
             // 詳細へリダイレクト
-            $this->session->write('message', '画像を削除しました。');
+            $this->session->write('message', Configure::read('alert_message.delete'));
             return $this->redirect(['action' => 'edit', $work->id]);
         }
     }
@@ -326,13 +327,13 @@ class WorksController extends AppController
                 $this->connection->rollback();
 
                 // 一覧画面へリダイレクト
-                $this->session->write('message', '削除に失敗しました。');
+                $this->session->write('message', Configure::read('alert_message.system_faild'));
                 return $this->redirect(['action' => 'index']);
             }
         }
 
         // 一覧画面へリダイレクト
-        $this->session->write('message', '実績を一件、削除しました。');
+        $this->session->write('message', Configure::read('alert_message.delete'));
         return $this->redirect(['action' => 'index']);
     }
 
@@ -378,11 +379,11 @@ class WorksController extends AppController
 
                 // ロールバック
                 $this->connection->rollback();
-                $this->session->write('message', '設定の更新が失敗しました。');
+                $this->session->write('message', Configure::read('alert_message.system_faild'));
                 return $this->redirect(['action' => 'index']);
             }
 
-            $this->session->write('message', '設定を反映しました。');
+            $this->session->write('message', Configure::read('alert_message.complete'));
             return $this->redirect(['action' => 'order']);
         }
 

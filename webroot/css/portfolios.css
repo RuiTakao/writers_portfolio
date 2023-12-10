@@ -246,15 +246,14 @@
 .works_content_image {
     width: 100%;
     height: auto;
-    max-height: 368px;
+    max-height: 512px;
     margin-top: 16px;
 }
 
 .works_content_image img {
     display: block;
-width: 100%;
     height: auto;
-    max-height: 368px;
+    max-height: 512px;
 }
 
 .works_content_link {

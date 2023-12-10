@@ -23,8 +23,10 @@ if (is_null($site->favicon_path) || !file_exists(SitesTable::ROOT_FAVICON_PATH))
 
 <?php $this->start('script') ?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<?= $this->Html->script('dropify/dropify.min.js') ?>
-<?= $this->Html->script('sites/favicon') ?>
+<?= $this->Html->script([
+    'dropify/dropify.min.js',
+    'dropify/favicon',
+]) ?>
 <?php $this->end() ?>
 
 <?= $this->Form->create($site, [

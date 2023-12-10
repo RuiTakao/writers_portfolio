@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Controller\Admin\AppController;
 use App\Model\Table\ProfilesTable;
+use Cake\Core\Configure;
 use Cake\Database\Exception\DatabaseException;
 use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
@@ -65,7 +66,7 @@ class ProfilesController extends AppController
 
             // バリデーション処理
             if ($profile->getErrors()) {
-                $this->session->write('message', ProfilesTable::INVALID_INPUT_MESSEGE);
+                $this->session->write('message', Configure::read('alert_message.input_faild'));
                 $this->set('profile', $profile);
                 return;
             }
@@ -94,12 +95,12 @@ class ProfilesController extends AppController
 
                 // ロールバック
                 $this->connection->rollback();
-                $this->session->write('message', ProfilesTable::INVALID_MESSAGE);
+                $this->session->write('message', Configure::read('alert_message.system_faild'));
                 return $this->redirect(['action' => 'index']);
             }
 
             // 完了画面へリダイレクト
-            $this->session->write('message', ProfilesTable::SUCCESS_MESSAGE);
+            $this->session->write('message', Configure::read('alert_message.complete'));
             return $this->redirect(['action' => 'index']);
         }
 
@@ -129,7 +130,7 @@ class ProfilesController extends AppController
             if ($data['image_path']->getClientFilename() == '' || $data['image_path']->getClientMediaType() == '') {
 
                 // アップロードされていなければ処理せず変更完了
-                $this->session->write('message', ProfilesTable::SUCCESS_IMAGE_MESSAGE);
+                $this->session->write('message', Configure::read('alert_message.complete'));
                 return $this->redirect(['action' => 'index']);
             }
 
@@ -140,9 +141,9 @@ class ProfilesController extends AppController
             $data['image_path'] = $data['image_path']->getClientFilename();
 
             // バリデーション
-            if (!in_array(pathinfo($data['image_path'])['extension'], ProfilesTable::EXTENTIONS)) {
+            if (!in_array(pathinfo($data['image_path'])['extension'], Configure::read('extensions'))) {
                 $profile->setError('image_path', [ProfilesTable::INVALID_EXTENSION_MESSAGE]);
-                $this->session->write('message', ProfilesTable::INVALID_INPUT_MESSEGE);
+                $this->session->write('message', Configure::read('alert_message.input_faild'));
                 $this->set('profile', $profile);
                 return;
             }
@@ -150,7 +151,7 @@ class ProfilesController extends AppController
             // エンティティにデータセット
             $profile = $this->Profiles->patchEntity($profile, $data);
             if ($profile->getErrors()) {
-                $this->session->write('message', ProfilesTable::INVALID_MESSAGE);
+                $this->session->write('message', Configure::read('alert_message.input_faild'));
                 return $this->redirect(['action' => 'index']);
             }
 
@@ -190,12 +191,12 @@ class ProfilesController extends AppController
 
                 // ロールバック
                 $this->connection->rollback();
-                $this->session->write('message', ProfilesTable::INVALID_MESSAGE);
+                $this->session->write('message', Configure::read('alert_message.system_faild'));
                 return $this->redirect(['action' => 'index']);
             }
 
             // 完了画面へリダイレクト
-            $this->session->write('message', ProfilesTable::SUCCESS_MESSAGE);
+            $this->session->write('message', Configure::read('alert_message.complete'));
             return $this->redirect(['action' => 'index']);
         }
 

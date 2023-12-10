@@ -76,14 +76,8 @@ class CreateUsersController extends AppController
             // エンティティにデータセット
             $user = $this->Users->patchEntity($this->AuthUser, $data);
 
-            // パスワード再入力チェック
-            if ($data['password'] != $data['re_password']) {
-                $user->setError('password', [UsersTable::PASSWORD_MISMATCH]);
-                $user->setError('re_password', [UsersTable::PASSWORD_MISMATCH]);
-            }
-
             // バリデーション処理
-            if ($user->getErrors()) {
+            if ($this->create_validate($user, $data)) {
                 $this->set('user', $user);
                 return;
             }
@@ -95,6 +89,48 @@ class CreateUsersController extends AppController
 
         // viewに渡すデータセット
         $this->set('user', $user);
+    }
+
+    /**
+     * ユーザー作成バリデーション
+     * 
+     * @param UsersTable $entity
+     * @param array $data
+     * 
+     * @return bool
+     */
+    private function create_validate($entity, $data): bool
+    {
+        $error_count = 0;
+        if ($data['username'] == '') {
+            $entity->setError('username', ['ユーザー名が入力されていません。']);
+            $error_count++;
+        } elseif (!empty($this->Users->find('all', ['conditions' => ['username ' => $data['username']]])->toArray())) {
+            $entity->setError('username', ['このユーザー名は使用できません。']);
+            $error_count++;
+        } elseif ($data['username'] == "admin") {
+            $entity->setError('username', ['このユーザー名は使用できません。']);
+            $error_count++;
+        } elseif (!preg_match("/^[a-zA-Z0-9]+$/", $data['username'])) {
+            $entity->setError('username', ['ユーザー名は半角英数字のみで入力してください。']);
+            $error_count++;
+        }
+
+        if ($data['password'] == '') {
+            $entity->setError('password', ['パスワードが入力されていません。']);
+            $error_count++;
+        } elseif (mb_strlen($data['password']) < 8) {
+            $entity->setError('password', ['パスワードは8文字以上で入力してください。']);
+            $error_count++;
+        } elseif ($data['password'] != $data['re_password']) {
+            $entity->setError('password', ['パスワードが一致しません。']);
+            $error_count++;
+        } elseif (!preg_match("/^[ -~]+$/", $data['password'])) {
+            $entity->setError('password', ['パスワードは半角記号英数字のみで入力してください。']);
+            $error_count++;
+        }
+
+        return $error_count !== 0;
     }
 
     /**
