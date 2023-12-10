@@ -13,6 +13,9 @@ use Cake\ORM\Entity;
  * @property string|null $site_description
  * @property string|null $favicon_path
  * @property string|null $heaher_image_path
+ * @property int $header_image_positionX
+ * @property int $header_image_positionY
+ * @property int $header_image_opacity
  * @property int $user_id
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
@@ -35,6 +38,9 @@ class Site extends Entity
         'site_description' => true,
         'favicon_path' => true,
         'header_image_path' => true,
+        'header_image_positionX' => true,
+        'header_image_positionY' => true,
+        'header_image_opacity' => true,
         'user_id' => true,
         'created' => true,
         'modified' => true,

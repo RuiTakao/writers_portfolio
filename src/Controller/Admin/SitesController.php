@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Controller\Admin\AppController;
+use App\Model\Table\ProfilesTable;
 use App\Model\Table\SitesTable;
 use Cake\Database\Exception\DatabaseException;
 use Cake\Http\Response;
@@ -14,6 +15,7 @@ use Cake\ORM\TableRegistry;
  * Sites Controller
  *
  * @property SitesTable $Sites
+ * @property ProfilesTable $Profiles
  */
 class SitesController extends AppController
 {
@@ -24,6 +26,7 @@ class SitesController extends AppController
 
         // 利用するモデル
         $this->Sites = TableRegistry::getTableLocator()->get('Sites');
+        $this->Profiles = TableRegistry::getTableLocator()->get('Profiles');
 
         // トランザクション変数
         $this->connection = $this->Sites->getConnection();
@@ -287,5 +290,61 @@ class SitesController extends AppController
 
         // viewに渡すデータセット
         $this->set('site', $site);
+    }
+
+    public function settingHeaderImage()
+    {
+        $this->viewBuilder()->disableAutoLayout();
+
+        // ログインidからデータ取得
+        $site = $this->Sites->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])->first();
+        $profile = $this->Profiles->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])->first();
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            // postの場合
+
+            // requestデータ取得
+            $data = $this->request->getData();
+
+            // エンティティにデータセット
+            $site = $this->Sites->patchEntity($site, $data);
+            if ($site->getErrors()) {
+                $this->session->write('message', SitesTable::INVALID_MESSAGE);
+                return $this->redirect(['action' => 'index']);
+            }
+
+            try {
+
+                // トランザクション開始
+                $this->connection->begin();
+
+                // 排他制御
+                $this->Sites
+                    ->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])
+                    ->modifier('SQL_NO_CACHE')
+                    ->epilog('FOR UPDATE')
+                    ->first();
+
+                // 登録処理
+                $ret = $this->Sites->save($site);
+                if (!$ret) {
+                    throw new DatabaseException;
+                }
+
+                // コミット
+                $this->connection->commit();
+            } catch (DatabaseException $e) {
+
+                // ロールバック
+                $this->connection->rollback();
+                $this->session->write('message', SitesTable::INVALID_HEADER_IMAGE_MESSAGE);
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->session->write('message', '変更を保存しました。');
+        }
+
+        // viewに渡すデータセット
+        $this->set('site', $site);
+        $this->set('profile', $profile);
     }
 }

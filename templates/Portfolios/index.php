@@ -13,13 +13,23 @@ use Cake\I18n\FrozenTime;
     <?php endif; ?>
     <meta name="description" content="<?= h($site->site_description) ?>">
     <?= $this->Html->css('portfolios') ?>
+    <style>
+        .fv_bg_cover {
+            opacity: <?= $site->header_image_opacity . '%' ?>;
+        }
+
+        .fv_bg {
+            background-image: url('<?= $this->Url->image($header_image) ?>');
+            background-position: <?= $site->header_image_positionX . '%, ' . $site->header_image_positionY . '%' ?>;
+        }
+    </style>
     <title><?= h($site->site_title) ?></title>
 </head>
 
 <body>
     <div class="fv">
         <div class="fv_bg_cover"></div>
-        <div class="fv_bg" style="background-image: url('<?= $this->Url->image($header_image) ?>');"></div>
+        <div class="fv_bg"></div>
         <div class="fv_container">
             <div class="fv_user_icon"><?= $this->Html->image($profile_image) ?></div>
             <div class="fv_user_content">
