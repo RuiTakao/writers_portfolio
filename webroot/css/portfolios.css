@@ -68,7 +68,6 @@
     top: 0;
     left: 0;
     background: #fff;
-    opacity: .6;
     z-index: 2;
 }
 
@@ -253,7 +252,7 @@
 
 .works_content_image img {
     display: block;
-    width: 100%;
+width: 100%;
     height: auto;
     max-height: 368px;
 }

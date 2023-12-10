@@ -6,8 +6,10 @@ use Cake\Core\Configure;
 // ヘッダー画像が設定されているか判定
 if (is_null($site->header_image_path) || !file_exists(SitesTable::ROOT_HEADER_IMAGE_PATH)) {
     $header_image_path = SitesTable::BLANK_HEADER_ADMIN_IMAGE_PATH;
+    $setting_button = 'pointer-events: none; background: #005e85;';
 } else {
     $header_image_path = SitesTable::HEADER_IMAGE_PATH . $auth->username . '/' . $site->header_image_path;
+    $setting_button = '';
 }
 ?>
 
@@ -19,6 +21,11 @@ if (is_null($site->header_image_path) || !file_exists(SitesTable::ROOT_HEADER_IM
 <?php $this->start('css') ?>
 <?= $this->Html->css('admin/sites') ?>
 <?= $this->Html->css('dropify/css/dropify.min.css') ?>
+<style>
+    .flex {
+        display: flex;
+    }
+</style>
 <?php $this->end() ?>
 
 <?php $this->start('script') ?>
@@ -35,7 +42,10 @@ if (is_null($site->header_image_path) || !file_exists(SitesTable::ROOT_HEADER_IM
 <div class="profile">
     <?= $this->Form->control('header_image_path', ['type' => 'file', 'class' => 'dropify', 'label' => false, 'required' => false]) ?>
 </div>
-<?= $this->Form->submit(Configure::read('button.save'),  ['class' => 'button']) ?>
+<div class="flex" style="gap: 16px">
+    <?= $this->Form->submit(Configure::read('button.save'),  ['class' => 'button']) ?>
+    <?= $this->Html->link('ヘッダー画像の設定', ['action' => 'settingHeaderImage'], ['class' => 'button', 'target' => '_blank','style' => $setting_button]) ?>
+</div>
 <?= $this->Form->end() ?>
 
 <p class="before_image_title">現在の画像</p>
