@@ -27,7 +27,7 @@ if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IM
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <?= $this->Html->script([
     'dropify/dropify.min.js',
-    'profiles/profiles'
+    'dropify/profiles'
 ]) ?>
 <?php $this->end() ?>
 

@@ -48,8 +48,8 @@ use Cake\Core\Configure;
                     <?= $this->Form->postLink(Configure::read('button.delete'), ['controller' => 'Works', 'action' => 'delete', $item->id], ['class' => 'button list-button delete', 'confirm' => $delete_message, 'style' => 'width: auto; margin: 0;']) ?>
                 </div>
             </div>
-            <div class="flex">
-                <div class="flex-left" style="width: 70%;">
+            <div class="flex justify-between">
+                <div class="flex-left" style="width: 65%;">
 
                     <?php if (!empty($item->url_path)) : ?>
                         <p style="margin-top: 16px; font-size:14px;">関連リンク：
@@ -67,7 +67,7 @@ use Cake\Core\Configure;
                 <?php if (!is_null($item->image_path) && $item->image_path != '' && file_exists($root_image_path)) : ?>
                     <div class="flex-right" style="width: 30%;">
                         <div style="margin-top: 16px;">
-                            <?= $this->Html->image($image_path, ['style' => 'width: 80%; height: auto; max-height:192px; display: block;']) ?>
+                            <?= $this->Html->image($image_path, ['style' => 'width: 100%; height: auto; display: block;']) ?>
                         </div>
                     </div>
                 <?php endif; ?>
