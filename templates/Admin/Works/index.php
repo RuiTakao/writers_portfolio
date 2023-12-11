@@ -15,9 +15,9 @@ use Cake\Core\Configure;
 <?= $this->Html->css('admin/works') ?>
 <?php $this->end() ?>
 
-<div class="flex" style="gap: 16px">
-    <?= $this->Html->link('実績の追加', ['action' => 'edit'], ['class' => 'button']) ?>
-    <?= $this->Html->link('並び順変更', ['action' => 'order'], ['class' => 'button']) ?>
+<div class="button-container default">
+    <?= $this->Html->link('実績の追加', ['action' => 'edit'], ['class' => 'button default']) ?>
+    <?= $this->Html->link('並び順変更', ['action' => 'order'], ['class' => 'button default']) ?>
 </div>
 
 <ul style="margin-top: 32px;">
@@ -35,24 +35,33 @@ use Cake\Core\Configure;
         $image_path = WorksTable::WORKS_IMAGE_PATH . $self_path;
 
         /**
+         * 画像有り無し判定
+         */
+        if (!is_null($item->image_path) && $item->image_path != '' && file_exists($root_image_path)) {
+            $is_image = true;
+        } else {
+            $is_image = false;
+        }
+
+        /**
          * 削除メッセージ
          */
         $delete_message = $item->title . 'を削除しますか？';
         ?>
 
         <li class="card">
-            <div class="flex" style="border-bottom: 1px solid #333; padding-bottom: 8px;">
+            <div class="head">
                 <p style="font-weight: 600; "><?= h($item->title) ?></p>
-                <div class="flex" style="gap: 8px; margin-left: 16px">
-                    <?= $this->Html->link(Configure::read('button.edit'), ['action' => 'edit', $item->id], ['class' => 'button list-button', 'style' => 'width: auto; margin: 0;']) ?>
-                    <?= $this->Form->postLink(Configure::read('button.delete'), ['controller' => 'Works', 'action' => 'delete', $item->id], ['class' => 'button list-button delete', 'confirm' => $delete_message, 'style' => 'width: auto; margin: 0;']) ?>
+                <div class="button-container item">
+                    <?= $this->Html->link(Configure::read('button.edit'), ['action' => 'edit', $item->id], ['class' => 'button item']) ?>
+                    <?= $this->Form->postLink(Configure::read('button.delete'), ['controller' => 'Works', 'action' => 'delete', $item->id], ['class' => 'button item delete', 'confirm' => $delete_message]) ?>
                 </div>
             </div>
-            <div class="flex justify-between">
-                <div class="flex-left" style="width: 65%;">
+            <div class="content">
+                <div style="width: <?= $is_image ? '65' : '100' ?>%;">
 
                     <?php if (!empty($item->url_path)) : ?>
-                        <p style="margin-top: 16px; font-size:14px;">関連リンク：
+                        <p style="font-size:14px;">関連リンク：
                             <?php if (!empty($item->url_name)) : ?>
                                 <a href="<?= h($item->url_path) ?>"><?= h($item->url_name) ?></a>（<?= h($item->url_path) ?>）
                             <?php else : ?>
@@ -64,8 +73,8 @@ use Cake\Core\Configure;
                     <p style="margin-top: 16px; line-height:1.8em;"><?= !empty($item->overview) ? nl2br(h($item->overview)) : '' ?></p>
                 </div>
 
-                <?php if (!is_null($item->image_path) && $item->image_path != '' && file_exists($root_image_path)) : ?>
-                    <div class="flex-right" style="width: 30%;">
+                <?php if ($is_image) : ?>
+                    <div style="width: 30%;">
                         <div style="margin-top: 16px;">
                             <?= $this->Html->image($image_path, ['style' => 'width: 100%; height: auto; display: block;']) ?>
                         </div>
