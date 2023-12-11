@@ -26,5 +26,5 @@ use Cake\Core\Configure;
         <td><?= $this->Form->control('site_description',['type' => 'textarea', 'label' => false, 'value' => $site->site_description]) ?></td>
     </tr>
 </table>
-<?= $this->Form->submit(Configure::read('button.save'), ['class' => 'button']) ?>
+<?= $this->Form->submit(Configure::read('button.save'), ['class' => 'button default mt16']) ?>
 <?= $this->Form->end() ?>

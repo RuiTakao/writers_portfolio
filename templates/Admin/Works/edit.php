@@ -64,9 +64,6 @@ if (!is_null($work->image_path) && $work->image_path != '' && file_exists($root_
 </div>
 <?= $this->Form->control('image_path', ['class' => 'dropify', 'type' => 'file', 'label' => false, 'data-default-file' => h($data_default_file)]) ?>
 
-<?= $this->Form->submit(
-    empty($work->id) ? Configure::read('button.add') : Configure::read('button.save'),
-    ['class' => 'button default', 'style' => 'margin-top: 32px;']
-) ?>
+<?= $this->Form->submit(empty($work->id) ? Configure::read('button.add') : Configure::read('button.save'),['class' => 'button default mt16']) ?>
 <?= $this->Form->end() ?>
 <?= $this->fetch('postLink') ?>

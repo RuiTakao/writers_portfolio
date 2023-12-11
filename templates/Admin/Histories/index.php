@@ -44,13 +44,13 @@ use Cake\I18n\FrozenTime;
             タイトル
         </th>
         <td style="width: 25%;">
-            <?= $this->Form->control('title', ['label' => false, 'required' => false]) ?>
+            <?= $this->Form->control('title', ['label' => false, 'required' => false, 'style' => 'height: 32px;']) ?>
         </td>
         <th>
             概要
         </th>
         <td>
-            <?= $this->Form->control('overview', ['type' => 'textarea', 'label' => false, 'required' => false]) ?>
+            <?= $this->Form->control('overview', ['type' => 'textarea', 'label' => false, 'required' => false, 'style' => 'height: 72px;']) ?>
         </td>
     </tr>
     <tr>
@@ -76,7 +76,7 @@ use Cake\I18n\FrozenTime;
         </td>
     </tr>
 </table>
-<?= $this->Form->submit(Configure::read('button.add'), ['class' => 'button']) ?>
+<?= $this->Form->submit(Configure::read('button.add'), ['class' => 'button default mt16']) ?>
 <?= $this->Form->end() ?>
 
 <table style="margin-top: 56px;">

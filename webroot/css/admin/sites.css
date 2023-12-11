@@ -1,14 +1,6 @@
 /*********************************
 	table
 *********************************/
-table {
-    width: 100%;
-}
-
-th {
-    background: #F6F7F7;
-}
-
 table tr th {
     width: 20%;
     text-align: left;
@@ -24,30 +16,8 @@ table tr td {
 }
 
 /*********************************
-	form
-*********************************/
-input,
-textarea {
-    width: 100%;
-    padding: 4px;
-}
-
-textarea {
-    height: 114px;
-}
-
-/*********************************
 	button
 *********************************/
-.button {
-    font-weight: 600;
-    width: 192px;
-    font-size: 14px;
-    display: block;
-    padding: 8px;
-    margin-top: 16px;
-}
-
 .button.edit_iamge {
     display: inline-block;
     margin: 0;

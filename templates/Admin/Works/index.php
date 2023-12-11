@@ -57,7 +57,7 @@ use Cake\Core\Configure;
                     <?= $this->Form->postLink(Configure::read('button.delete'), ['controller' => 'Works', 'action' => 'delete', $item->id], ['class' => 'button item delete', 'confirm' => $delete_message]) ?>
                 </div>
             </div>
-            <div class="content">
+            <div class="content flex">
                 <div style="width: <?= $is_image ? '65' : '100' ?>%;">
 
                     <?php if (!empty($item->url_path)) : ?>

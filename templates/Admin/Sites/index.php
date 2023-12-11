@@ -57,7 +57,7 @@ if (is_null($site->header_image_path) || !file_exists(SitesTable::ROOT_HEADER_IM
         <td>表示</td>
     </tr> -->
 </table>
-<?= $this->Html->link(Configure::read('button.edit'), ['action' => 'edit'], ['class' => 'button']) ?>
+<?= $this->Html->link(Configure::read('button.edit'), ['action' => 'edit'], ['class' => 'button default mt16']) ?>
 
 <table class="favicon_image_table image_table">
     <tr>

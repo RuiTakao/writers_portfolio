@@ -46,7 +46,7 @@ main {
     display: flex;
 }
 
-.space-between {
+.justify-between {
     justify-content: space-between;
 }
 
@@ -72,6 +72,15 @@ input,
 textarea {
     width: 100%;
     padding: 4px;
+}
+
+textarea {
+    height: 114px;
+}
+
+select {
+    padding: 4px;
+    font-size: 14px;
 }
 
 input[type=text]:focus,
@@ -162,11 +171,17 @@ table {
     border-collapse: collapse;
     border: 1px solid #C3C4C7;
     background: #fff;
+    width: 100%;
+}
+
+th {
+    background: #F6F7F7;
 }
 
 th,
 td {
     border: 1px solid #C3C4C7;
+    padding: 8px;
 }
 
 /*********************************
@@ -187,6 +202,7 @@ td {
 
 .card .content {
     margin-top: 16px;
+    justify-content: space-between;
 }
 
 .card:not(:first-child) {

@@ -56,5 +56,5 @@ if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IM
         ]) ?>
     </div>
 </div>
-<?= $this->Form->submit(Configure::read('button.save'),  ['class' => 'button']) ?>
+<?= $this->Form->submit(Configure::read('button.save'),  ['class' => 'button default mt16']) ?>
 <?= $this->Form->end() ?>

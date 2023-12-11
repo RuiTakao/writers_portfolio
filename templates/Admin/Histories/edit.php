@@ -71,5 +71,5 @@ use Cake\Core\Configure;
         </td>
     </tr>
 </table>
-<?= $this->Form->submit(Configure::read('button.save'), ['class' => 'button']) ?>
+<?= $this->Form->submit(Configure::read('button.save'), ['class' => 'button default mt16']) ?>
 <?= $this->Form->end() ?>
