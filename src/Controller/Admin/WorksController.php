@@ -191,7 +191,11 @@ class WorksController extends AppController
             }
 
             // 詳細へリダイレクト
-            $this->session->write('message', '実績' . Configure::read('alert_message.add'));
+            if (is_null($id)) {
+                $this->session->write('message', '実績' . Configure::read('alert_message.add'));
+            } else {
+                $this->session->write('message', Configure::read('alert_message.complete'));
+            }
             return $this->redirect(['action' => 'index']);
         }
 
@@ -220,15 +224,8 @@ class WorksController extends AppController
 
             $image_path = WorksTable::ROOT_WORKS_IMAGE_PATH . $this->AuthUser->username  . '/' . $work->id . '/' . $work->image_path;
 
-            // 削除するデータ作成
-            $data = [
-                'image_path' => null,
-                'url' => null,
-                'url_path' => null
-            ];
-
             // エンティティにデータセット
-            $work = $this->Works->patchEntity($work, $data);
+            $work = $this->Works->patchEntity($work, ['image_path' => null]);
 
             try {
 
