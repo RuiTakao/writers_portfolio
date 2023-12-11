@@ -18,6 +18,11 @@ if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IM
 
 <?php $this->start('css') ?>
 <?= $this->Html->css('admin/profiles') ?>
+<style>
+    .profile_content_item .text {
+        font-size: 24px;
+    }
+</style>
 <?php $this->end() ?>
 
 <?= $this->Form->create($profile, [
