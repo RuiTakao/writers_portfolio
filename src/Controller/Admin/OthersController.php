@@ -142,7 +142,11 @@ class OthersController extends AppController
             }
 
             // 一覧画面へリダイレクト
-            $this->session->write('message', 'その他' . Configure::read('alert_message.add'));
+            if (is_null($id)) {
+                $this->session->write('message', 'その他' . Configure::read('alert_message.add'));
+            } else {
+                $this->session->write('message', Configure::read('alert_message.complete'));
+            }
             return $this->redirect(['action' => 'index']);
         }
 

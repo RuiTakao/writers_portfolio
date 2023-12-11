@@ -24,8 +24,5 @@ use Cake\Core\Configure;
         <?= $this->Form->control('content' . $i, ['label' => false, 'required' => false]) ?>
     <?php endfor; ?>
 </div>
-<?= $this->Form->submit(
-    empty($other->id) ? Configure::read('button.add') : Configure::read('button.save'),
-    ['class' => 'button', 'style' => 'margin-top: 16px;']
-) ?>
+<?= $this->Form->submit(empty($other->id) ? Configure::read('button.add') : Configure::read('button.save'),['class' => 'button default mt16']) ?>
 <?= $this->Form->end() ?>

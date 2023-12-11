@@ -50,7 +50,7 @@ if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IM
         'controller' => 'Profiles', 'action' => 'edit'
     ],
     [
-        'class' => 'button',
+        'class' => 'button default',
         'style' => 'margin-top: 32px;'
     ]
 ) ?>

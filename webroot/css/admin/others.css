@@ -1,70 +1,15 @@
 /*********************************
-	flex
-*********************************/
-.flex {
-    display: flex;
-}
-
-.align-center {
-    align-items: center;
-}
-
-.justify-between {
-    justify-content: space-between;
-}
-
-/*********************************
 	form
 *********************************/
-input,
-textarea {
-    width: 100%;
-    padding: 4px;
-}
-
-textarea {
-    height: 114px;
+.input:not(:first-child) {
+    margin-top: 8px;
 }
 
 /*********************************
 	button
 *********************************/
-.button {
-    font-weight: 600;
-    width: 192px;
-    font-size: 14px;
-    display: block;
-    padding: 8px;
-}
-
-.card {
-    background: #fff;
-    padding: 16px;
-    border: 1px solid #C3C4C7;
-}
-
-li {
-    list-style: none;
-}
-
-.card:not(:first-child) {
-    margin-top: 32px;
-}
-
 .list-button {
     display: inline;
     padding: 2px 8px;
     margin-left: 16px;
-}
-
-/*********************************
-	other
-*********************************/
-.other_title {
-    font-weight: 600;
-    border-bottom: 1px solid #333;
-}
-
-.other_content_list .input:not(:first-child) {
-    margin-top: 4px;
 }

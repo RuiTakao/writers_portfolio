@@ -30,23 +30,6 @@ if (!is_null($work->image_path) && $work->image_path != '' && file_exists($root_
     'dropify/css/dropify.min.css',
     'admin/works'
 ]) ?>
-<style>
-    .input.textarea {
-        margin-top: 16px;
-    }
-
-    .input.file {
-        margin-top: 16px;
-    }
-
-    .url {
-        margin-top: 16px;
-    }
-
-    .url .input:not(:first-child) {
-        margin-top: 8px;
-    }
-</style>
 <?php $this->end() ?>
 
 <?php /* js */ ?>
@@ -64,14 +47,12 @@ if (!is_null($work->image_path) && $work->image_path != '' && file_exists($root_
     'onSubmit' => 'return checkAdd()'
 ]) ?>
 <?= $this->Form->control('title', ['label' => 'タイトル', 'required' => false]) ?>
-<?= $this->Form->control('overview', ['type' => 'textarea', 'label' => '概要', 'required' => false]) ?>
-<p style="border-bottom: 1px solid #333; padding-bottom: 8px;margin-top:32px;">関連リンク</p>
-<div class="url">
-    <?= $this->Form->control('url_path', ['label' => 'URL', 'required' => false]) ?>
-    <?= $this->Form->control('url_name', ['label' => 'URL名', 'required' => false]) ?>
-</div>
+<?= $this->Form->control('overview', ['type' => 'textarea', 'label' => '概要', 'required' => false, 'style' => 'height: 114px;']) ?>
+<p class="sub_title">関連リンク</p>
+<?= $this->Form->control('url_path', ['label' => 'URL', 'required' => false]) ?>
+<?= $this->Form->control('url_name', ['label' => 'URL名', 'required' => false]) ?>
 
-<div style="border-bottom: 1px solid #333; padding-bottom: 8px;margin-top:32px;" class="flex">
+<div class="sub_title flex">
     <p>関連画像</p>
     <?php if (!is_null($data_default_file)) : ?>
         <?= $this->Form->postLink(
@@ -83,9 +64,6 @@ if (!is_null($work->image_path) && $work->image_path != '' && file_exists($root_
 </div>
 <?= $this->Form->control('image_path', ['class' => 'dropify', 'type' => 'file', 'label' => false, 'data-default-file' => h($data_default_file)]) ?>
 
-<?= $this->Form->submit(
-    empty($work->id) ? Configure::read('button.add') : Configure::read('button.save'),
-    ['class' => 'button', 'style' => 'margin-top: 32px;']
-) ?>
+<?= $this->Form->submit(empty($work->id) ? Configure::read('button.add') : Configure::read('button.save'),['class' => 'button default mt16']) ?>
 <?= $this->Form->end() ?>
 <?= $this->fetch('postLink') ?>

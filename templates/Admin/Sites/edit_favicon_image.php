@@ -37,7 +37,7 @@ if (is_null($site->favicon_path) || !file_exists(SitesTable::ROOT_FAVICON_PATH))
 <div class="profile">
     <?= $this->Form->control('favicon_path', ['type' => 'file', 'class' => 'dropify', 'label' => false]) ?>
 </div>
-<?= $this->Form->submit(Configure::read('button.save'), ['class' => 'button']) ?>
+<?= $this->Form->submit(Configure::read('button.save'), ['class' => 'button default mt16']) ?>
 <?= $this->Form->end() ?>
 
 <p class="before_image_title">現在の画像</p>

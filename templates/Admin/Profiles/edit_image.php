@@ -39,7 +39,7 @@ if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IM
 <div class="profile">
     <?= $this->Form->control('image_path', ['type' => 'file', 'class' => 'dropify', 'label' => false,]) ?>
 </div>
-<?= $this->Form->submit(Configure::read('button.save'),  ['class' => 'button']) ?>
+<?= $this->Form->submit(Configure::read('button.save'),  ['class' => 'button default mt16']) ?>
 <?= $this->Form->end() ?>
 
 <p class="before_image_title">現在の画像</p>
