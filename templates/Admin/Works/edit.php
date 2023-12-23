@@ -13,9 +13,10 @@ $root_image_path = WorksTable::ROOT_WORKS_IMAGE_PATH . $self_path;
 // webrootからのパス
 $image_path = WorksTable::WORKS_IMAGE_PATH . $self_path;
 
-$data_default_file = null;
-if (!is_null($work->image_path) && $work->image_path != '' && file_exists($root_image_path)) {
-    $data_default_file = $this->Url->image($image_path);
+if (!empty($work->image_path) && file_exists($root_image_path)) {
+    $image_flg = true;
+} else {
+    $image_flg = false;
 }
 ?>
 
@@ -72,28 +73,52 @@ if (!is_null($work->image_path) && $work->image_path != '' && file_exists($root_
     <?= $this->Form->end() ?>
     <table class="current_content_table mt64">
         <tr>
-            <th>関連リンク<?=
-                        $this->Html->link('URLの変更', ['action' => 'editLink', $work->id], ['class' => 'button'])
-                        ?><?=
-                            $this->Form->postLink('URL削除', ['controller' => 'Works', 'action' => 'deleteLink', $work->id], ['class' => 'button delete', 'confirm' => 'URLを削除しますか？'])
-                            ?></th>
+            <th>
+                <?php
+                echo "関連リンク";
+                echo $this->Html->link(!empty($work->url_path) ? 'URL変更' : 'URL追加', ['action' => 'editLink', $work->id], ['class' => 'button']);
+                if ($image_flg) {
+                    echo $this->Form->postLink('URL削除', ['controller' => 'Works', 'action' => 'deleteLink', $work->id], ['class' => 'button delete', 'confirm' => 'URLを削除しますか？']);
+                }
+                ?>
+            </th>
         </tr>
         <tr>
             <td>
-                <?= $this->Html->link($work->url_name, ['action' => 'editImage']) ?>
+                <?php
+                if (!empty($work->url_name)) {
+                    echo $this->Html->link($work->url_name, $work->url_path, ['target' => '_blank']) . '<span class="ml8">(' . $work->url_path . ')</span>';
+                } elseif (!empty($work->url_path)) {
+                    echo  $this->Html->link($work->url_path, $work->url_path, ['target' => '_blank']);
+                } else {
+                    echo "未設定";
+                }
+                ?>
             </td>
         </tr>
     </table>
     <table class="current_content_table mt32">
         <tr>
-            <th>関連画像<?=
-                    $this->Html->link('画像の変更', ['action' => 'editImage', $work->id], ['class' => 'button'])
-                    ?><?=
-                        $this->Form->postLink('画像削除', ['controller' => 'Works', 'action' => 'deleteImage', $work->id], ['class' => 'button delete', 'confirm' => '画像を削除しますか？'])
-                        ?></th>
+            <th>
+                <?php
+                echo "関連画像";
+                echo $this->Html->link($image_flg ? '画像変更' : '画像追加', ['action' => 'editImage', $work->id], ['class' => 'button']);
+                if ($image_flg) {
+                    echo $this->Form->postLink('画像削除', ['controller' => 'Works', 'action' => 'deleteImage', $work->id], ['class' => 'button delete', 'confirm' => '画像を削除しますか？']);
+                }
+                ?>
+            </th>
         </tr>
         <tr>
-            <td><?= $this->Html->image($image_path, ['class' => 'rectangle_image']) ?></td>
+            <td>
+                <?php
+                if ($image_flg) {
+                    echo $this->Html->image($image_path, ['class' => 'rectangle_image']);
+                } else {
+                    echo "未設定";
+                }
+                ?>
+            </td>
         </tr>
     </table>
 <?php endif; ?>
