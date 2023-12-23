@@ -58,7 +58,7 @@ if (!is_null($work->image_path) && $work->image_path != '' && file_exists($root_
 
     <p class="content_title mt32">関連リンク</p>
     <?= $this->Form->control('url_path', ['label' => 'URL', 'required' => false]) ?>
-    <?= $this->Form->control('url_name', ['label' => 'URL名', 'required' => false]) ?>
+    <?= $this->Form->control('url_name', ['label' => 'URL名 (※表示するURLリンクを変更したい場合はこちらに入力して下さい。)', 'required' => false]) ?>
     <div class="content_title mt32">
         <p>関連画像</p>
     </div>
@@ -70,7 +70,7 @@ if (!is_null($work->image_path) && $work->image_path != '' && file_exists($root_
     <?= $this->Form->submit(Configure::read('button.save'), ['class' => 'button default mt16']) ?>
     <table class="current_content_table mt64">
         <tr>
-            <th>関連リンク<?= $this->Html->link(Configure::read('button.image_edit'), ['action' => 'editImage'], ['class' => 'button']) ?></th>
+            <th>関連リンク<?= $this->Html->link(Configure::read('button.image_edit'), ['action' => 'editLink', $work->id], ['class' => 'button']) ?></th>
         </tr>
         <tr>
             <td>
@@ -83,11 +83,7 @@ if (!is_null($work->image_path) && $work->image_path != '' && file_exists($root_
             <th>関連画像<?= $this->Html->link(Configure::read('button.image_edit'), ['action' => 'editImage', $work->id], ['class' => 'button']) ?></th>
         </tr>
         <tr>
-            <td>
-                <div class="header_image">
-                    <?= $this->Html->image($image_path) ?>
-                </div>
-            </td>
+            <td><?= $this->Html->image($image_path, ['class' => 'rectangle_image']) ?></td>
         </tr>
     </table>
 <?php endif; ?>

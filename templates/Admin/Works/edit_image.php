@@ -40,7 +40,7 @@ if (!is_null($work->image_path) && $work->image_path != '' && file_exists($root_
 
 <?php /* form */ ?>
 <?= $this->Form->create($work, [
-    'url' => ['controller' => 'Works', 'action' => 'editImage'],
+    'url' => ['controller' => 'Works', 'action' => 'editImage', $work->id],
     'type' => 'file',
     'onSubmit' => 'return checkEdit()'
 ]) ?>
