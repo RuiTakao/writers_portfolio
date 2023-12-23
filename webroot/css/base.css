@@ -3,13 +3,75 @@
 *********************************/
 body {
     color: #333;
+    font-size: 16px;
 }
 
 /*********************************
 	margin
 *********************************/
+
+/** top **/
+.mt4 {
+    margin-top: 4px;
+}
+
+.mt8 {
+    margin-top: 8px;
+}
+
 .mt16 {
     margin-top: 16px;
+}
+
+.mt32 {
+    margin-top: 32px;
+}
+
+.mt64 {
+    margin-top: 64px;
+}
+
+/** left **/
+.ml8 {
+    margin-left: 8px;
+}
+
+.ml16 {
+    margin-left: 16px;
+}
+
+.ml32 {
+    margin-left: 32px;
+}
+
+/*********************************
+	padding
+*********************************/
+
+/*********************************
+	font size
+*********************************/
+.fz12 {
+    font-size: 12px;
+}
+
+.fz14 {
+    font-size: 14px;
+}
+
+.fz18 {
+    font-size: 18px;
+}
+
+.fz32 {
+    font-size: 32px;
+}
+
+/*********************************
+	font weight
+*********************************/
+.fwb {
+    font-weight: 600;
 }
 
 /*********************************
@@ -56,6 +118,32 @@ main {
 
 .justify-end {
     justify-content: flex-end;
+}
+
+/*********************************
+	title
+*********************************/
+/** コンテンツのタイトル */
+.content_title {
+    border-bottom: 1px solid #333;
+    padding-bottom: 8px;
+}
+
+/** 現在の表示内容についてのタイトル */
+.current_content_title {
+    position: relative;
+    height: 40px;
+    margin-bottom: 32px;
+}
+
+.current_content_title::after {
+    position: absolute;
+    content: '';
+    width: 64px;
+    height: 1px;
+    background: #333;
+    left: 0;
+    bottom: 0;
 }
 
 /*********************************
@@ -173,14 +261,44 @@ table {
     width: 100%;
 }
 
-th {
-    background: #F6F7F7;
-}
-
 th,
 td {
     border: 1px solid #C3C4C7;
     padding: 8px;
+}
+
+.list_table th {
+    background: #F6F7F7;
+    font-size: 14px;
+    text-align: left;
+}
+
+.current_content_table th {
+    background: #F6F7F7;
+    text-align: left;
+}
+
+.current_content_table .button {
+    display: inline-block;
+    margin: 0;
+    margin-left: 32px;
+    padding: 2px;
+    width: 80px;
+    border-radius: 4px;
+}
+
+/*********************************
+	image
+*********************************/
+.square_image {
+    width: 192px;
+    height: 192px;
+    display: block;
+}
+
+.rectangle_image {
+    height: 192px;
+    display: block;
 }
 
 /*********************************
@@ -194,7 +312,7 @@ td {
 
 .card .head {
     display: flex;
-    border-bottom: 1px solid #333; 
+    border-bottom: 1px solid #333;
     padding-bottom: 8px;
     gap: 16px;
 }
@@ -214,16 +332,4 @@ td {
 .error-message {
     color: #DC3545;
     font-size: 14px;
-}
-
-
-.content_title {
-    font-size: 32px;
-    margin-top: 32px;
-    margin-bottom: 16px;
-}
-
-.content_title a {
-    font-size: 16px;
-    margin-left: 32px;
 }

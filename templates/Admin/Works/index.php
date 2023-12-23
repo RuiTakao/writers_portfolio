@@ -10,17 +10,12 @@ use Cake\Core\Configure;
 実績の設定
 <?php $this->end() ?>
 
-<?php /* css */ ?>
-<?php $this->start('css') ?>
-<?= $this->Html->css('admin/works') ?>
-<?php $this->end() ?>
-
 <div class="button-container default">
     <?= $this->Html->link('実績の追加', ['action' => 'edit'], ['class' => 'button default']) ?>
     <?= $this->Html->link('並び順変更', ['action' => 'order'], ['class' => 'button default']) ?>
 </div>
 
-<ul style="margin-top: 32px;">
+<ul class="mt32">
     <?php foreach ($works as $item) : ?>
 
         <?php
@@ -51,7 +46,7 @@ use Cake\Core\Configure;
 
         <li class="card">
             <div class="head">
-                <p style="font-weight: 600; "><?= h($item->title) ?></p>
+                <p class="fwb"><?= h($item->title) ?></p>
                 <div class="button-container item">
                     <?= $this->Html->link(Configure::read('button.edit'), ['action' => 'edit', $item->id], ['class' => 'button item']) ?>
                     <?= $this->Form->postLink(Configure::read('button.delete'), ['controller' => 'Works', 'action' => 'delete', $item->id], ['class' => 'button item delete', 'confirm' => $delete_message]) ?>

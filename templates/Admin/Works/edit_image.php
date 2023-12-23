@@ -1,19 +1,27 @@
 <?php
 
-use App\Model\Table\ProfilesTable;
+use App\Model\Table\WorksTable;
 use Cake\Core\Configure;
 
-// プロフィール画像が設定されているか判定
-if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IMAGE_PATH)) {
-    $profile_image_path = ProfilesTable::BLANK_PROFILE_IMAGE_PATH;
-} else {
-    $profile_image_path = ProfilesTable::PROFILE_IMAGE_PATH .  $auth->username . '/' . $profile->image_path;
+/**
+ * 画像パス
+ */
+// 各々のユーザーによって決まるパス
+$self_path = $auth->username . '/' . $work->id . '/' . $work->image_path;
+// ルートからのパス
+$root_image_path = WorksTable::ROOT_WORKS_IMAGE_PATH . $self_path;
+// webrootからのパス
+$image_path = WorksTable::WORKS_IMAGE_PATH . $self_path;
+
+$data_default_file = null;
+if (!is_null($work->image_path) && $work->image_path != '' && file_exists($root_image_path)) {
+    $data_default_file = $this->Url->image($image_path);
 }
 ?>
 
 <?php /* ページタイトル */ ?>
 <?php $this->start('page_title') ?>
-<?= $this->Html->link('プロフィール設定', ['action' => 'index']) ?> > プロフィール画像編集
+<?= $this->Html->link('実績の設定', ['action' => 'index']) ?> &gt; <?= $this->Html->link('編集', ['action' => 'edit', $work->id]) ?> &gt; 画像の編集
 <?php $this->end() ?>
 
 <?php /* css */ ?>
@@ -31,8 +39,8 @@ if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IM
 <?php $this->end() ?>
 
 <?php /* form */ ?>
-<?= $this->Form->create($profile, [
-    'url' => ['controller' => 'Profiles', 'action' => 'editImage'],
+<?= $this->Form->create($work, [
+    'url' => ['controller' => 'Works', 'action' => 'editImage'],
     'type' => 'file',
     'onSubmit' => 'return checkEdit()'
 ]) ?>
@@ -42,4 +50,4 @@ if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IM
 
 <?php /* current data */ ?>
 <p class="current_content_title mt64">現在の画像</p>
-<?= $this->Html->image($profile_image_path, ['class' => 'square_image']) ?>
+<?= $this->Html->image($image_path, ['class' => 'rectangle_image']) ?>

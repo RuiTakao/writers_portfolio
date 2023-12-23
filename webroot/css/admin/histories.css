@@ -1,29 +1,52 @@
-/*********************************
-	table
-*********************************/
-th {
-    width: 10%;
+.checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 8px;
     font-size: 14px;
-    text-align: left;
 }
 
-/*********************************
-	button
-*********************************/
-.table_button {
-    width: 56px;
-    margin: 0;
+.checkbox input {
+    width: auto;
 }
 
-/*********************************
-	機関の入力フォームのスタイル
-*********************************/
-.history_span_input {
+.period {
+    display: flex;
+    align-items: center;
     gap: 16px;
 }
 
-.history_span_input input {
-    width: 104px;
-    height: 24px;
-    font-size: 14px;
+form .list_table .title_column {
+    width: 25%;
+}
+
+.list_table .content_column .left {
+    width: 35%;
+}
+
+.list_table .content_column .right {
+    padding-top: 8px;
+    width: 65%;
+}
+
+.list_table .button_column {
+    width: 136px;
+}
+
+.list_table .button_column .button {
+    padding: 4px;
+    width: 45%;
+}
+
+input[type=text] {
+    height: 32px;
+}
+
+textarea {
+    height: 72px;
+}
+
+
+.list_table th {
+    width: 10%;
 }

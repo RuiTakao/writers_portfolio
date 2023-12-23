@@ -209,7 +209,7 @@ class WorksController extends AppController
      * 
      * @return Response|void|null
      */
-    public function deleteImage($id = null)
+    public function editImage($id = null)
     {
         // idとログインユーザーidから実績のレコードを取得
         $work = $this->Works->find('all', ['conditions' => ['id' => $id, 'user_id' => $this->AuthUser->id]])->first();
@@ -267,8 +267,10 @@ class WorksController extends AppController
 
             // 詳細へリダイレクト
             $this->session->write('message', Configure::read('alert_message.delete'));
-            return $this->redirect(['action' => 'edit', $work->id]);
+            return $this->redirect(['action' => 'editImage', $work->id]);
         }
+
+        $this->set('work', $work);
     }
 
     /**
