@@ -287,6 +287,10 @@ td {
     border-radius: 4px;
 }
 
+.current_content_table .button.delete {
+    margin-left: 16px;
+}
+
 /*********************************
 	image
 *********************************/

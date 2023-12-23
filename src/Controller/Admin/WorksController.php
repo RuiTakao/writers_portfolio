@@ -98,50 +98,10 @@ class WorksController extends AppController
             // エンティティにデータセット
             $work = $this->Works->patchEntity($work, $data);
 
-            try {
-
-                // トランザクション開始
-                $this->connection->begin();
-
-                if (!is_null($id)) {
-
-                    // 更新の場合、排他制御
-                    $this->Works
-                        ->find('all', ['conditions' => ['id' => $work->id]])
-                        ->modifier('SQL_NO_CACHE')
-                        ->epilog('FOR UPDATE')
-                        ->first();
-                }
-
-                // 登録処理
-                $ret = $this->Works->save($work);
-                if (!$ret) {
-                    throw new DatabaseException;
-                }
-
-                // 画像保存
-                if (!$this->save_image($image, $work->id)) {
-                    throw new DatabaseException;
-                }
-
-                // コミット
-                $this->connection->commit();
-            } catch (DatabaseException $e) {
-
-                // ロールバック
-                $this->connection->rollback();
-
-                // 一覧画面へリダイレクト
-                $this->session->write('message', Configure::read('alert_message.system_faild'));
+            if (!$this->save_data($work, $image, is_null($id) ? false : true)) {
                 return $this->redirect(['action' => 'index']);
             }
 
-            // 詳細へリダイレクト
-            if (is_null($id)) {
-                $this->session->write('message', '実績' . Configure::read('alert_message.add'));
-            } else {
-                $this->session->write('message', Configure::read('alert_message.complete'));
-            }
             return $this->redirect(['action' => 'index']);
         }
 
@@ -191,44 +151,13 @@ class WorksController extends AppController
             // エンティティにデータセット
             $work = $this->Works->patchEntity($work, $data);
 
-            try {
-
-                // トランザクション開始
-                $this->connection->begin();
-
-                // 排他制御
-                $this->Works
-                    ->find('all', ['conditions' => ['id' => $work->id]])
-                    ->modifier('SQL_NO_CACHE')
-                    ->epilog('FOR UPDATE')
-                    ->first();
-
-                // 登録処理
-                $ret = $this->Works->save($work);
-                if (!$ret) {
-                    throw new DatabaseException;
-                }
-
-                // 画像保存
-                if (!$this->save_image($image, $work->id)) {
-                    throw new DatabaseException;
-                }
-
-                // コミット
-                $this->connection->commit();
-            } catch (DatabaseException $e) {
-
-                // ロールバック
-                $this->connection->rollback();
-
-                // 一覧画面へリダイレクト
-                $this->session->write('message', Configure::read('alert_message.system_faild'));
+            if (!$this->save_data($work, $image)) {
                 return $this->redirect(['action' => 'index']);
             }
 
             // 詳細へリダイレクト
             $this->session->write('message', Configure::read('alert_message.delete'));
-            return $this->redirect(['action' => 'editImage', $work->id]);
+            return $this->redirect(['action' => 'edit', $work->id]);
         }
 
         $this->set('work', $work);
@@ -240,6 +169,8 @@ class WorksController extends AppController
      * @param int $id
      * 
      * @return Response|void|null
+     * 
+     * @throws DatabaseException
      */
     public function editLink($id = null)
     {
@@ -253,9 +184,55 @@ class WorksController extends AppController
 
         if ($this->request->is(['post', 'patch', 'put'])) {
             // postの場合
+
+            // バリデーション
+            if ($this->validate()) {
+                return;
+            }
+
+            // リクエストデータ取得
+            $data = $this->request->getData();
+
+            // エンティティにデータセット
+            $work = $this->Works->patchEntity($work, $data);
+
+            if (!$this->save_data($work)) {
+                return $this->redirect(['action' => 'index']);
+            }
+
+            // 詳細へリダイレクト
+            $this->session->write('message', Configure::read('alert_message.delete'));
+            return $this->redirect(['action' => 'editLink', $work->id]);
         }
 
         $this->set('work', $work);
+    }
+
+    public function deleteLink($id)
+    {
+        // idとログインユーザーidから実績のレコードを取得
+        $work = $this->Works->find('all', ['conditions' => ['id' => $id, 'user_id' => $this->AuthUser->id]])->first();
+
+        // 不正なアクセスの場合は一覧画面へリダイレクト
+        if (!$work) {
+            return $this->redirect(['action' => 'index']);
+        }
+
+        if ($this->request->is(['post', 'patch', 'put'])) {
+
+            // エンティティにデータセット
+            $work = $this->Works->patchEntity($work, [
+                'url_path' => null,
+                'url_name' => null
+            ]);
+
+            if (!$this->save_data($work)) {
+                return $this->redirect(['action' => 'index']);
+            }
+
+            $this->session->write('message', '画像を削除しました。');
+            return $this->redirect(['action' => 'editImage', $work->id]);
+        }
     }
 
     /**
@@ -319,6 +296,30 @@ class WorksController extends AppController
         // 一覧画面へリダイレクト
         $this->session->write('message', Configure::read('alert_message.delete'));
         return $this->redirect(['action' => 'index']);
+    }
+
+    public function deleteImage($id)
+    {
+        // idとログインユーザーidから実績のレコードを取得
+        $work = $this->Works->find('all', ['conditions' => ['id' => $id, 'user_id' => $this->AuthUser->id]])->first();
+
+        // 不正なアクセスの場合は一覧画面へリダイレクト
+        if (!$work) {
+            return $this->redirect(['action' => 'index']);
+        }
+
+        if ($this->request->is(['post', 'patch', 'put'])) {
+
+            // エンティティにデータセット
+            $work = $this->Works->patchEntity($work, ['image_path' => null]);
+
+            if (!$this->save_data($work, null, true, true)) {
+                return $this->redirect(['action' => 'index']);
+            }
+
+            $this->session->write('message', '画像を削除しました。');
+            return $this->redirect(['action' => 'editImage', $work->id]);
+        }
     }
 
     /**
@@ -393,7 +394,7 @@ class WorksController extends AppController
         // 画像がアップロードされているか確認
         if (!is_null(Hash::get($data, 'image_path'))) {
             if ($data['image_path']->getClientFilename() != '' || $data['image_path']->getClientMediaType() != '') {
-    
+
                 // 拡張子の確認
                 if (!in_array($data['image_path']->getClientMediaType(), ['image/jpeg', 'image/png', 'image/x-icon', 'image/webp'])) {
                     $image_error = '無効な拡張子です。';
@@ -464,6 +465,59 @@ class WorksController extends AppController
             // データの最大値+1を追加する
             return max($order_array) + 1;
         }
+    }
+
+    private function save_data($entity, $image = null, $exclusion = true, $image_delete = false)
+    {
+        try {
+
+            // トランザクション開始
+            $this->connection->begin();
+
+            if ($exclusion) {
+
+                // 更新の場合、排他制御
+                $this->Works
+                    ->find('all', ['conditions' => ['id' => $entity->id]])
+                    ->modifier('SQL_NO_CACHE')
+                    ->epilog('FOR UPDATE')
+                    ->first();
+            }
+
+            // 登録処理
+            $ret = $this->Works->save($entity);
+            if (!$ret) {
+                throw new DatabaseException;
+            }
+
+            // 画像削除
+            if ($image_delete) {
+                $path = WorksTable::ROOT_WORKS_IMAGE_PATH . $this->AuthUser->username . '/' . $entity->id;
+                if (file_exists($path)) {
+                    foreach (glob($path . '/*') as $file) {
+                        unlink($file);
+                    }
+                }
+            }
+
+            // 画像保存
+            if (!$this->save_image($image, $entity->id)) {
+                throw new DatabaseException;
+            }
+
+            // コミット
+            $this->connection->commit();
+        } catch (DatabaseException $e) {
+
+            // ロールバック
+            $this->connection->rollback();
+
+            // 一覧画面へリダイレクト
+            $this->session->write('message', Configure::read('alert_message.system_faild'));
+            return false;
+        }
+
+        return true;
     }
 
     /**

@@ -18,7 +18,7 @@ use Cake\Core\Configure;
 <?php $this->end() ?>
 
 <?= $this->Form->create($work, [
-    'url' => ['controller' => 'Works', 'action' => 'edit', $work->id],
+    'url' => ['controller' => 'Works', 'action' => 'editLink', $work->id],
     'type' => 'file',
     'onSubmit' => 'return checkAdd()'
 ]) ?>

@@ -93,7 +93,8 @@ class WorksTable extends Table
             ->allowEmptyString('url_path');
 
         $validator
-            ->maxLength('url_name', 255);
+            ->maxLength('url_name', 255)
+            ->allowEmptyString('url_name');
 
 
         return $validator;

@@ -64,13 +64,19 @@ if (!is_null($work->image_path) && $work->image_path != '' && file_exists($root_
     </div>
     <?= $this->Form->control('image_path', ['class' => 'dropify', 'type' => 'file', 'label' => false]) ?>
     <?= $this->Form->submit(Configure::read('button.add'), ['class' => 'button default mt16']) ?>
+    <?= $this->Form->end() ?>
 <?php else : ?>
     <?php /* 編集 */ ?>
 
     <?= $this->Form->submit(Configure::read('button.save'), ['class' => 'button default mt16']) ?>
+    <?= $this->Form->end() ?>
     <table class="current_content_table mt64">
         <tr>
-            <th>関連リンク<?= $this->Html->link(Configure::read('button.image_edit'), ['action' => 'editLink', $work->id], ['class' => 'button']) ?></th>
+            <th>関連リンク<?=
+                        $this->Html->link('URLの変更', ['action' => 'editLink', $work->id], ['class' => 'button'])
+                        ?><?=
+                            $this->Form->postLink('URL削除', ['controller' => 'Works', 'action' => 'deleteLink', $work->id], ['class' => 'button delete', 'confirm' => 'URLを削除しますか？'])
+                            ?></th>
         </tr>
         <tr>
             <td>
@@ -80,12 +86,14 @@ if (!is_null($work->image_path) && $work->image_path != '' && file_exists($root_
     </table>
     <table class="current_content_table mt32">
         <tr>
-            <th>関連画像<?= $this->Html->link(Configure::read('button.image_edit'), ['action' => 'editImage', $work->id], ['class' => 'button']) ?></th>
+            <th>関連画像<?=
+                    $this->Html->link('画像の変更', ['action' => 'editImage', $work->id], ['class' => 'button'])
+                    ?><?=
+                        $this->Form->postLink('画像削除', ['controller' => 'Works', 'action' => 'deleteImage', $work->id], ['class' => 'button delete', 'confirm' => '画像を削除しますか？'])
+                        ?></th>
         </tr>
         <tr>
             <td><?= $this->Html->image($image_path, ['class' => 'rectangle_image']) ?></td>
         </tr>
     </table>
 <?php endif; ?>
-
-<?= $this->Form->end() ?>

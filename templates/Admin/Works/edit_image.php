@@ -34,7 +34,7 @@ if (!is_null($work->image_path) && $work->image_path != '' && file_exists($root_
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <?= $this->Html->script([
     'dropify/dropify.min.js',
-    'dropify/profiles'
+    'dropify/works'
 ]) ?>
 <?php $this->end() ?>
 

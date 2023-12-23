@@ -36,7 +36,7 @@ use Cake\I18n\FrozenTime;
         <td colspan="3">
             <div class="period">
                 <?= $this->Form->control('start', ['type' => 'month', 'label' => false, 'required' => false, 'error' => false]) ?>
-                ～
+                <div>～</div>
                 <?= $this->Form->control('end', ['type' => 'month', 'label' => false, 'required' => false, 'error' => false]) ?>
                 <div class="checkbox">
                     <?= $this->Form->checkbox('to_now', ['id' => 'to_now', 'error' => false]) ?><label for="to_now">現在まで</label>
