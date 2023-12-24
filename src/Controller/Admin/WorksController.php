@@ -102,7 +102,13 @@ class WorksController extends AppController
                 return $this->redirect(['action' => 'index']);
             }
 
-            return $this->redirect(['action' => 'index']);
+            if (is_null($id)) {
+                $this->session->write('message', '実績' . Configure::read('alert_message.add'));
+                return $this->redirect(['action' => 'index']);
+            } else {
+                $this->session->write('message', Configure::read('alert_message.complete'));
+                return $this->redirect(['action' => 'edit', $work->id]);
+            }
         }
 
         $this->set('work', $work);
@@ -156,7 +162,7 @@ class WorksController extends AppController
             }
 
             // 詳細へリダイレクト
-            $this->session->write('message', Configure::read('alert_message.delete'));
+            $this->session->write('message', Configure::read('alert_message.complete'));
             return $this->redirect(['action' => 'edit', $work->id]);
         }
 
@@ -201,8 +207,8 @@ class WorksController extends AppController
             }
 
             // 詳細へリダイレクト
-            $this->session->write('message', Configure::read('alert_message.delete'));
-            return $this->redirect(['action' => 'editLink', $work->id]);
+            $this->session->write('message', Configure::read('alert_message.complete'));
+            return $this->redirect(['action' => 'edit', $work->id]);
         }
 
         $this->set('work', $work);
@@ -230,8 +236,8 @@ class WorksController extends AppController
                 return $this->redirect(['action' => 'index']);
             }
 
-            $this->session->write('message', '画像を削除しました。');
-            return $this->redirect(['action' => 'editImage', $work->id]);
+            $this->session->write('message', Configure::read('alert_message.delete'));
+            return $this->redirect(['action' => 'edit', $work->id]);
         }
     }
 
@@ -317,8 +323,8 @@ class WorksController extends AppController
                 return $this->redirect(['action' => 'index']);
             }
 
-            $this->session->write('message', '画像を削除しました。');
-            return $this->redirect(['action' => 'editImage', $work->id]);
+            $this->session->write('message', Configure::read('alert_message.delete'));
+            return $this->redirect(['action' => 'edit', $work->id]);
         }
     }
 

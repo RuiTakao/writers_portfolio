@@ -13,9 +13,10 @@ $root_image_path = WorksTable::ROOT_WORKS_IMAGE_PATH . $self_path;
 // webrootからのパス
 $image_path = WorksTable::WORKS_IMAGE_PATH . $self_path;
 
-$data_default_file = null;
-if (!is_null($work->image_path) && $work->image_path != '' && file_exists($root_image_path)) {
-    $data_default_file = $this->Url->image($image_path);
+if (!empty($work->image_path) && file_exists($root_image_path)) {
+    $image_flg = true;
+} else {
+    $image_flg = false;
 }
 ?>
 
@@ -45,9 +46,14 @@ if (!is_null($work->image_path) && $work->image_path != '' && file_exists($root_
     'onSubmit' => 'return checkEdit()'
 ]) ?>
 <?= $this->Form->control('image_path', ['type' => 'file', 'class' => 'dropify', 'label' => false,]) ?>
-<?= $this->Form->submit(Configure::read('button.save'),  ['class' => 'button default mt16']) ?>
+<div class="button-container default mt16">
+    <?= $this->Form->submit(Configure::read('button.save'),  ['class' => 'button default']) ?>
+    <?= $this->Html->link('戻る', ['action' => 'edit', $work->id], ['class' => 'button default back']) ?>
+</div>
 <?= $this->Form->end() ?>
 
-<?php /* current data */ ?>
-<p class="current_content_title mt64">現在の画像</p>
-<?= $this->Html->image($image_path, ['class' => 'rectangle_image']) ?>
+<?php if ($image_flg) : ?>
+    <?php /* current data */ ?>
+    <p class="current_content_title mt64">現在の画像</p>
+    <?= $this->Html->image($image_path, ['class' => 'rectangle_image']) ?>
+<?php endif; ?>

@@ -10,6 +10,25 @@ use Cake\Core\Configure;
 実績の設定
 <?php $this->end() ?>
 
+<?php /* css */ ?>
+<?php $this->start('css') ?>
+<style>
+    .page_content {
+        width: 90%;
+    }
+
+    .card {
+        min-height: 240px;
+    }
+
+    .card img {
+        max-width: 100%;
+        display: block;
+        max-height: 192px;
+    }
+</style>
+<?php $this->end() ?>
+
 <div class="button-container default">
     <?= $this->Html->link('実績の追加', ['action' => 'edit'], ['class' => 'button default']) ?>
     <?= $this->Html->link('並び順変更', ['action' => 'order'], ['class' => 'button default']) ?>
@@ -71,7 +90,7 @@ use Cake\Core\Configure;
                 <?php if ($is_image) : ?>
                     <div style="width: 30%;">
                         <div style="margin-top: 16px;">
-                            <?= $this->Html->image($image_path, ['style' => 'width: 100%; height: auto; display: block;']) ?>
+                            <?= $this->Html->image($image_path) ?>
                         </div>
                     </div>
                 <?php endif; ?>

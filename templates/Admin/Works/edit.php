@@ -41,7 +41,8 @@ if (!empty($work->image_path) && file_exists($root_image_path)) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <?= $this->Html->script([
         'dropify/dropify.min.js',
-        'dropify/works'
+        'dropify/works_add',
+        'works',
     ]) ?>
     <?php $this->end() ?>
 <?php endif; ?>
@@ -49,7 +50,7 @@ if (!empty($work->image_path) && file_exists($root_image_path)) {
 <?= $this->Form->create($work, [
     'url' => ['controller' => 'Works', 'action' => 'edit', $work->id],
     'type' => 'file',
-    'onSubmit' => 'return checkAdd()'
+    'onSubmit' => (is_null($work->id)) ? 'return checkAdd()' : 'return checkEdit()'
 ]) ?>
 <?= $this->Form->control('title', ['label' => 'タイトル', 'required' => false]) ?>
 <?= $this->Form->control('overview', ['type' => 'textarea', 'label' => '概要', 'required' => false, 'style' => 'height: 114px;']) ?>
