@@ -24,5 +24,8 @@ use Cake\Core\Configure;
 ]) ?>
 <?= $this->Form->control('url_path', ['label' => 'URL', 'required' => false]) ?>
 <?= $this->Form->control('url_name', ['label' => 'URL名 (※表示するURLリンクを変更したい場合はこちらに入力して下さい。)', 'required' => false]) ?>
-<?= $this->Form->submit(Configure::read('button.save'), ['class' => 'button default mt16']) ?>
+<div class="button-container default mt32">
+    <?= $this->Form->submit(Configure::read('button.save'), ['class' => 'button default ']) ?>
+    <?= $this->Html->link('戻る', ['action' => 'edit', $work->id], ['class' => 'button default back']) ?>
+</div>
 <?= $this->Form->end() ?>

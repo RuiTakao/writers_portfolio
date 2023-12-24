@@ -3,7 +3,6 @@ $('.dropify').dropify({
         'default': 'ここにプロフィール画像をドロップしてください。<br />横長長方形：768px × 512px 推奨<br />正方形：768px × 768px 推奨',
         'replace': 'ここに画像をドロップするとプロフィール画像を変更できます。',
         'error':   'この画像は挿入できません。',
-        'remove':   'アップロードの取り消し',
     },
     error: {
         'fileSize': 'The file size is too big ({{ value }} max).',

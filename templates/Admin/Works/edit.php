@@ -65,12 +65,18 @@ if (!empty($work->image_path) && file_exists($root_image_path)) {
         <p>関連画像</p>
     </div>
     <?= $this->Form->control('image_path', ['class' => 'dropify', 'type' => 'file', 'label' => false]) ?>
-    <?= $this->Form->submit(Configure::read('button.add'), ['class' => 'button default mt16']) ?>
+    <div class="button-container default mt16">
+        <?= $this->Form->submit(Configure::read('button.add'), ['class' => 'button default']) ?>
+        <?= $this->Html->link('戻る', ['action' => 'index'], ['class' => 'button default back']) ?>
+    </div>
     <?= $this->Form->end() ?>
 <?php else : ?>
     <?php /* 編集 */ ?>
 
-    <?= $this->Form->submit(Configure::read('button.save'), ['class' => 'button default mt16']) ?>
+    <div class="button-container default mt16">
+        <?= $this->Form->submit(Configure::read('button.save'), ['class' => 'button default']) ?>
+        <?= $this->Html->link('戻る', ['action' => 'index'], ['class' => 'button default back']) ?>
+    </div>
     <?= $this->Form->end() ?>
     <table class="current_content_table mt64">
         <tr>

@@ -37,7 +37,10 @@ if (is_null($site->favicon_path) || !file_exists(SitesTable::ROOT_FAVICON_PATH))
     'onSubmit' => 'return checkEdit()'
 ]) ?>
 <?= $this->Form->control('favicon_path', ['type' => 'file', 'class' => 'dropify', 'label' => false]) ?>
-<?= $this->Form->submit(Configure::read('button.save'), ['class' => 'button default mt16']) ?>
+<div class="button-container default mt32">
+    <?= $this->Form->submit(Configure::read('button.save'), ['class' => 'button default']) ?>
+    <?= $this->Html->link('戻る', ['action' => 'index'], ['class' => 'button default back']) ?>
+</div>
 <?= $this->Form->end() ?>
 
 <?php /* current data */ ?>
