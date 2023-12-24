@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex"/>
-    <title>Writers Portfolio</title>
+    <title>Smart Profile</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
@@ -104,7 +104,7 @@
 
 <body>
     <div class="fv">
-        <h1 class="fv_title">Writers Portfolio</h1>
+        <h1 class="fv_title">Smart Profile</h1>
     </div>
     <div class="overview mt108">
         <div class="container">
@@ -145,7 +145,7 @@
     </div>
     <footer class="footer">
         <div class="container">
-            <div class="footer_copy">©Writers Portfolio inc</div>
+            <div class="footer_copy">©Smart Profile inc</div>
         </div>
     </footer>
 </body>

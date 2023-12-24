@@ -12,7 +12,21 @@ use Cake\Core\Configure;
 
 <?php /* css */ ?>
 <?php $this->start('css') ?>
-<?= $this->Html->css('admin/works') ?>
+<style>
+    .page_content {
+        width: 90%;
+    }
+
+    .card {
+        min-height: 240px;
+    }
+
+    .card img {
+        max-width: 100%;
+        display: block;
+        max-height: 192px;
+    }
+</style>
 <?php $this->end() ?>
 
 <div class="button-container default">
@@ -20,7 +34,7 @@ use Cake\Core\Configure;
     <?= $this->Html->link('並び順変更', ['action' => 'order'], ['class' => 'button default']) ?>
 </div>
 
-<ul style="margin-top: 32px;">
+<ul class="mt32">
     <?php foreach ($works as $item) : ?>
 
         <?php
@@ -51,7 +65,7 @@ use Cake\Core\Configure;
 
         <li class="card">
             <div class="head">
-                <p style="font-weight: 600; "><?= h($item->title) ?></p>
+                <p class="fwb"><?= h($item->title) ?></p>
                 <div class="button-container item">
                     <?= $this->Html->link(Configure::read('button.edit'), ['action' => 'edit', $item->id], ['class' => 'button item']) ?>
                     <?= $this->Form->postLink(Configure::read('button.delete'), ['controller' => 'Works', 'action' => 'delete', $item->id], ['class' => 'button item delete', 'confirm' => $delete_message]) ?>
@@ -76,7 +90,7 @@ use Cake\Core\Configure;
                 <?php if ($is_image) : ?>
                     <div style="width: 30%;">
                         <div style="margin-top: 16px;">
-                            <?= $this->Html->image($image_path, ['style' => 'width: 100%; height: auto; display: block;']) ?>
+                            <?= $this->Html->image($image_path) ?>
                         </div>
                     </div>
                 <?php endif; ?>

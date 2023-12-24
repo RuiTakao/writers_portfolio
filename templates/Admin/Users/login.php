@@ -5,14 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex"/>
-    <title>ログイン - Writers Portfolio</title>
+    <title>ログイン - Smart Profile</title>
     <?= $this->Html->css('reset') ?>
     <?= $this->Html->css('admin/login') ?>
 </head>
 
 <body>
     <header class="header">
-        <h1 class="header_title">Writers Portfolio</h1>
+        <h1 class="header_title">Smart Profile</h1>
     </header>
     <main class="main">
         <div class="container">

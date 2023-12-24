@@ -28,7 +28,7 @@ if (is_null($site->header_image_path) || !file_exists(SitesTable::ROOT_HEADER_IM
 <?= $this->Html->css('admin/sites') ?>
 <?php $this->end() ?>
 
-<table class="text_table">
+<table class="list_table">
     <tr>
         <th>サイトタイトル</th>
         <td><?= h($site->site_title) ?></td>
@@ -57,30 +57,23 @@ if (is_null($site->header_image_path) || !file_exists(SitesTable::ROOT_HEADER_IM
         <td>表示</td>
     </tr> -->
 </table>
+
 <?= $this->Html->link(Configure::read('button.edit'), ['action' => 'edit'], ['class' => 'button default mt16']) ?>
 
-<table class="favicon_image_table image_table">
+<table class="current_content_table mt64">
     <tr>
-        <th>ファビコン<?= $this->Html->link(Configure::read('button.image_edit'), ['action' => 'editFaviconImage'], ['class' => 'button edit_iamge']) ?></th>
+        <th>ファビコン<?= $this->Html->link(Configure::read('button.image_edit'), ['action' => 'editFaviconImage'], ['class' => 'button']) ?></th>
     </tr>
     <tr>
-        <td>
-            <div class="favicon_image">
-                <?= $this->Html->image($favicon_path) ?>
-            </div>
-        </td>
+        <td><?= $this->Html->image($favicon_path, ['class' => 'square_image']) ?></td>
     </tr>
 </table>
 
-<table class="header_image_table image_table">
+<table class="current_content_table mt32">
     <tr>
-        <th>ヘッダー画像<?= $this->Html->link(Configure::read('button.image_edit'), ['action' => 'editHeaderImage'], ['class' => 'button edit_iamge']) ?></th>
+        <th>ヘッダー画像<?= $this->Html->link(Configure::read('button.image_edit'), ['action' => 'editHeaderImage'], ['class' => 'button']) ?></th>
     </tr>
     <tr>
-        <td>
-            <div class="header_image">
-                <?= $this->Html->image($header_image_path) ?>
-            </div>
-        </td>
+        <td><?= $this->Html->image($header_image_path, ['class' => 'rectangle_image']) ?></td>
     </tr>
 </table>
