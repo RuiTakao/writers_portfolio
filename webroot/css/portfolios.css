@@ -254,6 +254,7 @@
     display: block;
     height: auto;
     max-height: 512px;
+    max-width: 100%;
 }
 
 .works_content_link {

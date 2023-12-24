@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex"/>
-    <title>管理画面 - Writers Portfolio</title>
+    <title>管理画面 - Smart Profile</title>
     <?= $this->Html->css([
         'reset',
         'base',
@@ -18,7 +18,7 @@
 <body>
     <header class="header">
         <div class="header_container">
-            <h1 class="header_title">Writers Portfolio 管理画面</h1>
+            <h1 class="header_title">Smart Profile 管理画面</h1>
             <li class="header_nav_item"><?= $this->Html->link('ログアウト', ['controller' => 'users', 'action' => 'logout'], ['class' => 'logout', 'onClick' => 'return logout();']) ?></li>
         </div>
     </header>
