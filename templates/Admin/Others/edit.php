@@ -24,5 +24,9 @@ use Cake\Core\Configure;
         <?= $this->Form->control('content' . $i, ['label' => false, 'required' => false]) ?>
     <?php endfor; ?>
 </div>
-<?= $this->Form->submit(empty($other->id) ? Configure::read('button.add') : Configure::read('button.save'),['class' => 'button default mt16']) ?>
+
+<div class="button-container default mt16">
+    <?= $this->Form->submit(empty($other->id) ? Configure::read('button.add') : Configure::read('button.save'), ['class' => 'button default']) ?>
+    <?= $this->Html->link('戻る', ['action' => 'index'], ['class' => 'button default back']) ?>
+</div>
 <?= $this->Form->end() ?>

@@ -35,5 +35,8 @@ if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IM
     <?= $this->Form->control('profile_text', ['type' => 'textarea', 'label' => 'プロフィール文', 'value' => $profile->profile_text]) ?>
 </div>
 
-<?= $this->Form->submit(Configure::read('button.save'),  ['class' => 'button default mt16']) ?>
+<div class="button-container default mt16">
+    <?= $this->Form->submit(Configure::read('button.save'), ['class' => 'button default']) ?>
+    <?= $this->Html->link('戻る', ['action' => 'index'], ['class' => 'button default back']) ?>
+</div>
 <?= $this->Form->end() ?>

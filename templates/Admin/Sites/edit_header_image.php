@@ -39,9 +39,10 @@ if (is_null($site->header_image_path) || !file_exists(SitesTable::ROOT_HEADER_IM
     'onSubmit' => 'return checkEdit()'
 ]) ?>
 <?= $this->Form->control('header_image_path', ['type' => 'file', 'class' => 'dropify', 'label' => false, 'required' => false]) ?>
-<div class="button-container default mt16">
+<div class="button-container default mt32">
     <?= $this->Form->submit(Configure::read('button.save'),  ['class' => 'button default']) ?>
     <?= $this->Html->link('ヘッダー画像の設定', ['action' => 'settingHeaderImage'], ['class' => 'button default', 'target' => '_blank', 'style' => $setting_button]) ?>
+    <?= $this->Html->link('戻る', ['action' => 'index'], ['class' => 'button default back']) ?>
 </div>
 <?= $this->Form->end() ?>
 

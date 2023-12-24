@@ -37,5 +37,8 @@ use Cake\Core\Configure;
             <li class="product_order_item js-dropZone"></li>
         </ul>
     </div>
-    <?= $this->Form->submit(Configure::read('button.save'), ['class' => 'button', 'style' => 'margin-left: 16px; height: 32px;']) ?>
+    <div style="margin-left: 16px;">
+        <?= $this->Form->submit(Configure::read('button.save'), ['class' => 'button default']) ?>
+        <?= $this->Html->link('戻る', ['action' => 'index'], ['class' => 'button default back mt16']) ?>
+    </div>
 </div>

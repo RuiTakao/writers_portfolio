@@ -46,7 +46,7 @@ if (!empty($work->image_path) && file_exists($root_image_path)) {
     'onSubmit' => 'return checkEdit()'
 ]) ?>
 <?= $this->Form->control('image_path', ['type' => 'file', 'class' => 'dropify', 'label' => false,]) ?>
-<div class="button-container default mt16">
+<div class="button-container default mt32">
     <?= $this->Form->submit(Configure::read('button.save'),  ['class' => 'button default']) ?>
     <?= $this->Html->link('戻る', ['action' => 'edit', $work->id], ['class' => 'button default back']) ?>
 </div>
