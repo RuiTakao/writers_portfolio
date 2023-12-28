@@ -91,8 +91,8 @@ class WorksController extends AppController
                 // 画像名をリクエストデータに代入
                 $data['image_path'] = $data['image_path']->getClientFilename();
             } else {
+                $data['image_path'] = $work->image_path;
                 $image = null;
-                $data['image_path'] = null;
             }
 
             // エンティティにデータセット
@@ -104,11 +104,10 @@ class WorksController extends AppController
 
             if (is_null($id)) {
                 $this->session->write('message', '実績' . Configure::read('alert_message.add'));
-                return $this->redirect(['action' => 'index']);
             } else {
                 $this->session->write('message', Configure::read('alert_message.complete'));
-                return $this->redirect(['action' => 'edit', $work->id]);
             }
+            return $this->redirect(['action' => 'index']);
         }
 
         $this->set('work', $work);
@@ -236,7 +235,7 @@ class WorksController extends AppController
                 return $this->redirect(['action' => 'index']);
             }
 
-            $this->session->write('message', Configure::read('alert_message.delete'));
+            $this->session->write('message', '関連URLを削除しました。');
             return $this->redirect(['action' => 'edit', $work->id]);
         }
     }
@@ -323,7 +322,7 @@ class WorksController extends AppController
                 return $this->redirect(['action' => 'index']);
             }
 
-            $this->session->write('message', Configure::read('alert_message.delete'));
+            $this->session->write('message', '関連画像を削除しました。');
             return $this->redirect(['action' => 'edit', $work->id]);
         }
     }
@@ -375,7 +374,7 @@ class WorksController extends AppController
             }
 
             $this->session->write('message', Configure::read('alert_message.complete'));
-            return $this->redirect(['action' => 'order']);
+            return $this->redirect(['action' => 'index']);
         }
 
         $this->set('works', $works);
