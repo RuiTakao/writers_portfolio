@@ -15,7 +15,7 @@ use Cake\Core\Configure;
 
 <?= $this->Form->create($other, [
     'url' => ['controller' => 'Others', 'action' => 'edit', $other->id],
-    'onSubmit' => 'return checkEdit()'
+    'onSubmit' => empty($other->id) ? 'return checkAdd()' : 'return checkEdit()'
 ]) ?>
 <?= $this->Form->control('title', ['label' => 'タイトル', 'required' => false]) ?>
 <p style="margin-top: 16px">項目</p>

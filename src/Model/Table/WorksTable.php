@@ -88,12 +88,12 @@ class WorksTable extends Table
             ->notBlank('overview', '概要は必須です。');
 
         $validator
-            ->maxLength('url_path', 255)
+            ->maxLength('url_path', 255, 'URLは255文字以内で入力してください。')
             ->url('url_path', 'URLを入力してください。')
             ->allowEmptyString('url_path');
 
         $validator
-            ->maxLength('url_name', 255)
+            ->maxLength('url_name', 50,  'URL名は50文字以内で入力してください。')
             ->allowEmptyString('url_name');
 
 

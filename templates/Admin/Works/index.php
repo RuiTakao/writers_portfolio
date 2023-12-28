@@ -75,7 +75,7 @@ use Cake\Core\Configure;
                 <div style="width: <?= $is_image ? '65' : '100' ?>%;">
 
                     <?php if (!empty($item->url_path)) : ?>
-                        <p style="font-size:14px;">関連リンク：
+                        <p style="font-size:14px;">関連URL：
                             <?php if (!empty($item->url_name)) : ?>
                                 <a href="<?= h($item->url_path) ?>"><?= h($item->url_name) ?></a>（<?= h($item->url_path) ?>）
                             <?php else : ?>
