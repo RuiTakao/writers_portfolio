@@ -22,6 +22,7 @@ form .list_table .title_column {
 
 .list_table .content_column .left {
     width: 35%;
+    padding-right: 32px;
 }
 
 .list_table .content_column .right {
