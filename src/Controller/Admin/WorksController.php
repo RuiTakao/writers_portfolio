@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Controller\Admin\AppController;
+use App\Model\Entity\Work;
 use App\Model\Table\WorksTable;
 use Cake\Core\Configure;
 use Cake\Database\Exception\DatabaseException;
@@ -65,7 +66,7 @@ class WorksController extends AppController
         if ($this->request->is(['post', 'patch', 'put'])) {
 
             // バリデーション
-            if ($this->validate()) {
+            if ($this->validate($work)) {
                 return;
             }
 
@@ -134,7 +135,7 @@ class WorksController extends AppController
             // postの場合
 
             // バリデーション
-            if ($this->validate()) {
+            if ($this->validate($work)) {
                 return;
             }
 
@@ -191,7 +192,7 @@ class WorksController extends AppController
             // postの場合
 
             // バリデーション
-            if ($this->validate()) {
+            if ($this->validate($work)) {
                 return;
             }
 
@@ -385,9 +386,11 @@ class WorksController extends AppController
     /**
      * バリデーション
      * 
+     * @param WorksTable|null $entity
+     * 
      * @return bool
      */
-    private function validate(): bool
+    private function validate($entity = null): bool
     {
         // リクエストデータ取得
         $data = $this->request->getData();
@@ -411,7 +414,10 @@ class WorksController extends AppController
         $data['image_path'] = null;
 
         // エンティティにデータセット
-        $work = $this->Works->patchEntity($this->Works->newEmptyEntity(), $data);
+        if (is_null($entity)) {
+            $entity = $this->Works->newEmptyEntity();
+        }
+        $work = $this->Works->patchEntity($entity, $data);
 
         if ($image_error != '') {
             $work->setError('image_path', [$image_error]);
@@ -432,7 +438,7 @@ class WorksController extends AppController
      * 
      * @param int $id
      * 
-     * @return entity|null
+     * @return WorksTable|null
      */
     private function set_entity($id)
     {
@@ -472,6 +478,16 @@ class WorksController extends AppController
         }
     }
 
+    /**
+     * データ保存
+     * 
+     * @param WorksTable $entity
+     * @param mixed $image
+     * @param bool $exclusion
+     * @param bool $image_delete
+     * 
+     * @return bool
+     */
     private function save_data($entity, $image = null, $exclusion = true, $image_delete = false)
     {
         try {
