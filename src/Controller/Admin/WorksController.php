@@ -407,11 +407,11 @@ class WorksController extends AppController
                 if (!in_array($data['image_path']->getClientMediaType(), ['image/jpeg', 'image/png', 'image/x-icon', 'image/webp'])) {
                     $image_error = '無効な拡張子です。';
                 }
+
+                // オブジェクト型で渡ってくるため文字列に変換
+                $data['image_path'] = $data['image_path']->getClientFilename();
             }
         }
-
-        // オブジェクト型で渡ってくるためnullに変換
-        $data['image_path'] = null;
 
         // エンティティにデータセット
         if (is_null($entity)) {
