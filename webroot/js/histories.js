@@ -9,7 +9,6 @@ if (to_now.checked) {
 
 to_now.addEventListener('change', () => {
     if (to_now.checked) {
-        end.value = '';
         end.style = 'background-color: #ccc;';
         end.setAttribute('disabled', 'disabled');
     } else {
