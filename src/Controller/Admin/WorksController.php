@@ -410,6 +410,9 @@ class WorksController extends AppController
 
                 // オブジェクト型で渡ってくるため文字列に変換
                 $data['image_path'] = $data['image_path']->getClientFilename();
+            } else {
+                // 画像アップロード無しの場合はnullセット
+                $data['image_path'] = null;
             }
         }
 
