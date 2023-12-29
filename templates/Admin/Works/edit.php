@@ -83,7 +83,7 @@ if (!empty($work->image_path) && file_exists($root_image_path)) {
             <th>
                 <?php
                 echo "関連URL";
-                echo $this->Html->link(!empty($work->url_path) ? 'URL変更' : 'URL追加', ['action' => 'editLink', $work->id], ['class' => 'button']);
+                echo $this->Html->link('URL編集', ['action' => 'editLink', $work->id], ['class' => 'button']);
                 if (!empty($work->url_path)) {
                     echo $this->Form->postLink('URL削除', ['controller' => 'Works', 'action' => 'deleteLink', $work->id], ['class' => 'button delete', 'confirm' => '関連URLを削除しますか？']);
                 }
@@ -109,7 +109,7 @@ if (!empty($work->image_path) && file_exists($root_image_path)) {
             <th>
                 <?php
                 echo "関連画像";
-                echo $this->Html->link($image_flg ? '画像変更' : '画像追加', ['action' => 'editImage', $work->id], ['class' => 'button']);
+                echo $this->Html->link('画像編集', ['action' => 'editImage', $work->id], ['class' => 'button']);
                 if ($image_flg) {
                     echo $this->Form->postLink('画像削除', ['controller' => 'Works', 'action' => 'deleteImage', $work->id], ['class' => 'button delete', 'confirm' => '関連画像を削除しますか？']);
                 }

@@ -17,6 +17,11 @@ use Cake\Core\Configure;
 </style>
 <?php $this->end() ?>
 
+<?php /* js */ ?>
+<?php $this->start('script') ?>
+<?= $this->Html->script(['works']) ?>
+<?php $this->end() ?>
+
 <?= $this->Form->create($work, [
     'url' => ['controller' => 'Works', 'action' => 'editLink', $work->id],
     'type' => 'file',
