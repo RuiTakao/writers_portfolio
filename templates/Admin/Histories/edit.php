@@ -18,7 +18,7 @@ use Cake\Core\Configure;
 <?= $this->Html->script('histories') ?>
 <?php $this->end() ?>
 
-<?= $this->Form->create($historie, ['url' => ['controller' => 'Histories', 'action' => 'edit', $historie->id], 'onSubmit' => 'return checkAdd()']) ?>
+<?= $this->Form->create($historie, ['url' => ['controller' => 'Histories', 'action' => 'edit', $historie->id], 'onSubmit' => 'return checkEdit()']) ?>
 <table class="list_table">
     <tr>
         <th>タイトル</th>

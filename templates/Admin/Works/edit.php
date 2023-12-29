@@ -84,7 +84,7 @@ if (!empty($work->image_path) && file_exists($root_image_path)) {
                 <?php
                 echo "関連URL";
                 echo $this->Html->link(!empty($work->url_path) ? 'URL変更' : 'URL追加', ['action' => 'editLink', $work->id], ['class' => 'button']);
-                if ($image_flg) {
+                if (!empty($work->url_path)) {
                     echo $this->Form->postLink('URL削除', ['controller' => 'Works', 'action' => 'deleteLink', $work->id], ['class' => 'button delete', 'confirm' => '関連URLを削除しますか？']);
                 }
                 ?>
