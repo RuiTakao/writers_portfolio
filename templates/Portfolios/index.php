@@ -12,7 +12,6 @@ use Cake\I18n\FrozenTime;
         <link rel="icon" href="<?= $this->Url->image($favicon) ?>">
     <?php endif; ?>
     <meta name="description" content="<?= h($site->site_description) ?>">
-    <meta name="robots" content="noindex"/>
     <?= $this->Html->css('portfolios') ?>
     <style>
         .fv_bg_cover {
