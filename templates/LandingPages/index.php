@@ -11,6 +11,9 @@
     <meta property="og:description" content="簡単にプロフィールサイトを作成できるWebツールです。" />
     <meta property="og:site_name" content="Smart Profile" />
     <meta property="og:image" content="https://s-profile.jp/sp-logo.png" />
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Smart Profile - プロフィールサイト作成ツールです。">
+    <meta name="twitter:description" content="簡単にプロフィールサイトを作成できるWebツールです。">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
