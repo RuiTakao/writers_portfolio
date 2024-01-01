@@ -12,6 +12,7 @@
     <meta property="og:site_name" content="Smart Profile" />
     <meta property="og:image" content="https://s-profile.jp/sp-logo.png" />
     <meta name="twitter:card" content="summary">
+    <meta name=“twitter:site” content=“@TakaoKimura3 />
     <meta name="twitter:title" content="Smart Profile - プロフィールサイト作成ツールです。">
     <meta name="twitter:description" content="簡単にプロフィールサイトを作成できるWebツールです。">
     <link rel="preconnect" href="https://fonts.googleapis.com">
