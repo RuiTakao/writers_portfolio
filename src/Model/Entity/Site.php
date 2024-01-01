@@ -19,6 +19,12 @@ use Cake\ORM\Entity;
  * @property int $user_id
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
+ * @property string $histories_title
+ * @property bool $histories_flg
+ * @property string $works_title
+ * @property bool $works_flg
+ * @property string $others_title
+ * @property bool $others_flg
  *
  * @property \App\Model\Entity\User $user
  */
@@ -44,6 +50,12 @@ class Site extends Entity
         'user_id' => true,
         'created' => true,
         'modified' => true,
+        'histories_title' => true,
+        'histories_flg' => true,
+        'works_title' => true,
+        'works_flg' => true,
+        'others_title' => true,
+        'others_flg' => true,
         'user' => true,
     ];
 }
