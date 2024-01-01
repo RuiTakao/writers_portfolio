@@ -50,8 +50,10 @@ class AppController extends Controller
         $this->set('auth', $auth);
 
         // プロフィールアイコン
-        $profile_icon = TableRegistry::getTableLocator()->get('Profiles')->find('all', ['conditions' => ['user_id' => $auth->id]])->first();
-        $this->set('profile_icon', $profile_icon->image_path);
+        if (!is_null($auth)) {
+            $profile_icon = TableRegistry::getTableLocator()->get('Profiles')->find('all', ['conditions' => ['user_id' => $auth->id]])->first();
+            $this->set('profile_icon', $profile_icon->image_path);
+        }
 
         /*
          * Enable the following component for recommended CakePHP form protection settings.
