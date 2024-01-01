@@ -1,10 +1,16 @@
 <!DOCTYPE html>
 <html lang="ja">
 
-<head>
+<head prefix="og: https://ogp.me/ns#">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Profile</title>
+    <meta property="og:url" content="https://s-profile.jp">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Smart Profile - プロフィールサイト作成ツールです。">
+    <meta property="og:description" content="簡単にプロフィールサイトを作成できるWebツールです。" />
+    <meta property="og:site_name" content="Smart Profile" />
+    <meta property="og:image" content="https://s-profile.jp/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
