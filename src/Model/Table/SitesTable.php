@@ -32,7 +32,7 @@ use Cake\Validation\Validator;
  */
 class SitesTable extends Table
 {
-    
+
     /**
      * メッセージ
      */
@@ -84,27 +84,28 @@ class SitesTable extends Table
     {
         $validator
             ->scalar('site_title')
-            ->maxLength('site_title', 50)
+            ->maxLength('site_title', 50, 'サイトタイトルは50文字以内で入力してください。')
             ->allowEmptyString('site_title');
 
         $validator
             ->scalar('site_description')
-            ->maxLength('site_description', 255)
+            ->maxLength('site_description', 255, 'サイトディスクリプションは255文字以内で入力してください。')
             ->allowEmptyString('site_description');
 
         $validator
-            ->scalar('favicon_path')
-            ->maxLength('favicon_path', 255)
-            ->allowEmptyString('favicon_path');
+            ->scalar('histories_title')
+            ->notBlank('histories_title', '経歴のタイトル名は必須です。')
+            ->maxLength('histories_title', 255, '経歴のタイトル名は50文字以内で入力してください。');
 
         $validator
-            ->scalar('header_image_path')
-            ->maxLength('heaher_image_path', 255)
-            ->allowEmptyFile('heaher_image_path');
+            ->scalar('works_title')
+            ->notBlank('works_title', '実績のタイトル名は必須です。')
+            ->maxLength('works_title', 255, '実績のタイトル名は50文字以内で入力してください。');
 
         $validator
-            ->integer('user_id')
-            ->notEmptyString('user_id');
+            ->scalar('others_title')
+            ->notBlank('others_title', 'その他のタイトル名は必須です。')
+            ->maxLength('others_title', 255, 'その他のタイトル名は50文字以内で入力してください。');
 
         return $validator;
     }
