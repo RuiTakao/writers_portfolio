@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -14,11 +15,13 @@ declare(strict_types=1);
  * @since     0.2.9
  * @license   https://opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App\Controller\Admin;
 
 use Authentication\Controller\Component\AuthenticationComponent;
 use Cake\Controller\Controller;
 use Cake\Event\EventInterface;
+use Cake\ORM\TableRegistry;
 
 /**
  * 管理画面用コントローラー
@@ -27,7 +30,7 @@ use Cake\Event\EventInterface;
  */
 class AppController extends Controller
 {
-    
+
     public function initialize(): void
     {
         parent::initialize();
@@ -45,6 +48,10 @@ class AppController extends Controller
         // ログインユーザー情報をグローバルで使用できる設定
         $auth = $this->AuthUser = $this->request->getSession()->read('Auth');
         $this->set('auth', $auth);
+
+        // プロフィールアイコン
+        $profile_icon = TableRegistry::getTableLocator()->get('Profiles')->find('all', ['conditions' => ['user_id' => $auth->id]])->first();
+        $this->set('profile_icon', $profile_icon->image_path);
 
         /*
          * Enable the following component for recommended CakePHP form protection settings.

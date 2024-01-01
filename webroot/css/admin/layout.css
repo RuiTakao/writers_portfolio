@@ -33,15 +33,32 @@
 
 .header_nav_list {
     display: flex;
-    justify-content: flex-end;
-    padding: 0 16px;
-    gap: 32px;
+    padding-right: 16px;
+    gap: 16px;
     align-items: center;
-    height: 32px;
 }
 
 .header_nav_item {
     list-style: none;
+}
+
+.header_nav_text {
+    font-size: 12px;
+}
+
+.header_nav_icon {
+    cursor: pointer;
+}
+
+.header_nav_icon i {
+    font-size: 22px;
+}
+
+.header_nav_icon img {
+    display: block;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
 }
 
 .header_nav_link {

@@ -1,3 +1,7 @@
+<?php
+
+use App\Model\Table\ProfilesTable;
+?>
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -6,6 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>管理画面 - Writers Portfolio</title>
     <?= $this->Html->css([
+        'all.min',
         'reset',
         'base',
         'admin/layout'
@@ -18,7 +23,21 @@
     <header class="header">
         <div class="header_container">
             <h1 class="header_title">Writers Portfolio 管理画面</h1>
-            <li class="header_nav_item"><?= $this->Html->link('ログアウト', ['controller' => 'users', 'action' => 'logout'], ['class' => 'logout', 'onClick' => 'return logout();']) ?></li>
+            <ul class="header_nav_list">
+                <li class="header_nav_item">
+                    <p class="header_nav_text">ログインユーザー：<?= $auth->username ?></p>
+                </li>
+                <li class="header_nav_item">
+                    <p class="header_nav_icon" id="page-setting">
+                        <?php if (!empty($profile_icon)) : ?>
+                            <?= $this->Html->image(ProfilesTable::PROFILE_IMAGE_PATH . $auth->username . '/' . $profile_icon) ?>
+                        <?php else : ?>
+                            <i class="fa-solid fa-circle-user"></i>
+                        <?php endif; ?>
+                    </p>
+                </li>
+                <li class="header_nav_item"><?= $this->Html->link('ログアウト', ['controller' => 'users', 'action' => 'logout'], ['class' => 'logout', 'onClick' => 'return logout();']) ?></li>
+            </ul>
         </div>
     </header>
     <aside class="aside">
