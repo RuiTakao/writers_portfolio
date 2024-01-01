@@ -34,6 +34,7 @@ class UsersController extends AppController
         // ユーザーが submit 後、認証失敗した場合は、エラーを表示します
         if ($this->request->is('post') && !$result->isValid()) {
             $this->Flash->error(__('Invalid username or password'));
+            $this->session->write('message', 'ログインに失敗しました。');
         }
     }
 

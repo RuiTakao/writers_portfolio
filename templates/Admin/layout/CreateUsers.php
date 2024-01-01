@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ユーザー作成 - Writers Portfolio</title>
+    <title>ユーザー作成 - Smart Profile</title>
     <?= $this->Html->css([
         'reset',
         'base',
@@ -16,7 +16,7 @@
 
 <body>
     <header class="header">
-        <h1 class="header_title">Writers Portfolio ユーザー作成</h1>
+        <h1 class="header_title">Smart Profile ユーザー作成</h1>
     </header>
     <main class="main">
         <div class="container">

@@ -1,133 +1,27 @@
-/*********************************
-	flex
-*********************************/
 .flex {
-    display: flex;
     gap: 56px;
     align-items: flex-end;
-    width: 100%;
 }
 
 .flex_right {
     width: calc(100% - 192px + 32px);
 }
 
-/*********************************
-	image
-*********************************/
-.profile_image {
-    width: 192px;
-    height: 192px;
+.adjust_padding {
+    padding-bottom: 48px;
 }
 
-.profile_image img {
-    width: 192px;
-    height: 192px;
-}
-
-.before_image_title {
-    position: relative;
-    height: 40px;
-    margin-bottom: 32px;
-    margin-top: 56px;
-}
-
-.before_image_title::after {
-    position: absolute;
-    content: '';
-    width: 64px;
-    height: 1px;
-    background: #333;
-    left: 0;
-    bottom: 0;
-}
-
-/*********************************
-	button
-*********************************/
-.button {
-    font-weight: 600;
-    width: 192px;
-    font-size: 14px;
-    display: block;
-    padding: 8px;
-    margin-top: 16px;
-}
-
-.button.edit_image {
+.edit_image_button {
     padding: 4px;
     width: 96px;
     border-radius: 4px;
-    margin-top: 8px;
 }
 
-/*********************************
-	profile_content_item
-*********************************/
-.profile_content_item {
-    list-style: none;
-    padding-bottom: 2px;
-    vertical-align: bottom;
-}
-
-.profile_content_item .text {
-    font-weight: 600;
-    font-size: 32px;
-    margin-left: 32px;
-}
-
-.profile_content_item.border_bottom {
+.border_bottom {
     border-bottom: 1px solid #333;
 }
 
-.profile_content_item:not(:first-child) {
-    margin-top: 16px;
-}
-
-/*********************************
-	profile_text
-*********************************/
-.profile_text {
-    margin-top: 32px;
-}
-
-.profile_text .title {
-    position: relative;
-    height: 40px;
-    margin-bottom: 32px;
-}
-
-.profile_text .title::after {
-    position: absolute;
-    content: '';
-    width: 116px;
-    height: 1px;
-    background: #333;
-    left: 0;
-    bottom: 0;
-}
-
-.profile_content_item .input {
-    font-weight: 400;
-    font-size: 16px;
-    display: block;
-    margin-left: 0;
-}
-
-/*********************************
-	form
-*********************************/
-input {
-    width: 100%;
-    height: 32px;
-}
-
-label {
-    display: block;
-}
-
-.textarea textarea {
-    margin-top: 4px;
-    width: 100%;
-    height: 144px;
+.input {
+    font-size: 24px;
+    font-weight: 600;
 }

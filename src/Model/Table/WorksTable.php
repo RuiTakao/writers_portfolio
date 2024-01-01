@@ -36,16 +36,6 @@ class WorksTable extends Table
     /**
      * メッセージ
      */
-    // 成功時
-    const SUCCESS_ADD_WORKS_MESSAGE = '実績を追加しました。';
-    const SUCCESS_EDIT_WORKS_MESSAGE = '実績の内容を変更しました。';
-    const SUCCESS_EDIT_WORKS_IMAGE_MESSAGE = '実績の画像を変更しました。';
-    const SUCCESS_DELETE_WORKS_MESSAGE = '実績を削除しました。';
-    const SUCCESS_DELETE_WORKS_IMAGE_MESSAGE = '実績の画像を削除しました。';
-    // 失敗時
-
-    // バリデーションメッセージ
-    const INVALID_INPUT_MESSEGE = '入力に不備があります。';
     const INVALID_EXTENSION_MESSAGE = '拡張子が無効です。';
 
     /**
@@ -57,16 +47,6 @@ class WorksTable extends Table
     const ROOT_WORKS_IMAGE_PATH = WWW_ROOT . 'img/' . self::WORKS_IMAGE_PATH;
     // ブランク画像のパス
     const BLANK_WORKS_IMAGE_PATH = 'blank/works/works_blank_image.jpg';
-
-    /**
-     * 画像の拡張子
-     */
-    const EXTENTIONS = [
-        'jpg',
-        'png',
-        'jpeg',
-        'webp'
-    ];
 
 
     /**
@@ -108,12 +88,13 @@ class WorksTable extends Table
             ->notBlank('overview', '概要は必須です。');
 
         $validator
-            ->maxLength('url_path', 255)
+            ->maxLength('url_path', 255, 'URLは255文字以内で入力してください。')
             ->url('url_path', 'URLを入力してください。')
             ->allowEmptyString('url_path');
 
         $validator
-            ->maxLength('url_name', 255);
+            ->maxLength('url_name', 50,  'URL名は50文字以内で入力してください。')
+            ->allowEmptyString('url_name');
 
 
         return $validator;

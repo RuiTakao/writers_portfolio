@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Table;
@@ -55,36 +56,6 @@ class UsersTable extends Table
         $this->hasMany('Profiles', [
             'foreignKey' => 'user_id',
         ]);
-    }
-
-    /**
-     * Default validation rules.
-     *
-     * @param \Cake\Validation\Validator $validator Validator instance.
-     * @return \Cake\Validation\Validator
-     */
-    public function validationDefault(Validator $validator): Validator
-    {
-        $validator
-            ->maxLength('username', 255, 'ユーザー名は255文字以内で入力してください。')
-            ->notBlank('username', 'ユーザー名が入力されていません。')
-            ->asciiAlphaNumeric('username', 'ユーザー名は半角英数字のみで入力してください。')
-            ->add('username', 'unique', ['rule' => 'validateUnique', 'provider' => 'table', 'message' => 'ユーザー名は既に使用されています。'])
-            ->add('username', 'custom', [
-                'rule' => function($value) {
-                    if ($value == 'admin') {
-                        return false;
-                    }
-                    return true;
-                },
-                'message' => 'このユーザー名は使用できません。'
-            ]);
-
-        $validator
-            ->maxLength('password', 255, 'パスワードは255文字以内で入力してください。')
-            ->notBlank('password', 'パスワードが入力されていません。');
-
-        return $validator;
     }
 
     /**

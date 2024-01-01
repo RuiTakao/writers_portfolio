@@ -1,6 +1,7 @@
 <?php
 
 use App\Model\Table\ProfilesTable;
+use Cake\Core\Configure;
 
 // プロフィール画像が設定されているか判定
 if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IMAGE_PATH)) {
@@ -10,50 +11,32 @@ if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IM
 }
 ?>
 
-<?php /** ページタイトル */ ?>
+<?php /* ページタイトル */ ?>
 <?php $this->start('page_title') ?>
 <?= $this->Html->link('プロフィール設定', ['action' => 'index']) ?> > 編集
 <?php $this->end() ?>
 
+<?php /* css */ ?>
 <?php $this->start('css') ?>
 <?= $this->Html->css('admin/profiles') ?>
 <?php $this->end() ?>
 
-<?= $this->Form->create($profile, [
-    'url' => ['controller' => 'Profiles', 'action' => 'edit'],
-    'onSubmit' => 'return checkEdit()'
-]) ?>
-<div class="profile">
-    <div class="flex">
-        <div class="flex_left ">
-            <div class="profile_image">
-                <?= $this->Html->image($profile_image_path) ?>
-            </div>
-        </div>
-        <div class="flex_right">
-            <ul class="profile_content_list">
-                <li class="profile_content_item">
-                    <?= $this->Form->control('view_name', [
-                        'label' => '名前（表示名）',
-                        'value' => $profile->view_name
-                    ]) ?>
-                </li>
-                <li class="profile_content_item">
-                    <?= $this->Form->control('works', [
-                        'label' => '肩書（仕事名）',
-                        'value' => $profile->works
-                    ]) ?>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="profile_text">
-        <?= $this->Form->control('profile_text', [
-            'type' => 'textarea',
-            'label' => 'プロフィール文',
-            'value' => $profile->profile_text
-        ]) ?>
-    </div>
+<?= $this->Form->create($profile, ['url' => ['controller' => 'Profiles', 'action' => 'edit'], 'onSubmit' => 'return checkEdit()']) ?>
+
+<div class="flex">
+    <?= $this->Html->image($profile_image_path, ['class' => 'square_image']) ?>
+    <ul class="flex_right">
+        <li><?= $this->Form->control('view_name', ['label' => '名前（表示名）', 'value' => $profile->view_name]) ?></li>
+        <li class="mt16"><?= $this->Form->control('works', ['label' => '肩書（仕事名）', 'value' => $profile->works]) ?></li>
+    </ul>
 </div>
-<?= $this->Form->submit('この内容で変更する',  ['class' => 'button']) ?>
+
+<div class="mt32">
+    <?= $this->Form->control('profile_text', ['type' => 'textarea', 'label' => 'プロフィール文', 'value' => $profile->profile_text]) ?>
+</div>
+
+<div class="button-container default mt16">
+    <?= $this->Form->submit(Configure::read('button.save'), ['class' => 'button default']) ?>
+    <?= $this->Html->link('戻る', ['action' => 'index'], ['class' => 'button default back']) ?>
+</div>
 <?= $this->Form->end() ?>

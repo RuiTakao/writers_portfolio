@@ -8,14 +8,15 @@ use App\Model\Table\ProfilesTable;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>管理画面 - Writers Portfolio</title>
+    <meta name="robots" content="noindex" />
+    <title>管理画面 - Smart Profile</title>
     <?= $this->Html->css([
         'all.min',
         'reset',
         'base',
         'admin/layout'
     ]) ?>
-    <?php /** css 各ページ */ ?>
+    <?php /* css 各ページ */ ?>
     <?= $this->fetch('css') ?>
 </head>
 
@@ -60,7 +61,7 @@ use App\Model\Table\ProfilesTable;
         </div>
     </main>
     <?= $this->element('flash/message') ?>
-    <?php /** js 各ページ */ ?>
+    <?php /* js 各ページ */ ?>
     <?= $this->fetch('script') ?>
 </body>
 

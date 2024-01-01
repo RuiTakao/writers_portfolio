@@ -68,7 +68,6 @@
     top: 0;
     left: 0;
     background: #fff;
-    opacity: .6;
     z-index: 2;
 }
 
@@ -112,6 +111,18 @@
 }
 
 @media screen and (max-width:640px) {
+    .fv {
+        height: 272px;
+    }
+
+    .fv_bg_cover {
+        height: 240px;
+    }
+
+    .fv_bg {
+        height: 240px;
+    }
+
     .fv_container {
         gap: 32px;
     }
@@ -235,15 +246,15 @@
 .works_content_image {
     width: 100%;
     height: auto;
-    max-height: 368px;
+    max-height: 512px;
     margin-top: 16px;
 }
 
 .works_content_image img {
     display: block;
-    width: 100%;
     height: auto;
-    max-height: 368px;
+    max-height: 512px;
+    max-width: 100%;
 }
 
 .works_content_link {
@@ -291,5 +302,4 @@
     height: 56px;
     line-height: 56px;
     color: #fff;
-    text-align: right;
 }

@@ -13,13 +13,23 @@ use Cake\I18n\FrozenTime;
     <?php endif; ?>
     <meta name="description" content="<?= h($site->site_description) ?>">
     <?= $this->Html->css('portfolios') ?>
+    <style>
+        .fv_bg_cover {
+            opacity: <?= $site->header_image_opacity . '%' ?>;
+        }
+
+        .fv_bg {
+            background-image: url('<?= $this->Url->image($header_image) ?>');
+            background-position: <?= $site->header_image_positionX . '%, ' . $site->header_image_positionY . '%' ?>;
+        }
+    </style>
     <title><?= h($site->site_title) ?></title>
 </head>
 
 <body>
     <div class="fv">
         <div class="fv_bg_cover"></div>
-        <div class="fv_bg" style="background-image: url('<?= $this->Url->image($header_image) ?>');"></div>
+        <div class="fv_bg"></div>
         <div class="fv_container">
             <div class="fv_user_icon"><?= $this->Html->image($profile_image) ?></div>
             <div class="fv_user_content">
@@ -30,7 +40,7 @@ use Cake\I18n\FrozenTime;
     </div>
     <div class="pr">
         <div class="container">
-            <div class="pr_content"><?= nl2br(h($profile->profile_text)) ?></div>
+            <div class="pr_content"><?= !empty($profile->profile_text) ? nl2br(h($profile->profile_text)) : '' ?></div>
         </div>
     </div>
     <div class="career section">
@@ -57,7 +67,7 @@ use Cake\I18n\FrozenTime;
                             <p class="career_term"><?= h($start) ?> ～ <?= h($end) ?></p>
                             <p class="career_work"><?= h($history->title) ?></p>
                         </div>
-                        <p class="career_detail"><?= nl2br(h($history->overview)) ?></p>
+                        <p class="career_detail"><?= !empty($history->overview) ? nl2br(h($history->overview)) : '' ?></p>
                     </li>
                 <?php endforeach; ?>
 
@@ -75,7 +85,7 @@ use Cake\I18n\FrozenTime;
 
                         <h3 class="content_title"><?= h($work->title) ?></h3>
 
-                        <?php /** 画像パス */ ?>
+                        <?php /* 画像パス */ ?>
                         <?php $path = $username . '/' . $work->id . '/' . $work->image_path; ?>
                         <?php if (!is_null($work->image_path) && $work->image_path != '' && file_exists($root_works_image_path . $path)) : ?>
                             <div class="works_content_image"><?= $this->Html->image($works_image_path . $path) ?></div>
@@ -85,7 +95,7 @@ use Cake\I18n\FrozenTime;
                             <p class="works_content_link">関連リンク：<a href="<?= h($work->url_path) ?>"><?= !empty($work->url_name) ? h($work->url_name) : h($work->url_path) ?></a></p>
                         <?php endif; ?>
 
-                        <p class="works_content_detail"><?= h($work->overview) ?></p>
+                        <p class="works_content_detail"><?= !empty($work->overview) ? nl2br(h($work->overview)) : '' ?></p>
                     </li>
                 <?php endforeach; ?>
 
@@ -123,7 +133,7 @@ use Cake\I18n\FrozenTime;
     </div> -->
     <footer class="footer">
         <div class="container">
-            <div class="footer_copy">©Takao Folio inc</div>
+            <div class="footer_copy">©Smart Profile inc</div>
         </div>
     </footer>
 </body>

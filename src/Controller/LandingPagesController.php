@@ -17,5 +17,6 @@ class LandingPagesController extends AppController
      */
     public function index()
     {
+        $this->viewBuilder()->disableAutoLayout();
     }
 }

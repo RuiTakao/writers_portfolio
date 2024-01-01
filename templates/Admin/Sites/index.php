@@ -1,6 +1,7 @@
 <?php
 
 use App\Model\Table\SitesTable;
+use Cake\Core\Configure;
 
 // ファビコン画像が設定されているか判定
 if (is_null($site->favicon_path) || !file_exists(SitesTable::ROOT_FAVICON_PATH)) {
@@ -17,24 +18,24 @@ if (is_null($site->header_image_path) || !file_exists(SitesTable::ROOT_HEADER_IM
 }
 ?>
 
-<?php /** ページタイトル */ ?>
+<?php /* ページタイトル */ ?>
 <?php $this->start('page_title') ?>
 サイト設定
 <?php $this->end() ?>
 
-<?php /** css */ ?>
+<?php /* css */ ?>
 <?php $this->start('css') ?>
 <?= $this->Html->css('admin/sites') ?>
 <?php $this->end() ?>
 
-<table class="text_table">
+<table class="list_table">
     <tr>
         <th>サイトタイトル</th>
         <td><?= h($site->site_title) ?></td>
     </tr>
     <tr>
         <th>ディスクリプション</th>
-        <td><?= nl2br(h($site->site_description)) ?></td>
+        <td><?= !empty($site->site_description) ? nl2br(h($site->site_description)) : '' ?></td>
     </tr>
     <!-- <tr>
         <th colspan="2" style="text-align: center;padding: 0;">表示ステータス</th>
@@ -56,30 +57,23 @@ if (is_null($site->header_image_path) || !file_exists(SitesTable::ROOT_HEADER_IM
         <td>表示</td>
     </tr> -->
 </table>
-<?= $this->Html->link('編集', ['action' => 'edit'], ['class' => 'button']) ?>
 
-<table class="favicon_image_table image_table">
+<?= $this->Html->link(Configure::read('button.edit'), ['action' => 'edit'], ['class' => 'button default mt16']) ?>
+
+<table class="current_content_table mt64">
     <tr>
-        <th>ファビコン<?= $this->Html->link('編集', ['action' => 'editFaviconImage'], ['class' => 'button edit_iamge']) ?></th>
+        <th>ファビコン<?= $this->Html->link(Configure::read('button.image_edit'), ['action' => 'editFaviconImage'], ['class' => 'button']) ?></th>
     </tr>
     <tr>
-        <td>
-            <div class="favicon_image">
-                <?= $this->Html->image($favicon_path) ?>
-            </div>
-        </td>
+        <td><?= $this->Html->image($favicon_path, ['class' => 'square_image']) ?></td>
     </tr>
 </table>
 
-<table class="header_image_table image_table">
+<table class="current_content_table mt32">
     <tr>
-        <th>ヘッダー画像<?= $this->Html->link('編集', ['action' => 'editHeaderImage'], ['class' => 'button edit_iamge']) ?></th>
+        <th>ヘッダー画像<?= $this->Html->link(Configure::read('button.image_edit'), ['action' => 'editHeaderImage'], ['class' => 'button']) ?></th>
     </tr>
     <tr>
-        <td>
-            <div class="header_image">
-                <?= $this->Html->image($header_image_path) ?>
-            </div>
-        </td>
+        <td><?= $this->Html->image($header_image_path, ['class' => 'rectangle_image']) ?></td>
     </tr>
 </table>

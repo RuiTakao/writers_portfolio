@@ -1,31 +1,28 @@
 <?php
 
-/** ページタイトル */ ?>
+use Cake\Core\Configure;
+?>
+
+<?php /* ページタイトル */ ?>
 <?php $this->start('page_title') ?>
 <?= $this->Html->link('実績の設定', ['action' => 'index']) ?> > 並び順変更
 <?php $this->end() ?>
 
-<?php /** css */ ?>
+<?php /* css */ ?>
 <?php $this->start('css') ?>
 <?= $this->Html->css('admin/works') ?>
 <?= $this->Html->css('order') ?>
-<style>
-    .card {
-        padding: 8px;
-    }
-
-    .card:not(:first-child) {
-        margin-top: 8px;
-    }
-</style>
 <?php $this->end() ?>
 
-<?php /** js */ ?>
+<?php /* js */ ?>
 <?php $this->start('script') ?>
 <?= $this->Html->script('order') ?>
 <?php $this->end() ?>
 
-<?= $this->Form->create($works,['url' => ['controller' => 'Works', 'action' => 'order']]) ?>
+<?= $this->Form->create($works, [
+    'url' => ['controller' => 'Works', 'action' => 'order'],
+    'onSubmit' => 'return checkEdit()'
+]) ?>
 <div class="flex" style="width: 100%;">
     <div class="product_order_container" style="width: 70%; padding-right: 16px; border-right: 1px solid #333;">
         <ul id="productOrderList" class="product_order_list">
@@ -43,5 +40,8 @@
             <li class="product_order_item js-dropZone"></li>
         </ul>
     </div>
-    <?= $this->Form->submit('設定を保存', ['class' => 'button', 'style' => 'margin-left: 16px; height: 32px;']) ?>
+    <div style="margin-left: 16px;">
+        <?= $this->Form->submit(Configure::read('button.save'), ['class' => 'button default']) ?>
+        <?= $this->Html->link('戻る', ['action' => 'index'], ['class' => 'button default back mt16']) ?>
+    </div>
 </div>
