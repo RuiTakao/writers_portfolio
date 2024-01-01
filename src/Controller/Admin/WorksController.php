@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Controller\Admin\AppController;
-use App\Model\Entity\Work;
 use App\Model\Table\WorksTable;
 use Cake\Core\Configure;
 use Cake\Database\Exception\DatabaseException;
