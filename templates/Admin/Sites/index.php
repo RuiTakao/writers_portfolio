@@ -30,32 +30,49 @@ if (is_null($site->header_image_path) || !file_exists(SitesTable::ROOT_HEADER_IM
 
 <table class="list_table">
     <tr>
-        <th>サイトタイトル</th>
-        <td><?= h($site->site_title) ?></td>
+        <th colspan="3" class="table_head">サイトタイトル・サイトの説明</th>
     </tr>
     <tr>
-        <th>ディスクリプション</th>
-        <td><?= !empty($site->site_description) ? nl2br(h($site->site_description)) : '' ?></td>
+        <th class="column_title">サイトタイトル</th>
+        <td colspan="2"><?= h($site->site_title) ?></td>
+    </tr>
+    <tr>
+        <th class="column_title">ディスクリプション</th>
+        <td colspan="2"><?= !empty($site->site_description) ? nl2br(h($site->site_description)) : '' ?></td>
+    </tr>
+    <tr>
+        <th colspan="3" class="table_head">各項目について</th>
+    </tr>
+    <tr>
+        <th></th>
+        <th>タイトル名</th>
+        <th>表示・非表示</th>
     </tr>
     <!-- <tr>
-        <th colspan="2" style="text-align: center;padding: 0;">表示ステータス</th>
-    </tr>
-    <tr>
         <th>日付のフォーマット</th>
         <td>yyyy/mm/dd</td>
-    </tr>
-    <tr>
-        <th>経歴</th>
-        <td>表示</td>
-    </tr>
-    <tr>
-        <th>実績</th>
-        <td>表示</td>
-    </tr>
-    <tr>
-        <th>仕事について</th>
-        <td>表示</td>
     </tr> -->
+    <tr>
+        <th class="column_title">経歴</th>
+        <td><?= $site->histories_title ?></td>
+        <td>
+            <span class="view_icon <?= $site->histories_flg ? "true" : "false" ?>"><?= $site->histories_flg ? "表示" : "非表示" ?></span>
+        </td>
+    </tr>
+    <tr>
+        <th class="column_title">実績</th>
+        <td><?= $site->works_title ?></td>
+        <td>
+            <span class="view_icon <?= $site->works_flg ? "true" : "false" ?>"><?= $site->works_flg ? "表示" : "非表示" ?></span>
+        </td>
+    </tr>
+    <tr>
+        <th class="column_title">その他</th>
+        <td><?= $site->others_title ?></td>
+        <td>
+            <span class="view_icon <?= $site->others_flg ? "true" : "false" ?>"><?= $site->others_flg ? "表示" : "非表示" ?></span>
+        </td>
+    </tr>
 </table>
 
 <?= $this->Html->link(Configure::read('button.edit'), ['action' => 'edit'], ['class' => 'button default mt16']) ?>

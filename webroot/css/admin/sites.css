@@ -1,3 +1,25 @@
-.list_table th {
-    width: 20%;
+.list_table .column_title {
+    width: 15%;
+}
+
+.list_table .table_head {
+    background: #0284BB;
+    color: #fff;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.view_icon {
+    font-size: 14px;
+    padding: 0 4px;
+    border: 1px solid;
+    border-radius: 2px;
+}
+
+.view_icon.true {
+    color: #198754;
+}
+
+.view_icon.false {
+    color: #DC3545;
 }
