@@ -50,7 +50,8 @@ class AppController extends Controller
         $this->set('auth', $auth);
 
         // プロフィールアイコン
-        if (!is_null($auth)) {
+        // ログイン済または認証済の場合通る
+        if (!is_null($auth) && $auth->autherized_flg) {
             $profile_icon = TableRegistry::getTableLocator()->get('Profiles')->find('all', ['conditions' => ['user_id' => $auth->id]])->first();
             $this->set('profile_icon', $profile_icon->image_path);
         }

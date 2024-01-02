@@ -136,14 +136,38 @@ use Cake\I18n\FrozenTime;
         </div>
     <?php endif; ?>
 
-    <!-- <div class="contact section">
-        <div class="container">
-            <h2 class="section_title">お問い合わせ</h2>
-            <div class="_blank">
-                未定
+    <?php /* その他 */ ?>
+    <?php if (true) : ?>
+        <div class="works section">
+            <div class="container">
+                <h2 class="section_title">お問い合わせ</h2>
+                <ul class="works_content_list">
+
+                    <?php foreach ($contacts as $contact) : ?>
+
+                        <li class="works_content_item">
+
+                            <h3 class="content_title"><?= h($contact->title) ?></h3>
+
+                            <?php /* 画像パス */ ?>
+                            <?php $path = $username . '/' . $contact->id . '/' . $contact->image_path; ?>
+                            <?php if (!is_null($contact->image_path) && $contact->image_path != '' && file_exists($root_works_image_path . $path)) : ?>
+                                <div class="works_content_image"><?= $this->Html->image($works_image_path . $path) ?></div>
+                            <?php endif; ?>
+
+                            <?php if (!empty($contact->url_path)) : ?>
+                                <p class="works_content_link">関連リンク：<a href="<?= h($contact->url_path) ?>"><?= !empty($contact->url_name) ? h($contact->url_name) : h($contact->url_path) ?></a></p>
+                            <?php endif; ?>
+
+                            <p class="works_content_detail"><?= !empty($contact->overview) ? nl2br(h($contact->overview)) : '' ?></p>
+                        </li>
+                    <?php endforeach; ?>
+
+                </ul>
             </div>
         </div>
-    </div> -->
+    <?php endif; ?>
+
     <footer class="footer">
         <div class="container">
             <div class="footer_copy">©Smart Profile inc</div>

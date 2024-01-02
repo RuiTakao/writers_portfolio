@@ -49,6 +49,7 @@ use App\Model\Table\ProfilesTable;
                 <li class="aside_navi_item"><?= $this->Html->link('経歴の設定', ['controller' => 'Histories', 'action' => 'index']) ?></li>
                 <li class="aside_navi_item"><?= $this->Html->link('実績の設定', ['controller' => 'Works', 'action' => 'index']) ?></li>
                 <li class="aside_navi_item"><?= $this->Html->link('その他の設定', ['controller' => 'Others', 'action' => 'index']) ?></li>
+                <li class="aside_navi_item"><?= $this->Html->link('お問い合わせ', ['controller' => 'Contacts', 'action' => 'index']) ?></li>
             </ul>
         </nav>
     </aside>

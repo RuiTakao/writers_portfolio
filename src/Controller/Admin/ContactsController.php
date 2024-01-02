@@ -5,19 +5,17 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Controller\Admin\AppController;
-use App\Model\Table\WorksTable;
+use App\Model\Table\ContactsTable;
 use Cake\Core\Configure;
-use Cake\Database\Exception\DatabaseException;
-use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 
 /**
- * Works Controller
+ * Contacts Controller
  *
- * @property WorksTable $Works
+ * @property ContactsTable $Contacts
  */
-class WorksController extends AppController
+class ContactsController extends AppController
 {
 
     /**
@@ -28,22 +26,31 @@ class WorksController extends AppController
         parent::initialize();
 
         // 利用するモデル
-        $this->Works = TableRegistry::getTableLocator()->get('Works');
+        $this->Contacts = TableRegistry::getTableLocator()->get('Contacts');
 
         // トランザクション変数
-        $this->connection = $this->Works->getConnection();
+        $this->connection = $this->Contacts->getConnection();
     }
 
     /**
-     * 一覧表示
-     * 
-     * @return Response|void|null
+     * お問い合わせ設定Top
+     *
+     * @return void
      */
     public function index()
     {
+    }
+
+    /**
+     * お問い合わせ項目一覧
+     *
+     * @return void
+     */
+    public function list()
+    {
         $this->set(
-            'works',
-            $this->Works->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])->order(['works_order' => 'asc'])
+            'contacts',
+            $this->Contacts->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])->order(['contacts_order' => 'asc'])
         );
     }
 
@@ -55,17 +62,17 @@ class WorksController extends AppController
     public function edit($id = null)
     {
         // エンティティ取得
-        $work = $this->set_entity($id);
+        $contact = $this->set_entity($id);
 
         // 不正なアクセスの場合は一覧画面へリダイレクト
-        if (is_null($work)) {
+        if (is_null($contact)) {
             return $this->redirect(['action' => 'index']);
         }
 
         if ($this->request->is(['post', 'patch', 'put'])) {
 
             // バリデーション
-            if ($this->validate($work)) {
+            if ($this->validate($contact)) {
                 return;
             }
 
@@ -79,7 +86,7 @@ class WorksController extends AppController
                 $data['user_id'] = $this->AuthUser->id;
 
                 // オーダーの初期値を追加
-                $data['works_order'] = $this->set_order();
+                $data['contacts_order'] = $this->set_order();
             }
 
             // 画像がアップロードされているか確認
@@ -91,15 +98,15 @@ class WorksController extends AppController
                 // 画像名をリクエストデータに代入
                 $data['image_path'] = $data['image_path']->getClientFilename();
             } else {
-                $data['image_path'] = $work->image_path;
+                $data['image_path'] = $contact->image_path;
                 $image = null;
             }
 
             // エンティティにデータセット
-            $work = $this->Works->patchEntity($work, $data);
+            $contact = $this->Contacts->patchEntity($contact, $data);
 
-            if (!$this->save_data($work, $image, is_null($id) ? false : true)) {
-                return $this->redirect(['action' => 'index']);
+            if (!$this->save_data($contact, $image, is_null($id) ? false : true)) {
+                return $this->redirect(['action' => 'list']);
             }
 
             if (is_null($id)) {
@@ -107,13 +114,13 @@ class WorksController extends AppController
             } else {
                 $this->session->write('message', Configure::read('alert_message.complete'));
             }
-            return $this->redirect(['action' => 'index']);
+            return $this->redirect(['action' => 'list']);
         }
 
-        $this->set('work', $work);
+        $this->set('contact', $contact);
     }
 
-    /**
+     /**
      * 画像削除
      * 
      * @param int $id
@@ -123,10 +130,10 @@ class WorksController extends AppController
     public function editImage($id = null)
     {
         // idとログインユーザーidから実績のレコードを取得
-        $work = $this->Works->find('all', ['conditions' => ['id' => $id, 'user_id' => $this->AuthUser->id]])->first();
+        $contact = $this->Contacts->find('all', ['conditions' => ['id' => $id, 'user_id' => $this->AuthUser->id]])->first();
 
         // 不正なアクセスの場合は一覧画面へリダイレクト
-        if (!$work) {
+        if (!$contact) {
             return $this->redirect(['action' => 'index']);
         }
 
@@ -134,7 +141,7 @@ class WorksController extends AppController
             // postの場合
 
             // バリデーション
-            if ($this->validate($work)) {
+            if ($this->validate($contact)) {
                 return;
             }
 
@@ -143,7 +150,7 @@ class WorksController extends AppController
 
             // 画像がアップロードされていなければ処理を終了
             if ($data['image_path']->getClientFilename() == '') {
-                $this->set('work', $work);
+                $this->set('contact', $contact);
                 return;
             }
 
@@ -154,18 +161,18 @@ class WorksController extends AppController
             $data['image_path'] = $data['image_path']->getClientFilename();
 
             // エンティティにデータセット
-            $work = $this->Works->patchEntity($work, $data);
+            $contact = $this->Contacts->patchEntity($contact, $data);
 
-            if (!$this->save_data($work, $image)) {
+            if (!$this->save_data($contact, $image)) {
                 return $this->redirect(['action' => 'index']);
             }
 
             // 詳細へリダイレクト
             $this->session->write('message', Configure::read('alert_message.complete'));
-            return $this->redirect(['action' => 'edit', $work->id]);
+            return $this->redirect(['action' => 'edit', $contact->id]);
         }
 
-        $this->set('work', $work);
+        $this->set('contact', $contact);
     }
 
     /**
@@ -180,10 +187,10 @@ class WorksController extends AppController
     public function editLink($id = null)
     {
         // idとログインユーザーidから実績のレコードを取得
-        $work = $this->Works->find('all', ['conditions' => ['id' => $id, 'user_id' => $this->AuthUser->id]])->first();
+        $contact = $this->Contacts->find('all', ['conditions' => ['id' => $id, 'user_id' => $this->AuthUser->id]])->first();
 
         // 不正なアクセスの場合は一覧画面へリダイレクト
-        if (!$work) {
+        if (!$contact) {
             return $this->redirect(['action' => 'index']);
         }
 
@@ -191,7 +198,7 @@ class WorksController extends AppController
             // postの場合
 
             // バリデーション
-            if ($this->validate($work)) {
+            if ($this->validate($contact)) {
                 return;
             }
 
@@ -199,44 +206,44 @@ class WorksController extends AppController
             $data = $this->request->getData();
 
             // エンティティにデータセット
-            $work = $this->Works->patchEntity($work, $data);
+            $contact = $this->Contacts->patchEntity($contact, $data);
 
-            if (!$this->save_data($work)) {
+            if (!$this->save_data($contact)) {
                 return $this->redirect(['action' => 'index']);
             }
 
             // 詳細へリダイレクト
             $this->session->write('message', Configure::read('alert_message.complete'));
-            return $this->redirect(['action' => 'edit', $work->id]);
+            return $this->redirect(['action' => 'edit', $contact->id]);
         }
 
-        $this->set('work', $work);
+        $this->set('contact', $contact);
     }
 
     public function deleteLink($id)
     {
         // idとログインユーザーidから実績のレコードを取得
-        $work = $this->Works->find('all', ['conditions' => ['id' => $id, 'user_id' => $this->AuthUser->id]])->first();
+        $contact = $this->Contacts->find('all', ['conditions' => ['id' => $id, 'user_id' => $this->AuthUser->id]])->first();
 
         // 不正なアクセスの場合は一覧画面へリダイレクト
-        if (!$work) {
+        if (!$contact) {
             return $this->redirect(['action' => 'index']);
         }
 
         if ($this->request->is(['post', 'patch', 'put'])) {
 
             // エンティティにデータセット
-            $work = $this->Works->patchEntity($work, [
+            $contact = $this->Contacts->patchEntity($contact, [
                 'url_path' => null,
                 'url_name' => null
             ]);
 
-            if (!$this->save_data($work)) {
+            if (!$this->save_data($contact)) {
                 return $this->redirect(['action' => 'index']);
             }
 
             $this->session->write('message', '関連URLを削除しました。');
-            return $this->redirect(['action' => 'edit', $work->id]);
+            return $this->redirect(['action' => 'edit', $contact->id]);
         }
     }
 
@@ -250,10 +257,10 @@ class WorksController extends AppController
     public function delete($id = null)
     {
         // idとログインユーザーidから実績のレコードを取得
-        $work = $this->Works->find('all', ['conditions' => ['id' => $id, 'user_id' => $this->AuthUser->id]])->first();
+        $contact = $this->Contacts->find('all', ['conditions' => ['id' => $id, 'user_id' => $this->AuthUser->id]])->first();
 
         // 不正なアクセスの場合は一覧画面へリダイレクト
-        if (!$work) {
+        if (!$contact) {
             return $this->redirect(['action' => 'index']);
         }
 
@@ -264,20 +271,20 @@ class WorksController extends AppController
                 $this->connection->begin();
 
                 // 排他制御
-                $this->Works
-                    ->find('all', ['conditions' => ['id' => $work->id]])
+                $this->Contacts
+                    ->find('all', ['conditions' => ['id' => $contact->id]])
                     ->modifier('SQL_NO_CACHE')
                     ->epilog('FOR UPDATE')
                     ->first();
 
                 // 削除処理
-                $ret = $this->Works->delete($work);
+                $ret = $this->Contacts->delete($contact);
                 if (!$ret) {
                     throw new DatabaseException;
                 }
 
                 // 画像削除処理
-                $path = WorksTable::ROOT_WORKS_IMAGE_PATH . $this->AuthUser->username . '/' . $work->id;
+                $path = ContactsTable::ROOT_WORKS_IMAGE_PATH . $this->AuthUser->username . '/' . $contact->id;
                 if (file_exists($path)) {
                     foreach (glob($path . '/*') as $file) {
                         unlink($file);
@@ -294,36 +301,36 @@ class WorksController extends AppController
 
                 // 一覧画面へリダイレクト
                 $this->session->write('message', Configure::read('alert_message.system_faild'));
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'list']);
             }
         }
 
         // 一覧画面へリダイレクト
         $this->session->write('message', Configure::read('alert_message.delete'));
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['action' => 'list']);
     }
 
     public function deleteImage($id)
     {
         // idとログインユーザーidから実績のレコードを取得
-        $work = $this->Works->find('all', ['conditions' => ['id' => $id, 'user_id' => $this->AuthUser->id]])->first();
+        $contact = $this->Contacts->find('all', ['conditions' => ['id' => $id, 'user_id' => $this->AuthUser->id]])->first();
 
         // 不正なアクセスの場合は一覧画面へリダイレクト
-        if (!$work) {
+        if (!$contact) {
             return $this->redirect(['action' => 'index']);
         }
 
         if ($this->request->is(['post', 'patch', 'put'])) {
 
             // エンティティにデータセット
-            $work = $this->Works->patchEntity($work, ['image_path' => null]);
+            $contact = $this->Contacts->patchEntity($contact, ['image_path' => null]);
 
-            if (!$this->save_data($work, null, true, true)) {
+            if (!$this->save_data($contact, null, true, true)) {
                 return $this->redirect(['action' => 'index']);
             }
 
             $this->session->write('message', '関連画像を削除しました。');
-            return $this->redirect(['action' => 'edit', $work->id]);
+            return $this->redirect(['action' => 'edit', $contact->id]);
         }
     }
 
@@ -334,7 +341,7 @@ class WorksController extends AppController
      */
     public function order()
     {
-        $works = $this->Works->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])->order(['works_order' => 'asc']);
+        $contacts = $this->Contacts->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])->order(['contacts_order' => 'asc']);
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $data = $this->request->getData();
@@ -344,7 +351,7 @@ class WorksController extends AppController
             foreach ($data['id'] as $index => $item) {
                 $save_data[] =  [
                     'id' => $item,
-                    'works_order' => $data['order'][$index]
+                    'contacts_order' => $data['order'][$index]
                 ];
             }
 
@@ -354,12 +361,12 @@ class WorksController extends AppController
                 $this->connection->begin();
 
                 // 排他制御
-                $works->modifier('SQL_NO_CACHE')->epilog('FOR UPDATE')->toArray();
+                $contacts->modifier('SQL_NO_CACHE')->epilog('FOR UPDATE')->toArray();
 
                 // 一括更新
-                $works = $this->Works->patchEntities($works, $save_data);
-                $works = $this->Works->saveMany($works);
-                if (!$works) {
+                $contacts = $this->Contacts->patchEntities($contacts, $save_data);
+                $contacts = $this->Contacts->saveMany($contacts);
+                if (!$contacts) {
                     throw new DatabaseException();
                 }
 
@@ -370,14 +377,14 @@ class WorksController extends AppController
                 // ロールバック
                 $this->connection->rollback();
                 $this->session->write('message', Configure::read('alert_message.system_faild'));
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'list']);
             }
 
             $this->session->write('message', Configure::read('alert_message.complete'));
-            return $this->redirect(['action' => 'index']);
+            return $this->redirect(['action' => 'list']);
         }
 
-        $this->set('works', $works);
+        $this->set('contacts', $contacts);
     }
 
     /** private method **/
@@ -385,7 +392,7 @@ class WorksController extends AppController
     /**
      * バリデーション
      * 
-     * @param WorksTable|null $entity
+     * @param ContactsTable|null $entity
      * 
      * @return bool
      */
@@ -417,18 +424,18 @@ class WorksController extends AppController
 
         // エンティティにデータセット
         if (is_null($entity)) {
-            $entity = $this->Works->newEmptyEntity();
+            $entity = $this->Contacts->newEmptyEntity();
         }
-        $work = $this->Works->patchEntity($entity, $data);
+        $contact = $this->Contacts->patchEntity($entity, $data);
 
         if ($image_error != '') {
-            $work->setError('image_path', [$image_error]);
+            $contact->setError('image_path', [$image_error]);
         }
 
         // バリデーション処理
-        if ($work->getErrors() || $work->hasErrors()) {
+        if ($contact->getErrors() || $contact->hasErrors()) {
             $this->session->write('message', Configure::read('alert_message.input_faild'));
-            $this->set('work', $work);
+            $this->set('contact', $contact);
             return true;
         }
 
@@ -440,7 +447,7 @@ class WorksController extends AppController
      * 
      * @param int $id
      * 
-     * @return WorksTable|null
+     * @return ContactsTable|null
      */
     private function set_entity($id)
     {
@@ -448,12 +455,12 @@ class WorksController extends AppController
         if (is_null($id)) {
 
             // 新規登録
-            return $this->Works->newEmptyEntity();
+            return $this->Contacts->newEmptyEntity();
         } else {
 
             // 編集
             // idとログインユーザーidから実績のレコードを取得
-            return $this->Works->find('all', ['conditions' => ['id' => $id, 'user_id' => $this->AuthUser->id]])->first();
+            return $this->Contacts->find('all', ['conditions' => ['id' => $id, 'user_id' => $this->AuthUser->id]])->first();
         }
     }
 
@@ -465,11 +472,11 @@ class WorksController extends AppController
     private function set_order(): int
     {
         // 並び順の最後尾を検索し、最後尾の最後の順番を追加
-        $works = $this->Works->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])->order(['works_order' => 'asc']);
+        $contacts = $this->Contacts->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])->order(['contacts_order' => 'asc']);
         $order_array = [];
-        foreach ($works as $value) {
+        foreach ($contacts as $value) {
             // 比較用にothers_orderの数値を全て配列に格納
-            array_push($order_array, intval($value->works_order));
+            array_push($order_array, intval($value->contacts_order));
         }
         if (empty($order_array)) {
             // データが無い場合は1を追加する
@@ -483,7 +490,7 @@ class WorksController extends AppController
     /**
      * データ保存
      * 
-     * @param WorksTable $entity
+     * @param ContactsTable $entity
      * @param mixed $image
      * @param bool $exclusion
      * @param bool $image_delete
@@ -500,7 +507,7 @@ class WorksController extends AppController
             if ($exclusion) {
 
                 // 更新の場合、排他制御
-                $this->Works
+                $this->Contacts
                     ->find('all', ['conditions' => ['id' => $entity->id]])
                     ->modifier('SQL_NO_CACHE')
                     ->epilog('FOR UPDATE')
@@ -508,14 +515,14 @@ class WorksController extends AppController
             }
 
             // 登録処理
-            $ret = $this->Works->save($entity);
+            $ret = $this->Contacts->save($entity);
             if (!$ret) {
                 throw new DatabaseException;
             }
 
             // 画像削除
             if ($image_delete) {
-                $path = WorksTable::ROOT_WORKS_IMAGE_PATH . $this->AuthUser->username . '/' . $entity->id;
+                $path = ContactsTable::ROOT_WORKS_IMAGE_PATH . $this->AuthUser->username . '/' . $entity->id;
                 if (file_exists($path)) {
                     foreach (glob($path . '/*') as $file) {
                         unlink($file);
@@ -558,7 +565,7 @@ class WorksController extends AppController
         }
 
         // ディレクトリに画像保存
-        $path = WorksTable::ROOT_WORKS_IMAGE_PATH . $this->AuthUser->username;
+        $path = ContactsTable::ROOT_WORKS_IMAGE_PATH . $this->AuthUser->username;
         if (file_exists($path)) {
 
             // 保存ディレクトリを取得
