@@ -41,7 +41,7 @@ class ContactsTable extends Table
      * 画像ファイルパス
      */
     // 画像表示用のパス
-    const WORKS_IMAGE_PATH = 'users/works/';
+    const WORKS_IMAGE_PATH = 'users/contacts/';
     // ルートからの相対パス
     const ROOT_WORKS_IMAGE_PATH = WWW_ROOT . 'img/' . self::WORKS_IMAGE_PATH;
     // ブランク画像のパス

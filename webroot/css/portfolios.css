@@ -7,6 +7,10 @@
     box-sizing: border-box;
 }
 
+.main {
+    min-height: calc(100vh - 56px - 160px);
+}
+
 /*********************************
 	共通パーツ
 *********************************/
@@ -174,8 +178,6 @@
 *********************************/
 .pr {
     margin-top: 80px;
-    box-sizing: border-box;
-    min-height: calc(100vh - 56px - 432px - 80px - 160px);
 }
 
 .pr_content {

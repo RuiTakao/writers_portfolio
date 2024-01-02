@@ -82,6 +82,8 @@ class PortfoliosController extends AppController
         $this->set('header_image', $this->header_image($site, $username));
         $this->set('works_image_path', WorksTable::WORKS_IMAGE_PATH);
         $this->set('root_works_image_path', WorksTable::ROOT_WORKS_IMAGE_PATH);
+        $this->set('contacts_image_path', ContactsTable::WORKS_IMAGE_PATH);
+        $this->set('root_contacts_image_path', ContactsTable::ROOT_WORKS_IMAGE_PATH);
 
     }
 

@@ -47,6 +47,10 @@ use Cake\Core\Configure;
         <td><?= $this->Form->control('others_title', ['label' => false, 'value' => $site->others_title]) ?></td>
     </tr>
     <tr>
+        <th class="column_title">お問い合わせ</th>
+        <td><?= $this->Form->control('contacts_title', ['label' => false, 'value' => $site->contacts_title]) ?></td>
+    </tr>
+    <tr>
         <th colspan="3" class="table_head">各項目の表示・非表示の設定</th>
     </tr>
     <tr>
@@ -72,6 +76,14 @@ use Cake\Core\Configure;
             ['value' => 0, 'text' => '非表示']
         ],
         ['value' => $site->others_flg]) ?></td>
+    </tr>
+    <tr>
+        <th class="column_title">お問い合わせ</th>
+        <td><?= $this->Form->radio('contacts_flg', [
+            ['value' => 1, 'text' => '表示'],
+            ['value' => 0, 'text' => '非表示']
+        ],
+        ['value' => $site->contacts_flg]) ?></td>
     </tr>
 </table>
 <div class="button-container default mt16">
