@@ -434,6 +434,30 @@ class CreateUsersController extends AppController
         $path = WWW_ROOT . 'img/users/contacts/' . $this->AuthUser->username;
         mkdir($path);
 
+        // お問い合わせテーブルLINE作成
+        if (!$this->CreateContactLine($path)) {
+            return false;
+        }
+
+        // お問い合わせテーブルその他作成
+        if (!$this->CreateContactOther($path)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * お問い合わせテーブルLINE作成
+     * 
+     * @param string $path 画像保存パス
+     * 
+     * @return bool
+     * 
+     * @throws DatabaseException
+     */
+    private function CreateContactLine($path)
+    {
         // トランザクション用の変数用意
         $connection = $this->Contacts->getConnection();
 
@@ -455,7 +479,7 @@ class CreateUsersController extends AppController
             $contacts = $this->Contacts->newEmptyEntity();
             $contacts = $this->Contacts->patchEntity($contacts, $data);
             if ($contacts->getErrors()) {
-                return $this->redirect('/');
+                return false;
             }
 
             // 登録処理
@@ -477,6 +501,24 @@ class CreateUsersController extends AppController
         mkdir($path . '/' . $ret->id);
         copy(WWW_ROOT . 'img/contact/line_qr.jpg', $path . '/' . $ret->id . '/line_qr.jpg');
 
+        return true;
+    }
+
+    /**
+     * お問い合わせテーブルその他作成
+     * 
+     * @param string $path 画像保存パス
+     * 
+     * @return bool
+     * 
+     * @throws DatabaseException
+     */
+    private function CreateContactOther($path)
+    {
+
+        // トランザクション用の変数用意
+        $connection = $this->Contacts->getConnection();
+
         $data = [
             'title' => 'その他お問い合わせ',
             'overview' => 'メルマガ等、お問い合わせを設定してください',
@@ -495,7 +537,7 @@ class CreateUsersController extends AppController
             $contacts = $this->Contacts->newEmptyEntity();
             $contacts = $this->Contacts->patchEntity($contacts, $data);
             if ($contacts->getErrors()) {
-                return $this->redirect('/');
+                return false;
             }
 
             // 登録処理
