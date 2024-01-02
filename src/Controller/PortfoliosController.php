@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Model\Table\ContactsTable;
 use App\Model\Table\HistoriesTable;
 use App\Model\Table\OthersTable;
 use App\Model\Table\ProfilesTable;
@@ -21,6 +22,7 @@ use Cake\ORM\TableRegistry;
  * @param HistoriesTable $Histories
  * @param WorksTable $Works
  * @param OthersTable $Others
+ * @param ContactsTable $Contacts
  */
 class PortfoliosController extends AppController
 {
@@ -36,6 +38,7 @@ class PortfoliosController extends AppController
         $this->Histories = TableRegistry::getTableLocator()->get('Histories');
         $this->Works = TableRegistry::getTableLocator()->get('Works');
         $this->Others = TableRegistry::getTableLocator()->get('Others');
+        $this->Contacts = TableRegistry::getTableLocator()->get('Contacts');
     }
 
     /**
@@ -63,12 +66,15 @@ class PortfoliosController extends AppController
 
         $others = $this->Others->find('all', ['conditions' => ['user_id' => $user->id]])->order(['others_order' => 'asc']);
 
+        $contacts = $this->Contacts->find('all', ['conditions' => ['user_id' => $user->id]])->order(['contacts_order' => 'asc']);
+
         // viewに渡すデータセット
         $this->set('profile', $profile);
         $this->set('site', $site);
         $this->set('histories', $histories);
         $this->set('works', $works);
         $this->set('others', $others);
+        $this->set('contacts', $contacts);
         $this->set('username', $username);
         // 画像のパス
         $this->set('profile_image', $this->profile_image($profile, $username));

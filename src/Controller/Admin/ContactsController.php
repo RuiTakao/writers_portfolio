@@ -106,7 +106,7 @@ class ContactsController extends AppController
             $contact = $this->Contacts->patchEntity($contact, $data);
 
             if (!$this->save_data($contact, $image, is_null($id) ? false : true)) {
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'list']);
             }
 
             if (is_null($id)) {
@@ -114,7 +114,7 @@ class ContactsController extends AppController
             } else {
                 $this->session->write('message', Configure::read('alert_message.complete'));
             }
-            return $this->redirect(['action' => 'index']);
+            return $this->redirect(['action' => 'list']);
         }
 
         $this->set('contact', $contact);
@@ -301,13 +301,13 @@ class ContactsController extends AppController
 
                 // 一覧画面へリダイレクト
                 $this->session->write('message', Configure::read('alert_message.system_faild'));
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'list']);
             }
         }
 
         // 一覧画面へリダイレクト
         $this->session->write('message', Configure::read('alert_message.delete'));
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['action' => 'list']);
     }
 
     public function deleteImage($id)
@@ -351,7 +351,7 @@ class ContactsController extends AppController
             foreach ($data['id'] as $index => $item) {
                 $save_data[] =  [
                     'id' => $item,
-                    'works_order' => $data['order'][$index]
+                    'contacts_order' => $data['order'][$index]
                 ];
             }
 
@@ -364,8 +364,8 @@ class ContactsController extends AppController
                 $contacts->modifier('SQL_NO_CACHE')->epilog('FOR UPDATE')->toArray();
 
                 // 一括更新
-                $contacts = $this->Works->patchEntities($contacts, $save_data);
-                $contacts = $this->Works->saveMany($contacts);
+                $contacts = $this->Contacts->patchEntities($contacts, $save_data);
+                $contacts = $this->Contacts->saveMany($contacts);
                 if (!$contacts) {
                     throw new DatabaseException();
                 }
@@ -377,11 +377,11 @@ class ContactsController extends AppController
                 // ロールバック
                 $this->connection->rollback();
                 $this->session->write('message', Configure::read('alert_message.system_faild'));
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'list']);
             }
 
             $this->session->write('message', Configure::read('alert_message.complete'));
-            return $this->redirect(['action' => 'index']);
+            return $this->redirect(['action' => 'list']);
         }
 
         $this->set('contacts', $contacts);

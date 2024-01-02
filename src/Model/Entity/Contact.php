@@ -14,6 +14,7 @@ use Cake\ORM\Entity;
  * @property string|null $image_path
  * @property string|null $url_name
  * @property string|null $url_path
+ * @property bool $view_flg
  * @property int|null $contacts_order
  * @property int $user_id
  * @property \Cake\I18n\FrozenTime $created
@@ -39,6 +40,7 @@ class Contact extends Entity
         'url_name' => true,
         'url_path' => true,
         'contacts_order' => true,
+        'view_flg' => true,
         'user_id' => true,
         'created' => true,
         'modified' => true,
