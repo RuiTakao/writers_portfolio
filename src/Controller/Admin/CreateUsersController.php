@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Controller\Admin\AppController;
+use App\Model\Table\MailFormsTable;
 use App\Model\Table\ProfilesTable;
 use App\Model\Table\SitesTable;
 use App\Model\Table\UsersTable;
@@ -19,6 +20,7 @@ use Cake\ORM\TableRegistry;
  * @property UsersTable $Users
  * @property ProfilesTable $Profiles
  * @property SitesTable $Sites
+ * @property MailFormsTable $MailForms
  */
 class CreateUsersController extends AppController
 {
@@ -39,6 +41,7 @@ class CreateUsersController extends AppController
         $this->Users = TableRegistry::getTableLocator()->get('Users');
         $this->Profiles = TableRegistry::getTableLocator()->get('Profiles');
         $this->Sites = TableRegistry::getTableLocator()->get('Sites');
+        $this->MailForms = TableRegistry::getTableLocator()->get('MailForms');
 
         // トランザクション用の変数
         $this->connection = $this->Users->getConnection();
@@ -167,6 +170,11 @@ class CreateUsersController extends AppController
 
             // サイトテーブル作成処理
             if (!$this->createSite()) {
+                return $this->redirect('/');
+            }
+
+            // メールフォームテーブル作成処理
+            if (!$this->createMailForms()) {
                 return $this->redirect('/');
             }
 
@@ -358,6 +366,50 @@ class CreateUsersController extends AppController
     {
         // 実績画像保存用ディレクトリ作成
         mkdir(WWW_ROOT . 'img/users/works/' . $this->AuthUser->username);
+    }
+
+    /**
+     * メールフォームテーブル作成
+     * 
+     * @return bool
+     * 
+     * @throws DatabaseException
+     */
+    private function createMailForms()
+    {
+        // トランザクション用の変数用意
+        $connection = $this->MailForms->getConnection();
+
+        $data = ['user_id' => $this->AuthUser->id];
+
+        try {
+
+            // トランザクション開始
+            $connection->begin();
+
+            $mailForms = $this->MailForms->newEmptyEntity();
+            $mailForms = $this->MailForms->patchEntity($mailForms, $data);
+            if ($mailForms->getErrors()) {
+                return $this->redirect('/');
+            }
+
+            // 登録処理
+            $ret = $this->MailForms->save($mailForms);
+            if (!$ret) {
+                throw new DatabaseException(UsersTable::INVALID_CREATE_USER);
+            }
+
+            // コミット
+            $connection->commit();
+        } catch (DatabaseException $e) {
+
+            // ロールバック
+            $connection->rollback();
+            $this->session->write('message', $e);
+            return false;
+        }
+
+        return true;
     }
 
     /**
