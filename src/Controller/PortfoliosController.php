@@ -91,12 +91,12 @@ class PortfoliosController extends AppController
      * @param object $entity
      * @param string $username
      *
-     * @return string
+     * @return string|null
      */
     private function profile_image($entity, $username)
     {
         if (is_null($entity->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IMAGE_PATH)) {
-            return ProfilesTable::BLANK_PROFILE_IMAGE_PATH;
+            return null;
         } else {
             return ProfilesTable::PROFILE_IMAGE_PATH .  $username . '/' . $entity->image_path;
         }
@@ -125,12 +125,12 @@ class PortfoliosController extends AppController
      * @param object $entity
      * @param string $username
      *
-     * @return string
+     * @return string|null
      */
     private function header_image($entity, $username)
     {
         if (is_null($entity->header_image_path) || !file_exists(SitesTable::ROOT_HEADER_IMAGE_PATH)) {
-            return SitesTable::BLANK_HEADER_IMAGE_PATH;
+            return null;
         } else {
             return SitesTable::HEADER_IMAGE_PATH . $username . '/' . $entity->header_image_path;
         }

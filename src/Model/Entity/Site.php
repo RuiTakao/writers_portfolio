@@ -25,6 +25,8 @@ use Cake\ORM\Entity;
  * @property bool $works_flg
  * @property string $others_title
  * @property bool $others_flg
+ * @property string $contacts_title
+ * @property bool $contacts_flg
  *
  * @property \App\Model\Entity\User $user
  */
@@ -56,6 +58,8 @@ class Site extends Entity
         'works_flg' => true,
         'others_title' => true,
         'others_flg' => true,
+        'contacts_title' => true,
+        'contacts_flg' => true,
         'user' => true,
     ];
 }

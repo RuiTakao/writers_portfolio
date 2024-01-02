@@ -67,7 +67,8 @@
     width: 100%;
     top: 0;
     left: 0;
-    background: #fff;
+    background-image: linear-gradient(45deg, #fff 25%, #eee 25%, #eee 50%, #fff 50%, #fff 75%, #eee 75%, #eee);
+    background-size: 32px 32px;
     z-index: 2;
 }
 
@@ -84,11 +85,25 @@
     gap: 32px;
 }
 
+.fv_user_icon {
+    width: 192px;
+    height: 192px;
+    background: #eee;
+}
+
 .fv_user_icon img {
     width: 192px;
     height: 192px;
     display: block;
     border: 3px solid #fff;
+}
+
+.fv_user_icon i {
+    display: block;
+    border: 3px solid #fff;
+    text-align: center;
+    font-size: 108px;
+    line-height: 192px;
 }
 
 .fv_user_name {
@@ -127,9 +142,21 @@
         gap: 32px;
     }
 
+    .fv_user_icon {
+        width: 144px;
+        height: 144px;
+    }
+
     .fv_user_icon img {
         width: 144px;
         height: 144px;
+    }
+
+    .fv_user_icon i {
+        width: 144px;
+        height: 144px;
+        line-height: 144px;
+        font-size: 96px;
     }
 
     .fv_user_name {
@@ -147,6 +174,8 @@
 *********************************/
 .pr {
     margin-top: 80px;
+    box-sizing: border-box;
+    min-height: calc(100vh - 56px - 432px - 80px - 160px);
 }
 
 .pr_content {

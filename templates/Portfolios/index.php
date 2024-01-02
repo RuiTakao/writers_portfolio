@@ -12,17 +12,20 @@ use Cake\I18n\FrozenTime;
         <link rel="icon" href="<?= $this->Url->image($favicon) ?>">
     <?php endif; ?>
     <meta name="description" content="<?= h($site->site_description) ?>">
-    <?= $this->Html->css('portfolios') ?>
-    <style>
-        .fv_bg_cover {
-            opacity: <?= $site->header_image_opacity . '%' ?>;
-        }
+    <?= $this->Html->css(['all.min', 'portfolios']) ?>
+    <?php if (!empty($header_image)) : ?>
+        <style>
+            .fv_bg_cover {
+                background: #fff;
+                opacity: <?= $site->header_image_opacity . '%' ?>;
+            }
 
-        .fv_bg {
-            background-image: url('<?= $this->Url->image($header_image) ?>');
-            background-position: <?= $site->header_image_positionX . '%, ' . $site->header_image_positionY . '%' ?>;
-        }
-    </style>
+            .fv_bg {
+                background-image: url('<?= $this->Url->image($header_image) ?>');
+                background-position: <?= $site->header_image_positionX . '%, ' . $site->header_image_positionY . '%' ?>;
+            }
+        </style>
+    <?php endif; ?>
     <title><?= h($site->site_title) ?></title>
 </head>
 
@@ -31,7 +34,13 @@ use Cake\I18n\FrozenTime;
         <div class="fv_bg_cover"></div>
         <div class="fv_bg"></div>
         <div class="fv_container">
-            <div class="fv_user_icon"><?= $this->Html->image($profile_image) ?></div>
+            <div class="fv_user_icon">
+                <?php if (!empty($profile_image)) : ?>
+                    <?= $this->Html->image($profile_image) ?>
+                <?php else : ?>
+                    <i class="fa-solid fa-user"></i>
+                <?php endif; ?>
+            </div>
             <div class="fv_user_content">
                 <p class="fv_user_name"><?= h($profile->view_name) ?></p>
                 <p class="fv_user_works"><?= h($profile->works) ?></p>
@@ -136,8 +145,8 @@ use Cake\I18n\FrozenTime;
         </div>
     <?php endif; ?>
 
-    <?php /* その他 */ ?>
-    <?php if (true) : ?>
+    <?php /* お問い合わせ */ ?>
+    <?php if ($site->contacts_flg) : ?>
         <div class="works section">
             <div class="container">
                 <h2 class="section_title">お問い合わせ</h2>
