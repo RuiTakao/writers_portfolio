@@ -320,9 +320,82 @@
 /*********************************
 	お問い合わせ
 *********************************/
-._blank {
-    height: 320px;
-    line-height: 320px;
+.contacts_content_item {
+    list-style: none;
+}
+
+.contacts_content_item:not(:first-child) {
+    margin-top: 80px;
+}
+
+.contacts_content_image {
+    width: 100%;
+    height: auto;
+    max-height: 512px;
+    margin-top: 16px;
+}
+
+.contacts_content_image img {
+    display: block;
+    height: auto;
+    max-height: 512px;
+    max-width: 100%;
+}
+
+.contacts_content_link {
+    margin-top: 16px;
+    font-size: 14px;
+}
+
+.contacts_content_detail {
+    font-size: 16px;
+    letter-spacing: .2em;
+    line-height: 1.8em;
+    margin-top: 32px;
+}
+
+.input {
+    margin-top: 16px;
+}
+
+.input label {
+    display: block;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+.input input,
+.input textarea {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    margin-top: 2px;
+    border: 1px solid #C3C4C7;
+}
+
+.input textarea {
+    height: 160px;
+}
+
+input[type=text]:focus,
+textarea:focus {
+    outline: 1px solid #8FBBFC;
+    box-shadow: 0px 0px 6px #8FBBFC;
+}
+
+.submit {
+    margin-top: 16px;
+}
+
+.submit input {
+    width: 100%;
+    color: #fff;
+    border: none;
+    background: #ff9a00;
+    font-weight: 600;
+    padding: 8px;
+    font-size: 18px;
 }
 
 /*********************************

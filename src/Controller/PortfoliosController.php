@@ -11,6 +11,7 @@ use App\Model\Table\ProfilesTable;
 use App\Model\Table\SitesTable;
 use App\Model\Table\UsersTable;
 use App\Model\Table\WorksTable;
+use Cake\Mailer\Mailer;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -52,8 +53,18 @@ class PortfoliosController extends AppController
 
         $user = $this->Users->find('all', ['conditions' => ['username' => $username]])->first();
 
-        if (is_null($user) || $user->autherized_flg    == 0) {
+        if (is_null($user) || $user->autherized_flg == 0) {
             return $this->redirect('/');
+        }
+
+        if ($this->request->is('post')) {
+            $mailer = new Mailer();
+            $mailer->setEmailFormat('text')
+                ->setTo('ruia1082halfnc@gmail.com')
+                ->setFrom(['ruia1082halfnc@gmail.com' => 'fromの名前をここに入れる'])
+                ->setSubject('件名をここに入れる');
+
+            $mailer->deliver();
         }
 
         $profile = $this->Profiles->find('all', ['conditions' => ['user_id' => $user->id]])->first();
@@ -84,7 +95,6 @@ class PortfoliosController extends AppController
         $this->set('root_works_image_path', WorksTable::ROOT_WORKS_IMAGE_PATH);
         $this->set('contacts_image_path', ContactsTable::WORKS_IMAGE_PATH);
         $this->set('root_contacts_image_path', ContactsTable::ROOT_WORKS_IMAGE_PATH);
-
     }
 
     /**

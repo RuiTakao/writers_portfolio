@@ -148,31 +148,40 @@ use Cake\I18n\FrozenTime;
 
         <?php /* お問い合わせ */ ?>
         <?php if ($site->contacts_flg) : ?>
-            <div class="works section">
+            <div class="contacts section">
                 <div class="container">
                     <h2 class="section_title">お問い合わせ</h2>
-                    <ul class="works_content_list">
+                    <ul class="contacts_content_list">
 
                         <?php foreach ($contacts as $contact) : ?>
 
-                            <li class="works_content_item">
+                            <li class="contacts_content_item">
 
                                 <h3 class="content_title"><?= h($contact->title) ?></h3>
 
                                 <?php /* 画像パス */ ?>
                                 <?php $path = $username . '/' . $contact->id . '/' . $contact->image_path; ?>
                                 <?php if (!is_null($contact->image_path) && $contact->image_path != '' && file_exists($root_contacts_image_path . $path)) : ?>
-                                    <div class="works_content_image"><?= $this->Html->image($contacts_image_path . $path) ?></div>
+                                    <div class="contacts_content_image"><?= $this->Html->image($contacts_image_path . $path) ?></div>
                                 <?php endif; ?>
 
                                 <?php if (!empty($contact->url_path)) : ?>
-                                    <p class="works_content_link">関連リンク：<a href="<?= h($contact->url_path) ?>"><?= !empty($contact->url_name) ? h($contact->url_name) : h($contact->url_path) ?></a></p>
+                                    <p class="contacts_content_link">関連リンク：<a href="<?= h($contact->url_path) ?>"><?= !empty($contact->url_name) ? h($contact->url_name) : h($contact->url_path) ?></a></p>
                                 <?php endif; ?>
 
-                                <p class="works_content_detail"><?= !empty($contact->overview) ? nl2br(h($contact->overview)) : '' ?></p>
+                                <p class="contacts_content_detail"><?= !empty($contact->overview) ? nl2br(h($contact->overview)) : '' ?></p>
                             </li>
                         <?php endforeach; ?>
 
+                        <li class="contacts_content_item">
+                            <h3 class="content_title">お問い合わせフォーム</h3>
+                            <?= $this->Form->create(null, ['url' => ['controller' => 'Portfolios', 'action' => 'index', $username]]) ?>
+                            <?= $this->Form->control('name', ['label' => '名前']) ?>
+                            <?= $this->Form->control('email', ['label' => 'メールアドレス']) ?>
+                            <?= $this->Form->control('content', ['type' => 'textarea', 'label' => 'お問い合わせ内容']) ?>
+                            <?= $this->Form->submit('送信') ?>
+                            <?= $this->Form->end() ?>
+                        </li>
                     </ul>
                 </div>
             </div>
