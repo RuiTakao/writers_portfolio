@@ -39,6 +39,10 @@ class ContactsController extends AppController
      */
     public function index()
     {
+        $this->set(
+            'contacts',
+            $this->Contacts->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])->order(['contacts_order' => 'asc'])
+        );
     }
 
     /**
@@ -120,7 +124,7 @@ class ContactsController extends AppController
         $this->set('contact', $contact);
     }
 
-     /**
+    /**
      * 画像削除
      * 
      * @param int $id

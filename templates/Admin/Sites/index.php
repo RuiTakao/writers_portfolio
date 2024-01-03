@@ -73,6 +73,13 @@ if (is_null($site->header_image_path) || !file_exists(SitesTable::ROOT_HEADER_IM
             <span class="view_icon <?= $site->others_flg ? "true" : "false" ?>"><?= $site->others_flg ? "表示" : "非表示" ?></span>
         </td>
     </tr>
+    <tr>
+        <th class="column_title">お問い合わせ</th>
+        <td><?= $site->contacts_title ?></td>
+        <td>
+            <span class="view_icon <?= $site->contacts_flg ? "true" : "false" ?>"><?= $site->contacts_flg ? "表示" : "非表示" ?></span>
+        </td>
+    </tr>
 </table>
 
 <?= $this->Html->link(Configure::read('button.edit'), ['action' => 'edit'], ['class' => 'button default mt16']) ?>

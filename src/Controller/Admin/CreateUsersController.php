@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Controller\Admin\AppController;
+use App\Model\Table\ContactsTable;
 use App\Model\Table\MailFormsTable;
 use App\Model\Table\ProfilesTable;
 use App\Model\Table\SitesTable;
@@ -13,6 +14,7 @@ use Authentication\PasswordHasher\DefaultPasswordHasher;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
+use Cake\Routing\Router;
 
 /**
  * CreateUsers Controller
@@ -21,6 +23,7 @@ use Cake\ORM\TableRegistry;
  * @property ProfilesTable $Profiles
  * @property SitesTable $Sites
  * @property MailFormsTable $MailForms
+ * @property ContactsTable $Contacts
  */
 class CreateUsersController extends AppController
 {
@@ -42,6 +45,7 @@ class CreateUsersController extends AppController
         $this->Profiles = TableRegistry::getTableLocator()->get('Profiles');
         $this->Sites = TableRegistry::getTableLocator()->get('Sites');
         $this->MailForms = TableRegistry::getTableLocator()->get('MailForms');
+        $this->Contacts = TableRegistry::getTableLocator()->get('Contacts');
 
         // トランザクション用の変数
         $this->connection = $this->Users->getConnection();
@@ -175,6 +179,11 @@ class CreateUsersController extends AppController
 
             // メールフォームテーブル作成処理
             if (!$this->createMailForms()) {
+                return $this->redirect('/');
+            }
+
+            // お問い合わせフォームテーブル作成処理
+            if (!$this->createContact()) {
                 return $this->redirect('/');
             }
 
@@ -408,6 +417,147 @@ class CreateUsersController extends AppController
             $this->session->write('message', $e);
             return false;
         }
+
+        return true;
+    }
+
+    /**
+     * お問い合わせテーブル作成
+     * 
+     * @return bool
+     * 
+     * @throws DatabaseException
+     */
+    private function createContact()
+    {
+        // 実績画像保存用ディレクトリ作成
+        $path = WWW_ROOT . 'img/users/contacts/' . $this->AuthUser->username;
+        mkdir($path);
+
+        // お問い合わせテーブルLINE作成
+        if (!$this->CreateContactLine($path)) {
+            return false;
+        }
+
+        // お問い合わせテーブルその他作成
+        if (!$this->CreateContactOther($path)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * お問い合わせテーブルLINE作成
+     * 
+     * @param string $path 画像保存パス
+     * 
+     * @return bool
+     * 
+     * @throws DatabaseException
+     */
+    private function CreateContactLine($path)
+    {
+        // トランザクション用の変数用意
+        $connection = $this->Contacts->getConnection();
+
+        $data = [
+            'title' => 'LINE',
+            'overview' => 'LINEお問い合わせについての説明',
+            'url_name' => 'LINEリンク',
+            'url_path' => Router::url('/'),
+            'image_path' => 'line_qr.jpg',
+            'contacts_order' => 1,
+            'user_id' => $this->AuthUser->id
+        ];
+
+        try {
+
+            // トランザクション開始
+            $connection->begin();
+
+            $contacts = $this->Contacts->newEmptyEntity();
+            $contacts = $this->Contacts->patchEntity($contacts, $data);
+            if ($contacts->getErrors()) {
+                return false;
+            }
+
+            // 登録処理
+            $ret = $this->Contacts->save($contacts);
+            if (!$ret) {
+                throw new DatabaseException(UsersTable::INVALID_CREATE_USER);
+            }
+
+            // コミット
+            $connection->commit();
+        } catch (DatabaseException $e) {
+
+            // ロールバック
+            $connection->rollback();
+            $this->session->write('message', $e);
+            return false;
+        }
+
+        mkdir($path . '/' . $ret->id);
+        copy(WWW_ROOT . 'img/contact/line_qr.jpg', $path . '/' . $ret->id . '/line_qr.jpg');
+
+        return true;
+    }
+
+    /**
+     * お問い合わせテーブルその他作成
+     * 
+     * @param string $path 画像保存パス
+     * 
+     * @return bool
+     * 
+     * @throws DatabaseException
+     */
+    private function CreateContactOther($path)
+    {
+
+        // トランザクション用の変数用意
+        $connection = $this->Contacts->getConnection();
+
+        $data = [
+            'title' => 'その他お問い合わせ',
+            'overview' => 'メルマガ等、お問い合わせを設定してください',
+            'url_name' => 'お問い合わせリンク',
+            'url_path' => Router::url('/'),
+            'image_path' => 'contact_img.jpg',
+            'contacts_order' => 1,
+            'user_id' => $this->AuthUser->id
+        ];
+
+        try {
+
+            // トランザクション開始
+            $connection->begin();
+
+            $contacts = $this->Contacts->newEmptyEntity();
+            $contacts = $this->Contacts->patchEntity($contacts, $data);
+            if ($contacts->getErrors()) {
+                return false;
+            }
+
+            // 登録処理
+            $ret = $this->Contacts->save($contacts);
+            if (!$ret) {
+                throw new DatabaseException(UsersTable::INVALID_CREATE_USER);
+            }
+
+            // コミット
+            $connection->commit();
+        } catch (DatabaseException $e) {
+
+            // ロールバック
+            $connection->rollback();
+            $this->session->write('message', $e);
+            return false;
+        }
+
+        mkdir($path . '/' . $ret->id);
+        copy(WWW_ROOT . 'img/contact/contact_img.jpg', $path . '/' . $ret->id . '/contact_img.jpg');
 
         return true;
     }
