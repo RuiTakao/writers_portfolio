@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Model\Table\ContactsTable;
 use App\Model\Table\HistoriesTable;
+use App\Model\Table\MailFormsTable;
 use App\Model\Table\OthersTable;
 use App\Model\Table\ProfilesTable;
 use App\Model\Table\SitesTable;
@@ -24,6 +25,7 @@ use Cake\ORM\TableRegistry;
  * @param WorksTable $Works
  * @param OthersTable $Others
  * @param ContactsTable $Contacts
+ * @param MailFormsTable $MailForms
  */
 class PortfoliosController extends AppController
 {
@@ -40,6 +42,7 @@ class PortfoliosController extends AppController
         $this->Works = TableRegistry::getTableLocator()->get('Works');
         $this->Others = TableRegistry::getTableLocator()->get('Others');
         $this->Contacts = TableRegistry::getTableLocator()->get('Contacts');
+        $this->MailForms = TableRegistry::getTableLocator()->get('MailForms');
     }
 
     /**
@@ -57,19 +60,23 @@ class PortfoliosController extends AppController
             return $this->redirect('/');
         }
 
-        if ($this->request->is('post')) {
-            $mailer = new Mailer();
-            $mailer->setEmailFormat('text')
-                ->setTo('ruia1082halfnc@gmail.com')
-                ->setFrom(['ruia1082halfnc@gmail.com' => 'fromの名前をここに入れる'])
-                ->setSubject('件名をここに入れる');
+        // if ($this->request->is('post')) {
+        //     $mailer = new Mailer();
+        //     $mailer->setEmailFormat('text')
+        //         ->setTo('ruia1082halfnc@gmail.com')
+        //         ->setFrom(['ruia1082halfnc@gmail.com' => 'fromの名前をここに入れる'])
+        //         ->setSubject('件名をここに入れる');
 
-            $mailer->deliver();
-        }
+        //     $mailer->deliver();
+
+        //     return $this->redirect(['action' => 'index', $username]);
+        // }
 
         $profile = $this->Profiles->find('all', ['conditions' => ['user_id' => $user->id]])->first();
 
         $site = $this->Sites->find('all', ['conditions' => ['user_id' => $user->id]])->first();
+
+        $mailForms = $this->MailForms->find('all', ['conditions' => ['user_id' => $user->id]])->first();
 
         $histories = $this->Histories->find('all', ['conditions' => ['user_id' => $user->id]])->order(['history_order' => 'asc']);
 
@@ -86,6 +93,7 @@ class PortfoliosController extends AppController
         $this->set('works', $works);
         $this->set('others', $others);
         $this->set('contacts', $contacts);
+        $this->set('mailForms', $mailForms);
         $this->set('username', $username);
         // 画像のパス
         $this->set('profile_image', $this->profile_image($profile, $username));

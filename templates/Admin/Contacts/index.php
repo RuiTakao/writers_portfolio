@@ -31,7 +31,9 @@ use Cake\Core\Configure;
 
 <div class="button-container default">
     <?= $this->Html->link('お問い合わせ項目', ['action' => 'list'], ['class' => 'button default']) ?>
-    <?= $this->Html->link('メールフォーム', ['controller' => 'MailForms', 'action' => 'order'], ['class' => 'button default']) ?>
+    <?php if (false) : ?>
+        <?= $this->Html->link('メールフォーム', ['controller' => 'MailForms', 'action' => 'order'], ['class' => 'button default']) ?>
+    <?php endif; ?>
 </div>
 
 <ul class="mt32">

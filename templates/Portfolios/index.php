@@ -173,15 +173,17 @@ use Cake\I18n\FrozenTime;
                             </li>
                         <?php endforeach; ?>
 
-                        <li class="contacts_content_item">
-                            <h3 class="content_title">お問い合わせフォーム</h3>
-                            <?= $this->Form->create(null, ['url' => ['controller' => 'Portfolios', 'action' => 'index', $username]]) ?>
-                            <?= $this->Form->control('name', ['label' => '名前']) ?>
-                            <?= $this->Form->control('email', ['label' => 'メールアドレス']) ?>
-                            <?= $this->Form->control('content', ['type' => 'textarea', 'label' => 'お問い合わせ内容']) ?>
-                            <?= $this->Form->submit('送信') ?>
-                            <?= $this->Form->end() ?>
-                        </li>
+                        <?php if ($mailForms->view_mail_form) : ?>
+                            <li class="contacts_content_item">
+                                <h3 class="content_title">お問い合わせフォーム</h3>
+                                <?= $this->Form->create(null, ['url' => ['controller' => 'Portfolios', 'action' => 'index', $username]]) ?>
+                                <?= $this->Form->control('name', ['label' => '名前']) ?>
+                                <?= $this->Form->control('email', ['label' => 'メールアドレス']) ?>
+                                <?= $this->Form->control('content', ['type' => 'textarea', 'label' => 'お問い合わせ内容']) ?>
+                                <?= $this->Form->submit('送信') ?>
+                                <?= $this->Form->end() ?>
+                            </li>
+                        <?php endif; ?>
                     </ul>
                 </div>
             </div>
