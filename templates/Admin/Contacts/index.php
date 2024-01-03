@@ -7,7 +7,7 @@ use Cake\Core\Configure;
 
 <?php /* ページタイトル */ ?>
 <?php $this->start('page_title') ?>
-お問い合わせ
+お問い合わせの設定
 <?php $this->end() ?>
 
 <?php /* css */ ?>
@@ -30,7 +30,7 @@ use Cake\Core\Configure;
 <?php $this->end() ?>
 
 <div class="button-container default">
-    <?= $this->Html->link('お問い合わせ項目', ['action' => 'list'], ['class' => 'button default']) ?>
+    <?= $this->Html->link('お問い合わせ項目の設定', ['action' => 'list'], ['class' => 'button default']) ?>
     <?php if (false) : ?>
         <?= $this->Html->link('メールフォーム', ['controller' => 'MailForms', 'action' => 'order'], ['class' => 'button default']) ?>
     <?php endif; ?>

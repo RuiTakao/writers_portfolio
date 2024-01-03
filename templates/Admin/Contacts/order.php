@@ -4,7 +4,7 @@ use Cake\Core\Configure;
 ?>
 
 <?php /* ページタイトル */ ?>
-<?php $this->start('page_title') ?><?= $this->Html->link('お問い合わせ', ['action' => 'index']) ?> > <?= $this->Html->link('お問い合わせ項目', ['action' => 'list']) ?> > 表示順変更
+<?php $this->start('page_title') ?><?= $this->Html->link('お問い合わせの設定', ['action' => 'index']) ?> > <?= $this->Html->link('お問い合わせ項目の設定', ['action' => 'list']) ?> > 表示順変更
 <?php $this->end() ?>
 
 <?php /* css */ ?>

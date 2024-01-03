@@ -22,7 +22,7 @@ if (!empty($contact->image_path) && file_exists($root_image_path)) {
 
 <?php /* ページタイトル */ ?>
 <?php $this->start('page_title') ?>
-<?= $this->Html->link('お問い合わせ', ['action' => 'index']) ?> > <?= $this->Html->link('お問い合わせ項目', ['action' => 'list']) ?> > <?= empty($contact->id) ? '追加' : '編集' ?>
+<?= $this->Html->link('お問い合わせの設定', ['action' => 'index']) ?> > <?= $this->Html->link('お問い合わせ項目の設定', ['action' => 'list']) ?> > <?= empty($contact->id) ? '追加' : '編集' ?>
 <?php $this->end() ?>
 
 <?php /* css */ ?>

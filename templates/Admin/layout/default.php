@@ -23,7 +23,7 @@ use App\Model\Table\ProfilesTable;
 <body>
     <header class="header">
         <div class="header_container">
-            <h1 class="header_title">Writers Portfolio 管理画面</h1>
+            <h1 class="header_title">Smart Profile 管理画面</h1>
             <ul class="header_nav_list">
                 <li class="header_nav_item">
                     <p class="header_nav_text">ログインユーザー：<?= $auth->username ?></p>
@@ -49,7 +49,7 @@ use App\Model\Table\ProfilesTable;
                 <li class="aside_navi_item"><?= $this->Html->link('経歴の設定', ['controller' => 'Histories', 'action' => 'index']) ?></li>
                 <li class="aside_navi_item"><?= $this->Html->link('実績の設定', ['controller' => 'Works', 'action' => 'index']) ?></li>
                 <li class="aside_navi_item"><?= $this->Html->link('その他の設定', ['controller' => 'Others', 'action' => 'index']) ?></li>
-                <li class="aside_navi_item"><?= $this->Html->link('お問い合わせ', ['controller' => 'Contacts', 'action' => 'index']) ?></li>
+                <li class="aside_navi_item"><?= $this->Html->link('お問い合わせの設定', ['controller' => 'Contacts', 'action' => 'index']) ?></li>
             </ul>
         </nav>
     </aside>
