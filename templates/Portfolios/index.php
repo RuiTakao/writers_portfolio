@@ -180,7 +180,9 @@ use Cake\I18n\FrozenTime;
                                 <?= $this->Form->control('name', ['label' => '名前']) ?>
                                 <?= $this->Form->control('email', ['label' => 'メールアドレス']) ?>
                                 <?= $this->Form->control('content', ['type' => 'textarea', 'label' => 'お問い合わせ内容']) ?>
-                                <?= $this->Form->submit('送信') ?>
+                                <div class="form_submit">
+                                    <?= $this->Form->submit('送信') ?>
+                                </div>
                                 <?= $this->Form->end() ?>
                             </li>
                         <?php endif; ?>

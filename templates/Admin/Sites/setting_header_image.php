@@ -28,7 +28,7 @@ if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IM
         .fv_bg_cover {
             background: #fff;
         }
-        
+
         .fv_bg {
             background-image: url('<?= $this->Url->image($header_image) ?>');
         }
@@ -53,6 +53,47 @@ if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IM
             margin-top: 80px;
         }
 
+        /*********************************
+	margin
+*********************************/
+
+        /** top **/
+        .mt4 {
+            margin-top: 4px;
+        }
+
+        .mt8 {
+            margin-top: 8px;
+        }
+
+        .mt16 {
+            margin-top: 16px;
+        }
+
+        .mt32 {
+            margin-top: 32px;
+        }
+
+        .mt64 {
+            margin-top: 64px;
+        }
+
+        /** left **/
+        .ml8 {
+            margin-left: 8px;
+        }
+
+        .ml16 {
+            margin-left: 16px;
+        }
+
+        .ml32 {
+            margin-left: 32px;
+        }
+
+        /*********************************
+	button
+*********************************/
         .button {
             background: #0284BB;
             color: #fff;
@@ -61,11 +102,81 @@ if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IM
             outline: none;
             text-decoration: none;
             text-align: center;
-            display: block;
-            width: 156px;
-            margin-top: 64px;
-            padding: 4px;
             font-weight: 600;
+            font-size: 14px;
+            display: block;
+        }
+
+        .button.delete {
+            background: #DC3545;
+        }
+
+        .button:hover {
+            opacity: .8;
+        }
+
+        .button:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        /** デフォルトボタン */
+        .button.default {
+            width: 192px;
+            padding: 8px;
+        }
+
+        .button-container.default {
+            display: flex;
+            gap: 16px;
+        }
+
+        /** アイテムボタン */
+        .button.item {
+            padding: 2px 8px;
+        }
+
+        .button-container.item {
+            display: flex;
+            gap: 8px;
+        }
+
+        .button-container.item.table {
+            display: flex;
+            gap: 8px;
+            margin: 0 auto;
+        }
+
+        .button.back {
+            border: 1px solid #C3C4C7;
+            background: #fff;
+            color: #333;
+        }
+
+        .button.back:hover {
+            background: #efefef;
+        }
+
+        .list-button-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .flex {
+            display: flex;
+            width: 100%;
+        }
+
+        .flex_left {
+            width: 70%;
+            border-right: 1px solid #333;
+            padding-right: 16px;
+        }
+
+        .flex_right {
+            margin-top: 32px;
+            margin-left: 16px;
         }
     </style>
     <title>管理画面 - Writers Portfolio</title>
@@ -88,31 +199,38 @@ if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IM
             'url' => ['controller' => 'Sites', 'action' => 'settingHeaderImage'],
             'onSubmit' => 'return checkEdit()'
         ]) ?>
-        <?= $this->Form->control('header_image_positionX', [
-            'type' => 'range',
-            'id' => 'positionX',
-            'label' => '画像の左右の調整',
-            'min' => 0,
-            'max' => 100,
-            'value' => h($site->header_image_positionX)
-        ]) ?>
-        <?= $this->Form->control('header_image_positionY', [
-            'type' => 'range',
-            'id' => 'positionY',
-            'label' => '画像の上下の調整',
-            'min' => 0,
-            'max' => 100,
-            'value' => h($site->header_image_positionY)
-        ]) ?>
-        <?= $this->Form->control('header_image_opacity', [
-            'type' => 'range',
-            'id' => 'opacity',
-            'label' => '背景画像透過度',
-            'min' => 0,
-            'max' => 100,
-            'value' => h($site->header_image_opacity)
-        ]) ?>
-        <?= $this->Form->submit(Configure::read('button.save'),  ['class' => 'button']) ?>
+        <div class="flex">
+            <div class="flex_left">
+                <?= $this->Form->control('header_image_positionX', [
+                    'type' => 'range',
+                    'id' => 'positionX',
+                    'label' => '画像の左右の調整',
+                    'min' => 0,
+                    'max' => 100,
+                    'value' => h($site->header_image_positionX)
+                ]) ?>
+                <?= $this->Form->control('header_image_positionY', [
+                    'type' => 'range',
+                    'id' => 'positionY',
+                    'label' => '画像の上下の調整',
+                    'min' => 0,
+                    'max' => 100,
+                    'value' => h($site->header_image_positionY)
+                ]) ?>
+                <?= $this->Form->control('header_image_opacity', [
+                    'type' => 'range',
+                    'id' => 'opacity',
+                    'label' => '背景画像透過度',
+                    'min' => 0,
+                    'max' => 100,
+                    'value' => h($site->header_image_opacity)
+                ]) ?>
+            </div>
+            <div class="flex_right">
+                <?= $this->Form->submit(Configure::read('button.save'),  ['class' => 'button default']) ?>
+                <?= $this->Html->link('戻る', ['action' => 'editHeaderImage'], ['class' => 'button default back mt16']) ?>
+            </div>
+        </div>
         <?= $this->Form->end() ?>
 
     </div>

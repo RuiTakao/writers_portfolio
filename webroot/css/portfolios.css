@@ -385,11 +385,11 @@ textarea:focus {
     box-shadow: 0px 0px 6px #8FBBFC;
 }
 
-.submit {
+.form_submit {
     margin-top: 16px;
 }
 
-.submit input {
+.form_submit input {
     width: 100%;
     color: #fff;
     border: none;
