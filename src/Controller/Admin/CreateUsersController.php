@@ -298,7 +298,7 @@ class CreateUsersController extends AppController
             }
 
             // ユーザープロフィール画像保存用ディレクトリ作成
-            mkdir(WWW_ROOT . 'img/users/profiles/' . $this->AuthUser->username);
+            $this->_createDir(WWW_ROOT . 'img/users/profiles/' . $this->AuthUser->username);
 
             // コミット
             $connection->commit();
@@ -348,10 +348,10 @@ class CreateUsersController extends AppController
             }
 
             // ファビコン画像保存用ディレクトリ作成
-            mkdir(WWW_ROOT . 'img/users/sites/favicons/' . $this->AuthUser->username);
+            $this->_createDir(WWW_ROOT . 'img/users/sites/favicons/' . $this->AuthUser->username);
 
             // ヘッダー画像保存用ディレクトリ作成
-            mkdir(WWW_ROOT . 'img/users/sites/headers/' . $this->AuthUser->username);
+            $this->_createDir(WWW_ROOT . 'img/users/sites/headers/' . $this->AuthUser->username);
 
             // コミット
             $connection->commit();
@@ -374,7 +374,15 @@ class CreateUsersController extends AppController
     private function createWork()
     {
         // 実績画像保存用ディレクトリ作成
-        mkdir(WWW_ROOT . 'img/users/works/' . $this->AuthUser->username);
+        $path = WWW_ROOT . 'img/users/works/' . $this->AuthUser->username;
+        if (file_exists($path)) {
+            foreach (glob($path . '/*') as $dir) {
+                array_map('unlink', glob($dir . '/*.*'));
+                rmdir($dir);
+            }
+            rmdir($path);
+        }
+        mkdir($path);
     }
 
     /**
@@ -432,6 +440,13 @@ class CreateUsersController extends AppController
     {
         // 実績画像保存用ディレクトリ作成
         $path = WWW_ROOT . 'img/users/contacts/' . $this->AuthUser->username;
+        if (file_exists($path)) {
+            foreach (glob($path . '/*') as $dir) {
+                array_map('unlink', glob($dir . '/*.*'));
+                rmdir($dir);
+            }
+            rmdir($path);
+        }
         mkdir($path);
 
         // お問い合わせテーブルLINE作成
@@ -498,7 +513,7 @@ class CreateUsersController extends AppController
             return false;
         }
 
-        mkdir($path . '/' . $ret->id);
+        $this->_createDir($path . '/' . $ret->id);
         copy(WWW_ROOT . 'img/contact/line_qr.jpg', $path . '/' . $ret->id . '/line_qr.jpg');
 
         return true;
@@ -556,16 +571,31 @@ class CreateUsersController extends AppController
             return false;
         }
 
-        mkdir($path . '/' . $ret->id);
+        $this->_createDir($path . '/' . $ret->id);
         copy(WWW_ROOT . 'img/contact/contact_img.jpg', $path . '/' . $ret->id . '/contact_img.jpg');
 
         return true;
     }
 
     /**
+     * ディレクトリ作成
+     * 
+     * @param string $path
+     * @return void 
+     */
+    private function _createDir($path)
+    {
+        if (file_exists($path)) {
+            array_map('unlink', glob($path . '/*.*'));
+            rmdir($path);
+        }
+        mkdir($path);
+    }
+
+    /**
      * パスワード暗号化
      * 
-     * @param string
+     * @param string $password
      * @return ?string 
      */
     private function _setPassword(string $password): ?string

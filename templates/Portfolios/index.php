@@ -150,7 +150,7 @@ use Cake\I18n\FrozenTime;
         <?php if ($site->contacts_flg) : ?>
             <div class="contacts section">
                 <div class="container">
-                    <h2 class="section_title">お問い合わせ</h2>
+                    <h2 class="section_title"><?= h($site->contacts_title) ?></h2>
                     <ul class="contacts_content_list">
 
                         <?php foreach ($contacts as $contact) : ?>
