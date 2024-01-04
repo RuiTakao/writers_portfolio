@@ -22,7 +22,7 @@ use Cake\I18n\FrozenTime;
 
             .fv_bg {
                 background-image: url('<?= $this->Url->image($header_image) ?>');
-                background-position: <?= $site->header_image_positionX . '%, ' . $site->header_image_positionY . '%' ?>;
+                background-position: <?= $site->header_image_positionX . '% ' . $site->header_image_positionY . '%' ?>;
             }
         </style>
     <?php endif; ?>
@@ -109,7 +109,7 @@ use Cake\I18n\FrozenTime;
                                 <?php endif; ?>
 
                                 <?php if (!empty($work->url_path)) : ?>
-                                    <p class="works_content_link">関連リンク：<a href="<?= h($work->url_path) ?>"><?= !empty($work->url_name) ? h($work->url_name) : h($work->url_path) ?></a></p>
+                                    <p class="works_content_link">関連リンク：<a href="<?= h($work->url_path) ?>" target="_blank"><?= !empty($work->url_name) ? h($work->url_name) : h($work->url_path) ?></a></p>
                                 <?php endif; ?>
 
                                 <p class="works_content_detail"><?= !empty($work->overview) ? nl2br(h($work->overview)) : '' ?></p>

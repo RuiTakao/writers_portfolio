@@ -540,7 +540,7 @@ class CreateUsersController extends AppController
             'url_name' => 'お問い合わせリンク',
             'url_path' => Router::url('/'),
             'image_path' => 'contact_img.jpg',
-            'contacts_order' => 1,
+            'contacts_order' => 2,
             'user_id' => $this->AuthUser->id
         ];
 

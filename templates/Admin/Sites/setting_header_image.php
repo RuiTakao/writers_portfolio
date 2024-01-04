@@ -25,6 +25,10 @@ if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IM
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?= $this->Html->css('portfolios') ?>
     <style>
+        .fv_bg_cover {
+            background: #fff;
+        }
+        
         .fv_bg {
             background-image: url('<?= $this->Url->image($header_image) ?>');
         }
