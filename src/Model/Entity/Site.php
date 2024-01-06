@@ -27,6 +27,9 @@ use Cake\ORM\Entity;
  * @property bool $others_flg
  * @property string $contacts_title
  * @property bool $contacts_flg
+ * @property bool $header_image_sp_path
+ * @property bool $header_image_sp_positionX
+ * @property bool $header_image_sp_positionY
  *
  * @property \App\Model\Entity\User $user
  */
@@ -60,6 +63,9 @@ class Site extends Entity
         'others_flg' => true,
         'contacts_title' => true,
         'contacts_flg' => true,
+        'header_image_sp_path' => true,
+        'header_image_sp_positionX' => true,
+        'header_image_sp_positionY' => true,
         'user' => true,
     ];
 }

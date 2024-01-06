@@ -8,11 +8,13 @@
 /webroot/img/users/profiles/*
 /webroot/img/users/sites/favicons/*
 /webroot/img/users/sites/headers/*
+/webroot/img/users/sites/headers_sp/*
 /webroot/img/users/works/*
 /webroot/img/users/contacts/*
 !/webroot/img/users/profiles/.gitkeep
 !/webroot/img/users/sites/favicons/.gitkeep
 !/webroot/img/users/sites/headers/.gitkeep
+!/webroot/img/users/sites/headers_sp/.gitkeep
 !/webroot/img/users/works/.gitkeep
 !/webroot/img/users/contacts/.gitkeep
 

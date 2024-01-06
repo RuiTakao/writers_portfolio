@@ -2,20 +2,6 @@
 
 use App\Model\Table\SitesTable;
 use Cake\Core\Configure;
-
-// ファビコン画像が設定されているか判定
-if (is_null($site->favicon_path) || !file_exists(SitesTable::ROOT_FAVICON_PATH)) {
-    $favicon_path = SitesTable::BLANK_FAVICON_PATH;
-} else {
-    $favicon_path = SitesTable::FAVICON_PATH . $auth->username . '/' . $site->favicon_path;
-}
-
-// ヘッダー画像が設定されているか判定
-if (is_null($site->header_image_path) || !file_exists(SitesTable::ROOT_HEADER_IMAGE_PATH)) {
-    $header_image_path = SitesTable::BLANK_HEADER_ADMIN_IMAGE_PATH;
-} else {
-    $header_image_path = SitesTable::HEADER_IMAGE_PATH . $auth->username . '/' . $site->header_image_path;
-}
 ?>
 
 <?php /* ページタイトル */ ?>
@@ -89,7 +75,10 @@ if (is_null($site->header_image_path) || !file_exists(SitesTable::ROOT_HEADER_IM
         <th>ファビコン<?= $this->Html->link(Configure::read('button.image_edit'), ['action' => 'editFaviconImage'], ['class' => 'button']) ?></th>
     </tr>
     <tr>
-        <td><?= $this->Html->image($favicon_path, ['class' => 'square_image']) ?></td>
+        <td>
+            <?php $path = SitesTable::FAVICON_PATH . $auth->username . '/' . $site->favicon_path ?>
+            <?= !empty($site->favicon_path) ? $this->Html->image($path, ['class' => 'rectangle_image']) : "未設定" ?>
+        </td>
     </tr>
 </table>
 
@@ -98,6 +87,21 @@ if (is_null($site->header_image_path) || !file_exists(SitesTable::ROOT_HEADER_IM
         <th>ヘッダー画像<?= $this->Html->link(Configure::read('button.image_edit'), ['action' => 'editHeaderImage'], ['class' => 'button']) ?></th>
     </tr>
     <tr>
-        <td><?= $this->Html->image($header_image_path, ['class' => 'rectangle_image']) ?></td>
+        <td>
+            <?php $path = SitesTable::HEADER_IMAGE_PATH . $auth->username . '/' . $site->header_image_path ?>
+            <?= !empty($site->header_image_path) ? $this->Html->image($path, ['class' => 'rectangle_image']) : "未設定" ?>
+        </td>
+    </tr>
+</table>
+
+<table class="current_content_table mt32">
+    <tr>
+        <th>ヘッダー画像（モバイルサイズ）<?= $this->Html->link(Configure::read('button.image_edit'), ['action' => 'editHeaderSpImage'], ['class' => 'button']) ?></th>
+    </tr>
+    <tr>
+        <td>
+            <?php $path = SitesTable::HEADER_IMAGE_SP_PATH . $auth->username . '/' . $site->header_image_sp_path ?>
+            <?= !empty($site->header_image_sp_path) ? $this->Html->image($path, ['class' => 'rectangle_image']) : "未設定" ?>
+        </td>
     </tr>
 </table>

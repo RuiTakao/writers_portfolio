@@ -2,13 +2,6 @@
 
 use App\Model\Table\SitesTable;
 use Cake\Core\Configure;
-
-// ファビコン画像が設定されているか判定
-if (is_null($site->favicon_path) || !file_exists(SitesTable::ROOT_FAVICON_PATH)) {
-    $favicon_path = SitesTable::BLANK_FAVICON_PATH;
-} else {
-    $favicon_path = SitesTable::FAVICON_PATH . $auth->username . '/' . $site->favicon_path;
-}
 ?>
 
 <?php /* ページタイトル */ ?>
@@ -44,5 +37,8 @@ if (is_null($site->favicon_path) || !file_exists(SitesTable::ROOT_FAVICON_PATH))
 <?= $this->Form->end() ?>
 
 <?php /* current data */ ?>
-<p class="current_content_title mt64">現在の画像</p>
-<?= $this->Html->image($favicon_path, ['class' => 'square_image']) ?>
+<?php if (!empty($site->favicon_path)) : ?>
+    <p class="current_content_title mt64">現在の画像</p>
+    <?php $path = SitesTable::FAVICON_PATH . $auth->username . '/' . $site->favicon_path ?>
+    <?= $this->Html->image($path, ['class' => 'square_image']) ?>
+<?php endif; ?>

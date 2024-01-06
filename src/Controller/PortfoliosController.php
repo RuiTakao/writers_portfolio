@@ -99,6 +99,7 @@ class PortfoliosController extends AppController
         $this->set('profile_image', $this->profile_image($profile, $username));
         $this->set('favicon', $this->favicon($site, $username));
         $this->set('header_image', $this->header_image($site, $username));
+        $this->set('header_image_sp', $this->header_image_sp($site, $username));
         $this->set('works_image_path', WorksTable::WORKS_IMAGE_PATH);
         $this->set('root_works_image_path', WorksTable::ROOT_WORKS_IMAGE_PATH);
         $this->set('contacts_image_path', ContactsTable::WORKS_IMAGE_PATH);
@@ -153,6 +154,23 @@ class PortfoliosController extends AppController
             return null;
         } else {
             return SitesTable::HEADER_IMAGE_PATH . $username . '/' . $entity->header_image_path;
+        }
+    }
+
+    /**
+     * ヘッダー画像（モバイルサイズ）
+     *
+     * @param object $entity
+     * @param string $username
+     *
+     * @return string|null
+     */
+    private function header_image_sp($entity, $username)
+    {
+        if (is_null($entity->header_image_sp_path) || !file_exists(SitesTable::ROOT_HEADER_IMAGE_SP_PATH)) {
+            return null;
+        } else {
+            return SitesTable::HEADER_IMAGE_SP_PATH . $username . '/' . $entity->header_image_sp_path;
         }
     }
 }

@@ -45,8 +45,6 @@ class ProfilesTable extends Table
     const PROFILE_IMAGE_PATH = 'users/profiles/';
     // ルートからの相対パス
     const ROOT_PROFILE_IMAGE_PATH = WWW_ROOT . 'img/' . self::PROFILE_IMAGE_PATH;
-    // ブランク画像のパス
-    const BLANK_PROFILE_IMAGE_PATH = 'blank/profiles/profile_blank_image.jpg';
 
     /**
      * Initialize method

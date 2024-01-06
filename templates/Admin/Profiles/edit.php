@@ -2,13 +2,6 @@
 
 use App\Model\Table\ProfilesTable;
 use Cake\Core\Configure;
-
-// プロフィール画像が設定されているか判定
-if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IMAGE_PATH)) {
-    $profile_image_path = ProfilesTable::BLANK_PROFILE_IMAGE_PATH;
-} else {
-    $profile_image_path = ProfilesTable::PROFILE_IMAGE_PATH .  $auth->username . '/' . $profile->image_path;
-}
 ?>
 
 <?php /* ページタイトル */ ?>
@@ -18,13 +11,18 @@ if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IM
 
 <?php /* css */ ?>
 <?php $this->start('css') ?>
-<?= $this->Html->css('admin/profiles') ?>
+<?= $this->Html->css(['all.min', 'admin/profiles']) ?>
 <?php $this->end() ?>
 
 <?= $this->Form->create($profile, ['url' => ['controller' => 'Profiles', 'action' => 'edit'], 'onSubmit' => 'return checkEdit()']) ?>
 
 <div class="flex">
-    <?= $this->Html->image($profile_image_path, ['class' => 'square_image']) ?>
+    <?php if (!empty($profile->image_path)) : ?>
+        <?php $path = ProfilesTable::PROFILE_IMAGE_PATH .  $auth->username . '/' . $profile->image_path ?>
+        <?= $this->Html->image($path, ['class' => 'square_image']) ?>
+    <?php else : ?>
+        <div class="fv_user_icon"><i class="fa-solid fa-user"></i></div>
+    <?php endif; ?>
     <ul class="flex_right">
         <li><?= $this->Form->control('view_name', ['label' => '名前（表示名）', 'value' => $profile->view_name]) ?></li>
         <li class="mt16"><?= $this->Form->control('works', ['label' => '肩書（仕事名）', 'value' => $profile->works]) ?></li>

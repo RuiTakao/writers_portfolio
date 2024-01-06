@@ -3,6 +3,20 @@
     align-items: flex-end;
 }
 
+.fv_user_icon {
+    width: 192px;
+    height: 192px;
+    background: #eee;
+}
+
+.fv_user_icon i {
+    display: block;
+    border: 3px solid #fff;
+    text-align: center;
+    font-size: 108px;
+    line-height: 186px;
+}
+
 .flex_right {
     width: calc(100% - 192px + 32px);
 }

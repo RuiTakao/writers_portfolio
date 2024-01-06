@@ -7,17 +7,17 @@ use Cake\Core\Configure;
 $setting_button_class = "button default";
 $path = null;
 $setting_action = "#";
-if (empty($site->header_image_path)) {
+if (empty($site->header_image_sp_path)) {
     $setting_button_class .= ' disabled';
 } else {
-    $path = SitesTable::HEADER_IMAGE_PATH . $auth->username . '/' . $site->header_image_path;
+    $path = SitesTable::HEADER_IMAGE_SP_PATH . $auth->username . '/' . $site->header_image_sp_path;
     $setting_action = "settingHeaderImage";
 }
 ?>
 
 <?php /* ページタイトル */ ?>
 <?php $this->start('page_title') ?>
-<?= $this->Html->link('サイト設定', ['action' => 'index']) ?> > ヘッダー画像編集
+<?= $this->Html->link('サイト設定', ['action' => 'index']) ?> > ヘッダー画像（モバイルサイズ）編集
 <?php $this->end() ?>
 
 <?php /* css */ ?>
@@ -36,11 +36,11 @@ if (empty($site->header_image_path)) {
 
 <?php /* form */ ?>
 <?= $this->Form->create($site, [
-    'url' => ['controller' => 'Sites', 'action' => 'editHeaderImage'],
+    'url' => ['controller' => 'Sites', 'action' => 'editHeaderSpImage'],
     'type' => 'file',
     'onSubmit' => 'return checkEdit()'
 ]) ?>
-<?= $this->Form->control('header_image_path', ['type' => 'file', 'class' => 'dropify', 'label' => false, 'required' => false]) ?>
+<?= $this->Form->control('header_image_sp_path', ['type' => 'file', 'class' => 'dropify', 'label' => false, 'required' => false]) ?>
 <div class="button-container default mt32">
     <?= $this->Form->submit(Configure::read('button.save'),  ['class' => 'button default']) ?>
     <?= $this->Html->link('ヘッダー画像の設定', ['action' => $setting_action], ['class' => $setting_button_class]) ?>

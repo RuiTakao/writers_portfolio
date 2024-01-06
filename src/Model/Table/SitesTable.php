@@ -44,13 +44,11 @@ class SitesTable extends Table
     // 画像表示用のパス
     const FAVICON_PATH = 'users/sites/favicons/';
     const HEADER_IMAGE_PATH = 'users/sites/headers/';
+    const HEADER_IMAGE_SP_PATH = 'users/sites/headers_sp/';
     // ルートからの相対パス
     const ROOT_FAVICON_PATH = WWW_ROOT . 'img/' . self::FAVICON_PATH;
     const ROOT_HEADER_IMAGE_PATH = WWW_ROOT . 'img/' . self::HEADER_IMAGE_PATH;
-    // ブランク画像のパス
-    const BLANK_FAVICON_PATH = 'blank/sites/favicons/favicon_blank.jpg';
-    const BLANK_HEADER_IMAGE_PATH = 'blank/sites/headers/header_blank_image.jpg';
-    const BLANK_HEADER_ADMIN_IMAGE_PATH = 'blank/sites/headers/header_admin_blank_image.jpg';
+    const ROOT_HEADER_IMAGE_SP_PATH = WWW_ROOT . 'img/' . self::HEADER_IMAGE_SP_PATH;
 
     /**
      * Initialize method

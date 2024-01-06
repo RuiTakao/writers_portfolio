@@ -300,6 +300,101 @@ class SitesController extends AppController
         $this->set('site', $site);
     }
 
+     /**
+     * ヘッダー画像（モバイルサイズ）の設定
+     * 
+     * @return Response|void|null
+     * 
+     * @throws DatabaseException;
+     */
+    public function editHeaderSpImage()
+    {
+        // ログインidからデータ取得
+        $site = $this->Sites->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])->first();
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            // postの場合
+
+            // requestデータ取得
+            $data = $this->request->getData();
+
+            if ($data['header_image_sp_path']->getClientFilename() == '' || $data['header_image_sp_path']->getClientMediaType() == '') {
+
+                // アップロードされていなければ処理せず変更完了
+                $this->session->write('message', Configure::read('alert_message.complete'));
+                return $this->redirect(['action' => 'index']);
+            }
+
+            // 画像データを変数に格納
+            $image = $data['header_image_sp_path'];
+
+            // 画像名をリクエストデータに代入
+            $data['header_image_sp_path'] = $data['header_image_sp_path']->getClientFilename();
+
+            // バリデーション
+            if (!in_array(pathinfo($data['header_image_sp_path'])['extension'], Configure::read('extensions'))) {
+                $site->setError('header_image_sp_path', [SitesTable::INVALID_EXTENSION_MESSAGE]);
+                $this->session->write('message', Configure::read('alert_message.input_faild'));
+                $this->set('site', $site);
+                return;
+            }
+
+            // エンティティにデータセット
+            $site = $this->Sites->patchEntity($site, $data);
+            if ($site->getErrors()) {
+                $this->session->write('message', Configure::read('alert_message.input_faild'));
+                return $this->redirect(['action' => 'index']);
+            }
+
+            try {
+
+                // トランザクション開始
+                $this->connection->begin();
+
+                // 排他制御
+                $this->Sites
+                    ->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])
+                    ->modifier('SQL_NO_CACHE')
+                    ->epilog('FOR UPDATE')
+                    ->first();
+
+                // 登録処理
+                $ret = $this->Sites->save($site);
+                if (!$ret) {
+                    throw new DatabaseException;
+                }
+
+                // ディレクトリに画像保存
+                $path = SitesTable::ROOT_HEADER_IMAGE_SP_PATH . $this->AuthUser->username;
+                if (file_exists($path)) {
+                    // 既に画像がある場合は削除
+                    foreach (glob($path . '/*') as $old_file) {
+                        unlink($old_file);
+                    }
+                    $image->moveTo($path . '/' . $data['header_image_sp_path']);
+                } else {
+                    throw new DatabaseException;
+                }
+
+                // コミット
+                $this->connection->commit();
+            } catch (DatabaseException $e) {
+
+                // ロールバック
+                $this->connection->rollback();
+                $this->session->write('message', Configure::read('alert_message.system_faild'));
+                return $this->redirect(['action' => 'index']);
+            }
+
+            // 完了画面へリダイレクト
+            $this->session->write('message', Configure::read('alert_message.complete'));
+            return $this->redirect(['action' => 'index']);
+        }
+
+        // viewに渡すデータセット
+        $this->set('site', $site);
+    }
+
     /**
      * ヘッダー画像の設定（詳細）
      * 
@@ -308,6 +403,69 @@ class SitesController extends AppController
      * @throws DatabaseException
      */
     public function settingHeaderImage()
+    {
+        $this->viewBuilder()->disableAutoLayout();
+
+        // ログインidからデータ取得
+        $site = $this->Sites->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])->first();
+        $profile = $this->Profiles->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])->first();
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            // postの場合
+
+            // requestデータ取得
+            $data = $this->request->getData();
+
+            // エンティティにデータセット
+            $site = $this->Sites->patchEntity($site, $data);
+            if ($site->getErrors()) {
+                $this->session->write('message', Configure::read('alert_message.input_faild'));
+                return $this->redirect(['action' => 'index']);
+            }
+
+            try {
+
+                // トランザクション開始
+                $this->connection->begin();
+
+                // 排他制御
+                $this->Sites
+                    ->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])
+                    ->modifier('SQL_NO_CACHE')
+                    ->epilog('FOR UPDATE')
+                    ->first();
+
+                // 登録処理
+                $ret = $this->Sites->save($site);
+                if (!$ret) {
+                    throw new DatabaseException;
+                }
+
+                // コミット
+                $this->connection->commit();
+            } catch (DatabaseException $e) {
+
+                // ロールバック
+                $this->connection->rollback();
+                $this->session->write('message', Configure::read('alert_message.system_faild'));
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->session->write('message', Configure::read('alert_message.complete'));
+        }
+
+        // viewに渡すデータセット
+        $this->set('site', $site);
+        $this->set('profile', $profile);
+    }
+
+    /**
+     * ヘッダー画像の設定（モバイルサイズ）（詳細）
+     * 
+     * @return Response|void|null
+     * 
+     * @throws DatabaseException
+     */
+    public function settingHeaderSpImage()
     {
         $this->viewBuilder()->disableAutoLayout();
 

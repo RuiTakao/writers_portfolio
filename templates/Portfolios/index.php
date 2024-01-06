@@ -25,6 +25,16 @@ use Cake\I18n\FrozenTime;
                 background-position: <?= $site->header_image_positionX . '% ' . $site->header_image_positionY . '%' ?>;
             }
         </style>
+        <?php if (!empty($header_image_sp)) : ?>
+            <style>
+                @media screen and (max-width: 640px) {
+                    .fv_bg {
+                        background-image: url('<?= $this->Url->image($header_image_sp) ?>');
+                        background-position: <?= $site->header_image_sp_positionX . '% ' . $site->header_image_sp_positionY . '%' ?>;
+                    }
+                }
+            </style>
+        <?php endif; ?>
     <?php endif; ?>
     <title><?= h($site->site_title) ?></title>
 </head>

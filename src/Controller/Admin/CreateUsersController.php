@@ -353,6 +353,9 @@ class CreateUsersController extends AppController
             // ヘッダー画像保存用ディレクトリ作成
             $this->_createDir(WWW_ROOT . 'img/users/sites/headers/' . $this->AuthUser->username);
 
+            // ヘッダー画像（モバイルサイズ）保存用ディレクトリ作成
+            $this->_createDir(WWW_ROOT . 'img/users/sites/headers_sp/' . $this->AuthUser->username);
+
             // コミット
             $connection->commit();
         } catch (DatabaseException $e) {
