@@ -3,19 +3,6 @@
 use App\Model\Table\ProfilesTable;
 use App\Model\Table\SitesTable;
 use Cake\Core\Configure;
-
-if (is_null($site->header_image_path) || !file_exists(SitesTable::ROOT_HEADER_IMAGE_PATH)) {
-    $header_image = SitesTable::BLANK_HEADER_IMAGE_PATH;
-} else {
-    $header_image = SitesTable::HEADER_IMAGE_PATH . $auth->username . '/' . $site->header_image_path;
-}
-
-if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IMAGE_PATH)) {
-    $profile_image = ProfilesTable::BLANK_PROFILE_IMAGE_PATH;
-} else {
-    $profile_image = ProfilesTable::PROFILE_IMAGE_PATH .  $auth->username . '/' . $profile->image_path;
-}
-
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -23,160 +10,11 @@ if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IM
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <?= $this->Html->css('portfolios') ?>
+    <?= $this->Html->css(['all.min', 'portfolios', 'admin/setting_header']) ?>
+    <?php $path = SitesTable::HEADER_IMAGE_PATH . $auth->username . '/' . $site->header_image_path ?>
     <style>
-        .fv_bg_cover {
-            background: #fff;
-        }
-
         .fv_bg {
-            background-image: url('<?= $this->Url->image($header_image) ?>');
-        }
-
-        .input label {
-            display: block;
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .input input {
-            display: block;
-            width: 100%;
-            margin-top: 8px;
-        }
-
-        .input:not(:first-child) {
-            margin-top: 32px;
-        }
-
-        .container {
-            margin-top: 80px;
-        }
-
-        /*********************************
-	margin
-*********************************/
-
-        /** top **/
-        .mt4 {
-            margin-top: 4px;
-        }
-
-        .mt8 {
-            margin-top: 8px;
-        }
-
-        .mt16 {
-            margin-top: 16px;
-        }
-
-        .mt32 {
-            margin-top: 32px;
-        }
-
-        .mt64 {
-            margin-top: 64px;
-        }
-
-        /** left **/
-        .ml8 {
-            margin-left: 8px;
-        }
-
-        .ml16 {
-            margin-left: 16px;
-        }
-
-        .ml32 {
-            margin-left: 32px;
-        }
-
-        /*********************************
-	button
-*********************************/
-        .button {
-            background: #0284BB;
-            color: #fff;
-            cursor: pointer;
-            border: none;
-            outline: none;
-            text-decoration: none;
-            text-align: center;
-            font-weight: 600;
-            font-size: 14px;
-            display: block;
-        }
-
-        .button.delete {
-            background: #DC3545;
-        }
-
-        .button:hover {
-            opacity: .8;
-        }
-
-        .button:focus {
-            outline: none;
-            box-shadow: none;
-        }
-
-        /** デフォルトボタン */
-        .button.default {
-            width: 192px;
-            padding: 8px;
-        }
-
-        .button-container.default {
-            display: flex;
-            gap: 16px;
-        }
-
-        /** アイテムボタン */
-        .button.item {
-            padding: 2px 8px;
-        }
-
-        .button-container.item {
-            display: flex;
-            gap: 8px;
-        }
-
-        .button-container.item.table {
-            display: flex;
-            gap: 8px;
-            margin: 0 auto;
-        }
-
-        .button.back {
-            border: 1px solid #C3C4C7;
-            background: #fff;
-            color: #333;
-        }
-
-        .button.back:hover {
-            background: #efefef;
-        }
-
-        .list-button-container {
-            display: flex;
-            justify-content: space-between;
-            gap: 8px;
-        }
-
-        .flex {
-            display: flex;
-            width: 100%;
-        }
-
-        .flex_left {
-            width: 70%;
-            border-right: 1px solid #333;
-            padding-right: 16px;
-        }
-
-        .flex_right {
-            margin-top: 32px;
-            margin-left: 16px;
+            background-image: url('<?= $this->Url->image($path) ?>');
         }
     </style>
     <title>管理画面 - Writers Portfolio</title>
@@ -187,7 +25,14 @@ if (is_null($profile->image_path) || !file_exists(ProfilesTable::ROOT_PROFILE_IM
         <div class="fv_bg_cover" id="bg_cover"></div>
         <div class="fv_bg" id="bg"></div>
         <div class="fv_container">
-            <div class="fv_user_icon"><?= $this->Html->image($profile_image) ?></div>
+            <div class="fv_user_icon">
+                <?php if (!empty($profile->image_path)) : ?>
+                    <?php $path = ProfilesTable::PROFILE_IMAGE_PATH .  $auth->username . '/' . $profile->image_path ?>
+                    <?= $this->Html->image($profile_image) ?>
+                <?php else : ?>
+                    <i class="fa-solid fa-user"></i>
+                <?php endif; ?>
+            </div>
             <div class="fv_user_content">
                 <p class="fv_user_name"><?= h($profile->view_name) ?></p>
                 <p class="fv_user_works"><?= h($profile->works) ?></p>

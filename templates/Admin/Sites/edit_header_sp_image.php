@@ -11,7 +11,7 @@ if (empty($site->header_image_sp_path)) {
     $setting_button_class .= ' disabled';
 } else {
     $path = SitesTable::HEADER_IMAGE_SP_PATH . $auth->username . '/' . $site->header_image_sp_path;
-    $setting_action = "settingHeaderImage";
+    $setting_action = "settingHeaderSpImage";
 }
 ?>
 
