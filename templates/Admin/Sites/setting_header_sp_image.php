@@ -73,7 +73,7 @@ use Cake\Core\Configure;
             <div class="fv_user_icon">
                 <?php if (!empty($profile->image_path)) : ?>
                     <?php $path = ProfilesTable::PROFILE_IMAGE_PATH .  $auth->username . '/' . $profile->image_path ?>
-                    <?= $this->Html->image($profile_image) ?>
+                    <?= $this->Html->image($path) ?>
                 <?php else : ?>
                     <i class="fa-solid fa-user"></i>
                 <?php endif; ?>
