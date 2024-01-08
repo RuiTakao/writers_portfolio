@@ -53,7 +53,12 @@ if (!empty($contact->image_path) && file_exists($root_image_path)) {
     'onSubmit' => (is_null($contact->id)) ? 'return checkAdd()' : 'return checkEdit()'
 ]) ?>
 <?= $this->Form->control('title', ['label' => 'タイトル', 'required' => false]) ?>
-<?= $this->Form->control('overview', ['type' => 'textarea', 'label' => '概要', 'required' => false, 'style' => 'height: 114px;']) ?>
+<?= $this->Form->control('overview', [
+    'type' => 'textarea',
+    'label' => '概要',
+    'required' => false,
+    'rows' => 6
+]) ?>
 
 <?php if (is_null($contact->id)) : ?>
     <?php /* 新規登録 */ ?>

@@ -18,19 +18,19 @@ use Cake\Core\Configure;
 
 <div class="flex">
     <?php if (!empty($profile->image_path)) : ?>
-        <?php $path = ProfilesTable::PROFILE_IMAGE_PATH .  $auth->username . '/' . $profile->image_path ?>
+        <?php $path = ProfilesTable::PROFILE_IMAGE_PATH .  h($auth->username) . '/' . h($profile->image_path) ?>
         <?= $this->Html->image($path, ['class' => 'square_image']) ?>
     <?php else : ?>
         <div class="fv_user_icon"><i class="fa-solid fa-user"></i></div>
     <?php endif; ?>
     <ul class="flex_right">
-        <li><?= $this->Form->control('view_name', ['label' => '名前（表示名）', 'value' => $profile->view_name]) ?></li>
-        <li class="mt16"><?= $this->Form->control('works', ['label' => '肩書（仕事名）', 'value' => $profile->works]) ?></li>
+        <li><?= $this->Form->control('view_name', ['label' => '名前（表示名）']) ?></li>
+        <li class="mt16"><?= $this->Form->control('works', ['label' => '肩書（仕事名）']) ?></li>
     </ul>
 </div>
 
 <div class="mt32">
-    <?= $this->Form->control('profile_text', ['type' => 'textarea', 'label' => 'プロフィール文', 'value' => $profile->profile_text]) ?>
+    <?= $this->Form->control('profile_text', ['type' => 'textarea', 'label' => 'プロフィール文', 'rows' => 9]) ?>
 </div>
 
 <div class="button-container default mt16">

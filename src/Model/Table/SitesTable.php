@@ -87,23 +87,23 @@ class SitesTable extends Table
 
         $validator
             ->scalar('site_description')
-            ->maxLength('site_description', 255, 'サイトディスクリプションは255文字以内で入力してください。')
+            ->maxLength('site_description', 400, 'サイトディスクリプションは400文字以内で入力してください。')
             ->allowEmptyString('site_description');
 
         $validator
             ->scalar('histories_title')
             ->notBlank('histories_title', '経歴のタイトル名は必須です。')
-            ->maxLength('histories_title', 255, '経歴のタイトル名は50文字以内で入力してください。');
+            ->maxLength('histories_title', 50, '経歴のタイトル名は50文字以内で入力してください。');
 
         $validator
             ->scalar('works_title')
             ->notBlank('works_title', '実績のタイトル名は必須です。')
-            ->maxLength('works_title', 255, '実績のタイトル名は50文字以内で入力してください。');
+            ->maxLength('works_title', 50, '実績のタイトル名は50文字以内で入力してください。');
 
         $validator
             ->scalar('others_title')
             ->notBlank('others_title', 'その他のタイトル名は必須です。')
-            ->maxLength('others_title', 255, 'その他のタイトル名は50文字以内で入力してください。');
+            ->maxLength('others_title', 50, 'その他のタイトル名は50文字以内で入力してください。');
 
         return $validator;
     }

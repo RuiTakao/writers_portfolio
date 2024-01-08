@@ -81,7 +81,7 @@ class WorksTable extends Table
             ->notBlank('title', 'タイトルは必須です。');
 
         $validator
-            ->maxLength('overview', 255, '概要は255文字以内で入力してください。')
+            ->maxLength('overview', 400, '概要は400文字以内で入力してください。')
             ->notBlank('overview', '概要は必須です。');
 
         $validator

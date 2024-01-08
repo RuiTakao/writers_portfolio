@@ -85,7 +85,7 @@ class ProfilesTable extends Table
             ->allowEmptyString('works');
 
         $validator
-            ->maxLength('profile_text', 255, 'プロフィール文は255文字以内で入力してください。')
+            ->maxLength('profile_text', 400, 'プロフィール文は400文字以内で入力してください。')
             ->allowEmptyString('profile_text');
 
         $validator

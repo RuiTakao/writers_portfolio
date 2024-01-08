@@ -42,7 +42,7 @@ use Cake\Core\Configure;
          * 画像パス
          */
         // 各々のユーザーによって決まるパス
-        $self_path = $auth->username . '/' . $item->id . '/' . $item->image_path;
+        $self_path = h($auth->username) . '/' . $item->id . '/' . h($item->image_path);
         // ルートからのパス
         $root_image_path = WorksTable::ROOT_WORKS_IMAGE_PATH . $self_path;
         // webrootからのパス
