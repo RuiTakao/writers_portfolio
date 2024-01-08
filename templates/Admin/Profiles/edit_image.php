@@ -39,6 +39,6 @@ use Cake\Core\Configure;
 <?php /* current data */ ?>
 <?php if (!empty($profile->image_path)) : ?>
     <p class="current_content_title mt64">現在の画像</p>
-    <?php $path = ProfilesTable::PROFILE_IMAGE_PATH .  $auth->username . '/' . $profile->image_path ?>
+    <?php $path = ProfilesTable::PROFILE_IMAGE_PATH .  h($auth->username) . '/' . h($profile->image_path) ?>
     <?= $this->Html->image($path, ['class' => 'square_image']) ?>
 <?php endif; ?>

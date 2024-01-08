@@ -7,7 +7,7 @@ use Cake\Core\Configure;
  * 画像パス
  */
 // 各々のユーザーによって決まるパス
-$self_path = $auth->username . '/' . $work->id . '/' . $work->image_path;
+$self_path = h($auth->username) . '/' . $work->id . '/' . h($work->image_path);
 // ルートからのパス
 $root_image_path = WorksTable::ROOT_WORKS_IMAGE_PATH . $self_path;
 // webrootからのパス
@@ -53,7 +53,12 @@ if (!empty($work->image_path) && file_exists($root_image_path)) {
     'onSubmit' => (is_null($work->id)) ? 'return checkAdd()' : 'return checkEdit()'
 ]) ?>
 <?= $this->Form->control('title', ['label' => 'タイトル', 'required' => false]) ?>
-<?= $this->Form->control('overview', ['type' => 'textarea', 'label' => '概要', 'required' => false, 'style' => 'height: 114px;']) ?>
+<?= $this->Form->control('overview', [
+    'type' => 'textarea',
+    'label' => '概要',
+    'required' => false,
+    'rows' => 6
+]) ?>
 
 <?php if (is_null($work->id)) : ?>
     <?php /* 新規登録 */ ?>
@@ -94,9 +99,9 @@ if (!empty($work->image_path) && file_exists($root_image_path)) {
             <td>
                 <?php
                 if (!empty($work->url_name)) {
-                    echo $this->Html->link($work->url_name, $work->url_path, ['target' => '_blank']) . '<span class="ml8">(' . $work->url_path . ')</span>';
+                    echo $this->Html->link(h($work->url_name), h($work->url_path), ['target' => '_blank']) . '<span class="ml8">(' . h($work->url_path) . ')</span>';
                 } elseif (!empty($work->url_path)) {
-                    echo  $this->Html->link($work->url_path, $work->url_path, ['target' => '_blank']);
+                    echo  $this->Html->link(h($work->url_path), h($work->url_path), ['target' => '_blank']);
                 } else {
                     echo "未設定";
                 }

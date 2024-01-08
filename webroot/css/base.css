@@ -159,11 +159,13 @@ select {
 input,
 textarea {
     width: 100%;
+}
+
+input {
     padding: 4px;
 }
 
 textarea {
-    height: 114px;
     padding: 8px;
 }
 

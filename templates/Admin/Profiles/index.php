@@ -17,7 +17,7 @@ use Cake\Core\Configure;
 <div class="flex">
     <div class="flex_left">
         <?php if (!empty($profile->image_path)) : ?>
-            <?php $path = ProfilesTable::PROFILE_IMAGE_PATH .  $auth->username . '/' . $profile->image_path ?>
+            <?php $path = ProfilesTable::PROFILE_IMAGE_PATH .  h($auth->username) . '/' . h($profile->image_path) ?>
             <?= $this->Html->image($path, ['class' => 'square_image']) ?>
         <?php else : ?>
             <div class="fv_user_icon"><i class="fa-solid fa-user"></i></div>

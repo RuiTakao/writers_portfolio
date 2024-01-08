@@ -83,7 +83,7 @@ class ContactsTable extends Table
 
         $validator
             ->scalar('overview')
-            ->maxLength('overview', 255)
+            ->maxLength('overview', 400)
             ->allowEmptyString('overview');
 
         $validator

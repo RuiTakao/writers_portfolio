@@ -29,7 +29,12 @@ use Cake\Core\Configure;
     </tr>
     <tr>
         <th class="column_title">ディスクリプション</th>
-        <td><?= $this->Form->control('site_description', ['type' => 'textarea', 'label' => false, 'value' => $site->site_description]) ?></td>
+        <td><?= $this->Form->control('site_description', [
+                'type' => 'textarea',
+                'label' => false,
+                'value' => $site->site_description,
+                'rows' => 6
+            ]) ?></td>
     </tr>
     <tr>
         <th colspan="3" class="table_head">各項目のタイトルの表示テキスト</th>
@@ -55,35 +60,47 @@ use Cake\Core\Configure;
     </tr>
     <tr>
         <th class="column_title">経歴</th>
-        <td><?= $this->Form->radio('histories_flg', [
-                ['value' => 1, 'text' => '表示'],
-                ['value' => 0, 'text' => '非表示']
-        ],
-        ['value' => $site->histories_flg]) ?></td>
+        <td><?= $this->Form->radio(
+                'histories_flg',
+                [
+                    ['value' => 1, 'text' => '表示'],
+                    ['value' => 0, 'text' => '非表示']
+                ],
+                ['value' => $site->histories_flg]
+            ) ?></td>
     </tr>
     <tr>
         <th class="column_title">実績</th>
-        <td><?= $this->Form->radio('works_flg', [
-            ['value' => 1, 'text' => '表示'],
-            ['value' => 0, 'text' => '非表示']
-        ],
-        ['value' => $site->works_flg]) ?></td>
+        <td><?= $this->Form->radio(
+                'works_flg',
+                [
+                    ['value' => 1, 'text' => '表示'],
+                    ['value' => 0, 'text' => '非表示']
+                ],
+                ['value' => $site->works_flg]
+            ) ?></td>
     </tr>
     <tr>
         <th class="column_title">その他</th>
-        <td><?= $this->Form->radio('others_flg', [
-            ['value' => 1, 'text' => '表示'],
-            ['value' => 0, 'text' => '非表示']
-        ],
-        ['value' => $site->others_flg]) ?></td>
+        <td><?= $this->Form->radio(
+                'others_flg',
+                [
+                    ['value' => 1, 'text' => '表示'],
+                    ['value' => 0, 'text' => '非表示']
+                ],
+                ['value' => $site->others_flg]
+            ) ?></td>
     </tr>
     <tr>
         <th class="column_title">お問い合わせ</th>
-        <td><?= $this->Form->radio('contacts_flg', [
-            ['value' => 1, 'text' => '表示'],
-            ['value' => 0, 'text' => '非表示']
-        ],
-        ['value' => $site->contacts_flg]) ?></td>
+        <td><?= $this->Form->radio(
+                'contacts_flg',
+                [
+                    ['value' => 1, 'text' => '表示'],
+                    ['value' => 0, 'text' => '非表示']
+                ],
+                ['value' => $site->contacts_flg]
+            ) ?></td>
     </tr>
 </table>
 <div class="button-container default mt16">
