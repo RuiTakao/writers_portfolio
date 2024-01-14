@@ -24,6 +24,7 @@ class DesignsController extends AppController
 
         // 利用するモデル
         $this->Designs = TableRegistry::getTableLocator()->get('Designs');
+        $this->Profiles = TableRegistry::getTableLocator()->get('Profiles');
 
         // トランザクション変数
         $this->connection = $this->Designs->getConnection();
@@ -99,6 +100,26 @@ class DesignsController extends AppController
 
     public function editFvImagePc()
     {
+        return $this->editFvImage('fv_image_path', DesignsTable::ROOT_FV_IMAGE_PC_PATH);
+    }
+
+    public function editFvImageSp()
+    {
+        return $this->editFvImage('fv_image_sp_path', DesignsTable::ROOT_FV_IMAGE_SP_PATH);
+    }
+
+    public function settingFvImagePc()
+    {
+        return $this->settingFvImage();
+    }
+
+    public function settingFvImageSp()
+    {
+        return $this->settingFvImage();
+    }
+
+    private function editFvImage($column, $root_path)
+    {
         // ログインidからデータ取得
         $design = $this->Designs->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])->first();
 
@@ -108,7 +129,7 @@ class DesignsController extends AppController
             // requestデータ取得
             $data = $this->request->getData();
 
-            if ($data['fv_image_path']->getClientFilename() == '' || $data['fv_image_path']->getClientMediaType() == '') {
+            if ($data[$column]->getClientFilename() == '' || $data[$column]->getClientMediaType() == '') {
 
                 // アップロードされていなければ処理せず変更完了
                 $this->session->write('message', Configure::read('alert_message.complete'));
@@ -116,14 +137,14 @@ class DesignsController extends AppController
             }
 
             // 画像データを変数に格納
-            $image = $data['fv_image_path'];
+            $image = $data[$column];
 
             // 画像名をリクエストデータに代入
-            $data['fv_image_path'] = $data['fv_image_path']->getClientFilename();
+            $data[$column] = $data[$column]->getClientFilename();
 
             // バリデーション
-            if (!in_array(pathinfo($data['fv_image_path'])['extension'], Configure::read('extensions'))) {
-                $design->setError('fv_image_path', Configure::read('alert_message.file_extensions_faild'));
+            if (!in_array(pathinfo($data[$column])['extension'], Configure::read('extensions'))) {
+                $design->setError($column, Configure::read('alert_message.file_extensions_faild'));
                 $this->session->write('message', Configure::read('alert_message.input_faild'));
                 $this->set('design', $design);
                 return;
@@ -155,13 +176,13 @@ class DesignsController extends AppController
                 }
 
                 // ディレクトリに画像保存
-                $path = DesignsTable::ROOT_FV_IMAGE_PC_PATH . $this->AuthUser->username;
+                $path = $root_path . $this->AuthUser->username;
                 if (file_exists($path)) {
                     // 既に画像がある場合は削除
                     foreach (glob($path . '/*') as $old_file) {
                         unlink($old_file);
                     }
-                    $image->moveTo($path . '/' . $data['fv_image_path']);
+                    $image->moveTo($path . '/' . $data[$column]);
                 } else {
                     throw new DatabaseException;
                 }
@@ -185,37 +206,19 @@ class DesignsController extends AppController
         $this->set('design', $design);
     }
 
-    public function editFvImageSp()
+    private function settingFvImage()
     {
+        $this->viewBuilder()->disableAutoLayout();
+
         // ログインidからデータ取得
         $design = $this->Designs->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])->first();
+        $profile = $this->Profiles->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])->first();
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             // postの場合
 
             // requestデータ取得
             $data = $this->request->getData();
-
-            if ($data['fv_image_sp_path']->getClientFilename() == '' || $data['fv_image_sp_path']->getClientMediaType() == '') {
-
-                // アップロードされていなければ処理せず変更完了
-                $this->session->write('message', Configure::read('alert_message.complete'));
-                return $this->redirect(['action' => 'index']);
-            }
-
-            // 画像データを変数に格納
-            $image = $data['fv_image_sp_path'];
-
-            // 画像名をリクエストデータに代入
-            $data['fv_image_sp_path'] = $data['fv_image_sp_path']->getClientFilename();
-
-            // バリデーション
-            if (!in_array(pathinfo($data['fv_image_sp_path'])['extension'], Configure::read('extensions'))) {
-                $design->setError('fv_image_sp_path', Configure::read('alert_message.file_extensions_faild'));
-                $this->session->write('message', Configure::read('alert_message.input_faild'));
-                $this->set('design', $design);
-                return;
-            }
 
             // エンティティにデータセット
             $design = $this->Designs->patchEntity($design, $data);
@@ -242,18 +245,6 @@ class DesignsController extends AppController
                     throw new DatabaseException;
                 }
 
-                // ディレクトリに画像保存
-                $path = DesignsTable::ROOT_FV_IMAGE_SP_PATH . $this->AuthUser->username;
-                if (file_exists($path)) {
-                    // 既に画像がある場合は削除
-                    foreach (glob($path . '/*') as $old_file) {
-                        unlink($old_file);
-                    }
-                    $image->moveTo($path . '/' . $data['fv_image_sp_path']);
-                } else {
-                    throw new DatabaseException;
-                }
-
                 // コミット
                 $this->connection->commit();
             } catch (DatabaseException $e) {
@@ -263,13 +254,11 @@ class DesignsController extends AppController
                 $this->session->write('message', Configure::read('alert_message.system_faild'));
                 return $this->redirect(['action' => 'index']);
             }
-
-            // 完了画面へリダイレクト
             $this->session->write('message', Configure::read('alert_message.complete'));
-            return $this->redirect(['action' => 'index']);
         }
 
         // viewに渡すデータセット
         $this->set('design', $design);
+        $this->set('profile', $profile);
     }
 }

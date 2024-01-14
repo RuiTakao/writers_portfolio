@@ -44,6 +44,11 @@ class DesignsTable extends Table
         self::FV_DESIGN_PATTERN_X_TEXT_FIRST,
     ];
 
+    // TOPレイアウトセッティングOK
+    const FV_DESIGN_SETTING_PERMISSION = [
+        self::FV_DESIGN_PATTERN_DEFAULT,
+    ];
+
     // TOPのレイアウトのテキスト
     const FV_DESIGN_TEXT = [
         self::FV_DESIGN_PATTERN_DEFAULT => "デフォルトのTOPレイアウト",

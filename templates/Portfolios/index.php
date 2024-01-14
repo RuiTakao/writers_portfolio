@@ -1,5 +1,6 @@
 <?php
 
+use App\Model\Table\DesignsTable;
 use Cake\I18n\FrozenTime;
 ?>
 <!DOCTYPE html>
@@ -14,6 +15,15 @@ use Cake\I18n\FrozenTime;
     <meta name="description" content="<?= h($site->site_description) ?>">
     <?= $this->Html->css(['all.min', 'portfolios', 'fv/pattern' . $design->fv_design]) ?>
     <?php if (!empty($fv_image_pc)) : ?>
+        <?php
+        if (in_array($design->fv_design, DesignsTable::FV_DESIGN_SETTING_PERMISSION)) {
+            $background_position_pc = $design->fv_image_positionX . '% ' . $design->fv_image_positionY . '%';
+            $background_position_sp = $design->fv_image_sp_positionX    . '% ' . $design->fv_image_sp_positionY . '%';
+        } else {
+            $background_position_pc = 'center';
+            $background_position_sp = 'center';
+        }
+        ?>
         <style>
             .fv_bg_cover {
                 background: #fff;
@@ -22,19 +32,18 @@ use Cake\I18n\FrozenTime;
 
             .fv_bg {
                 background-image: url('<?= $this->Url->image($fv_image_pc) ?>');
-                background-position: <?= $design->fv_image_positionX . '% ' . $design->fv_image_positionY . '%' ?>;
+                background-position: <?= $background_position_pc ?>;
             }
-        </style>
-        <?php if (!empty($fv_image_sp)) : ?>
-            <style>
-                @media screen and (max-width: 640px) {
-                    .fv_bg {
-                        background-image: url('<?= $this->Url->image($fv_image_sp) ?>');
-                        background-position: <?= $design->fv_image_sp_positionX	. '% ' . $design->fv_image_sp_positionY . '%' ?>;
-                    }
+
+            <?php if (!empty($fv_image_sp)) : ?>@media screen and (max-width: 640px) {
+                .fv_bg {
+                    background-image: url('<?= $this->Url->image($fv_image_sp) ?>');
+                    background-position: <?= $background_position_sp ?>;
                 }
-            </style>
-        <?php endif; ?>
+            }
+
+            <?php endif; ?>
+        </style>
     <?php endif; ?>
     <title><?= h($site->site_title) ?></title>
 </head>

@@ -11,7 +11,11 @@ if (empty($design->fv_image_sp_path)) {
     $setting_button_class .= ' disabled';
 } else {
     $path = DesignsTable::FV_IMAGE_SP_PATH . $auth->username . '/' . $design->fv_image_sp_path;
-    $setting_action = "settingHeaderImage";
+    if (!in_array($design->fv_design, DesignsTable::FV_DESIGN_SETTING_PERMISSION)) {
+        $setting_button_class .= ' disabled';
+    } else {
+        $setting_action = "settingFvImageSp";
+    }
 }
 ?>
 
