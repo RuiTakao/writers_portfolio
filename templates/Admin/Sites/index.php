@@ -81,27 +81,3 @@ use Cake\Core\Configure;
         </td>
     </tr>
 </table>
-
-<table class="current_content_table mt32">
-    <tr>
-        <th>ヘッダー画像<?= $this->Html->link(Configure::read('button.image_edit'), ['action' => 'editHeaderImage'], ['class' => 'button']) ?></th>
-    </tr>
-    <tr>
-        <td>
-            <?php $path = SitesTable::HEADER_IMAGE_PATH . $auth->username . '/' . $site->header_image_path ?>
-            <?= !empty($site->header_image_path) ? $this->Html->image($path, ['class' => 'rectangle_image']) : "未設定" ?>
-        </td>
-    </tr>
-</table>
-
-<table class="current_content_table mt32">
-    <tr>
-        <th>ヘッダー画像（モバイルサイズ）<?= $this->Html->link(Configure::read('button.image_edit'), ['action' => 'editHeaderSpImage'], ['class' => 'button']) ?></th>
-    </tr>
-    <tr>
-        <td>
-            <?php $path = SitesTable::HEADER_IMAGE_SP_PATH . $auth->username . '/' . $site->header_image_sp_path ?>
-            <?= !empty($site->header_image_sp_path) ? $this->Html->image($path, ['class' => 'rectangle_image']) : "未設定" ?>
-        </td>
-    </tr>
-</table>

@@ -34,21 +34,12 @@ class SitesTable extends Table
 {
 
     /**
-     * メッセージ
-     */
-    const INVALID_EXTENSION_MESSAGE = '拡張子が無効です。';
-
-    /**
      * 画像ファイルパス
      */
     // 画像表示用のパス
-    const FAVICON_PATH = 'users/sites/favicons/';
-    const HEADER_IMAGE_PATH = 'users/sites/headers/';
-    const HEADER_IMAGE_SP_PATH = 'users/sites/headers_sp/';
+    const FAVICON_PATH = 'users/favicon/';
     // ルートからの相対パス
     const ROOT_FAVICON_PATH = WWW_ROOT . 'img/' . self::FAVICON_PATH;
-    const ROOT_HEADER_IMAGE_PATH = WWW_ROOT . 'img/' . self::HEADER_IMAGE_PATH;
-    const ROOT_HEADER_IMAGE_SP_PATH = WWW_ROOT . 'img/' . self::HEADER_IMAGE_SP_PATH;
 
     /**
      * Initialize method
