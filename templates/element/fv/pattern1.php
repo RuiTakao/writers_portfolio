@@ -15,3 +15,9 @@
         </div>
     </div>
 </div>
+
+<div class="pr">
+    <div class="container">
+        <div class="pr_content"><?= !empty($profile->profile_text) ? nl2br(h($profile->profile_text)) : '' ?></div>
+    </div>
+</div>

@@ -12,25 +12,25 @@ use Cake\I18n\FrozenTime;
         <link rel="icon" href="<?= $this->Url->image($favicon) ?>">
     <?php endif; ?>
     <meta name="description" content="<?= h($site->site_description) ?>">
-    <?= $this->Html->css(['all.min', 'portfolios']) ?>
-    <?php if (!empty($header_image)) : ?>
+    <?= $this->Html->css(['all.min', 'portfolios', 'fv/pattern' . $design->fv_design]) ?>
+    <?php if (!empty($fv_image_pc)) : ?>
         <style>
             .fv_bg_cover {
                 background: #fff;
-                opacity: <?= $site->header_image_opacity . '%' ?>;
+                opacity: 60%;
             }
 
             .fv_bg {
-                background-image: url('<?= $this->Url->image($header_image) ?>');
-                background-position: <?= $site->header_image_positionX . '% ' . $site->header_image_positionY . '%' ?>;
+                background-image: url('<?= $this->Url->image($fv_image_pc) ?>');
+                background-position: <?= $design->fv_image_positionX . '% ' . $design->fv_image_positionY . '%' ?>;
             }
         </style>
-        <?php if (!empty($header_image_sp)) : ?>
+        <?php if (!empty($fv_image_sp)) : ?>
             <style>
                 @media screen and (max-width: 640px) {
                     .fv_bg {
-                        background-image: url('<?= $this->Url->image($header_image_sp) ?>');
-                        background-position: <?= $site->header_image_sp_positionX . '% ' . $site->header_image_sp_positionY . '%' ?>;
+                        background-image: url('<?= $this->Url->image($fv_image_sp) ?>');
+                        background-position: <?= $design->fv_image_sp_positionX	. '% ' . $design->fv_image_sp_positionY . '%' ?>;
                     }
                 }
             </style>
@@ -41,13 +41,9 @@ use Cake\I18n\FrozenTime;
 
 <body>
     <main class="main">
-        <?= $this->element('fv/pattern1') ?>
 
-        <div class="pr">
-            <div class="container">
-                <div class="pr_content"><?= !empty($profile->profile_text) ? nl2br(h($profile->profile_text)) : '' ?></div>
-            </div>
-        </div>
+        <?php /* ファーストビュー */ ?>
+        <?= $this->element('fv/pattern' . $design->fv_design) ?>
 
         <?php /* 経歴 */ ?>
         <?php if ($site->histories_flg) : ?>
