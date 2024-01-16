@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Table;
@@ -65,6 +66,15 @@ class DesignsTable extends Table
     const ROOT_FV_IMAGE_PC_PATH = WWW_ROOT . 'img/' . self::FV_IMAGE_PC_PATH;
     const FV_IMAGE_SP_PATH = 'users/fv_sp/';
     const ROOT_FV_IMAGE_SP_PATH = WWW_ROOT . 'img/' . self::FV_IMAGE_SP_PATH;
+
+    /**
+     * TOPのデフォルト画像の数
+     */
+    const FV_DEFAULT_IMAGE_PATTERN_COUNT = 3;
+
+    // TOPのデフォルト画像のパス
+    const FV_DEFAULT_IMAGE_PATH = 'fv_default/';
+    const ROOT_FV_DEFAULT_IMAGE_PATH =  WWW_ROOT . 'img/' . self::FV_DEFAULT_IMAGE_PATH;
 
     /**
      * Initialize method

@@ -100,12 +100,82 @@ class DesignsController extends AppController
 
     public function editFvImagePc()
     {
-        return $this->editFvImage('fv_image_path', DesignsTable::ROOT_FV_IMAGE_PC_PATH);
     }
 
     public function editFvImageSp()
     {
         return $this->editFvImage('fv_image_sp_path', DesignsTable::ROOT_FV_IMAGE_SP_PATH);
+    }
+
+    public function editFvImagePcUpload()
+    {
+        return $this->editFvImage('fv_image_path', DesignsTable::ROOT_FV_IMAGE_PC_PATH);
+    }
+
+    public function editFvImagePcSelect()
+    {
+        // ログインidからデータ取得
+        $design = $this->Designs->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])->first();
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            // postの場合
+
+            // requestデータ取得
+            $data = $this->request->getData();
+
+            $image = 'default' . $data['default_image'] . '.jpg';
+            $data = ['fv_image_path' => $image];
+
+            // エンティティにデータセット
+            $design = $this->Designs->patchEntity($design, $data);
+
+            try {
+
+                // トランザクション開始
+                $this->connection->begin();
+
+                // 排他制御
+                $this->Designs
+                    ->find('all', ['conditions' => ['user_id' => $this->AuthUser->id]])
+                    ->modifier('SQL_NO_CACHE')
+                    ->epilog('FOR UPDATE')
+                    ->first();
+
+                // 登録処理
+                $ret = $this->Designs->save($design);
+                if (!$ret) {
+                    throw new DatabaseException();
+                }
+
+                // ディレクトリに画像保存
+                $path = DesignsTable::ROOT_FV_IMAGE_PC_PATH . $this->AuthUser->username;
+                if (file_exists($path)) {
+                    // 既に画像がある場合は削除
+                    foreach (glob($path . '/*') as $old_file) {
+                        unlink($old_file);
+                    }
+                    copy(DesignsTable::ROOT_FV_DEFAULT_IMAGE_PATH . $image, $path . '/' . $image);
+                } else {
+                    throw new DatabaseException;
+                }
+
+                // コミット
+                $this->connection->commit();
+            } catch (DatabaseException $e) {
+
+                // ロールバック
+                $this->connection->rollback();
+                $this->session->write('message', Configure::read('alert_message.system_faild'));
+                return $this->redirect(['action' => 'index']);
+            }
+
+            // 完了画面へリダイレクト
+            $this->session->write('message', Configure::read('alert_message.complete'));
+            return $this->redirect(['action' => 'index']);
+        }
+
+        // viewに渡すデータセット
+        $this->set('design', $design);
     }
 
     public function settingFvImagePc()
