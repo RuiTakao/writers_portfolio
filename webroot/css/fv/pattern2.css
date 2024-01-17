@@ -1,0 +1,107 @@
+/*********************************
+	ファーストビュー
+*********************************/
+.fv_bg {
+    max-width: 768px;
+    aspect-ratio: 3;
+    margin: 0 auto;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.fv_container {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+    margin-top: 32px;
+}
+
+.fv_user_icon {
+    width: 144px;
+    height: 144px;
+    background: #eee;
+    border-radius: 50%;
+}
+
+.fv_user_icon img {
+    width: 144px;
+    height: 144px;
+    display: block;
+    border-radius: 50%;
+}
+
+.fv_user_icon i {
+    display: block;
+    text-align: center;
+    font-size: 108px;
+    line-height: 192px;
+}
+
+.fv_user_name {
+    font-size: 22px;
+    color: #333;
+    font-weight: 600;
+    margin-top: 16px;
+}
+
+.fv_user_works {
+    font-size: 18px;
+    color: #333;
+    font-weight: 600;
+    margin-top: 8px;
+}
+
+@media screen and (max-width:960px) {
+    .fv_container {
+        width: 90%;
+    }
+}
+
+@media screen and (max-width:640px) {
+    .fv_container {
+        gap: 32px;
+    }
+
+    .fv_user_icon {
+        width: 96px;
+        height: 96px;
+    }
+
+    .fv_user_icon img {
+        width: 96px;
+        height: 96px;
+    }
+
+    .fv_user_icon i {
+        line-height: 144px;
+        font-size: 96px;
+    }
+
+    .fv_user_name {
+        font-size: 18px;
+    }
+
+    .fv_user_works {
+        font-size: 16px;
+        margin-top: 4px;
+    }
+}
+
+/*********************************
+	自己PR
+*********************************/
+.pr {
+    margin-top: 64px;
+}
+
+.pr_content {
+    font-size: 12px;
+    letter-spacing: .2em;
+    line-height: 1.8em;
+}
+
+@media screen and (max-width:640px) {
+    .pr {
+        margin-top: 32px;
+    }
+}

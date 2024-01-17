@@ -14,6 +14,7 @@ return [
         'delete' => '削除しました。',
         'input_faild' => '入力に不備があります。',
         'system_faild' => '処理に失敗しました。',
+        'file_extensions_faild' => '拡張子が無効です。',
     ],
     'extensions' => [
         'jpg',

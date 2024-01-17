@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Model\Table\ContactsTable;
+use App\Model\Table\DesignsTable;
 use App\Model\Table\HistoriesTable;
 use App\Model\Table\MailFormsTable;
 use App\Model\Table\OthersTable;
@@ -38,6 +39,7 @@ class PortfoliosController extends AppController
         $this->Users = TableRegistry::getTableLocator()->get('Users');
         $this->Profiles = TableRegistry::getTableLocator()->get('Profiles');
         $this->Sites = TableRegistry::getTableLocator()->get('Sites');
+        $this->Designs = TableRegistry::getTableLocator()->get('Designs');
         $this->Histories = TableRegistry::getTableLocator()->get('Histories');
         $this->Works = TableRegistry::getTableLocator()->get('Works');
         $this->Others = TableRegistry::getTableLocator()->get('Others');
@@ -76,6 +78,8 @@ class PortfoliosController extends AppController
 
         $site = $this->Sites->find('all', ['conditions' => ['user_id' => $user->id]])->first();
 
+        $design = $this->Designs->find('all', ['conditions' => ['user_id' => $user->id]])->first();
+
         $mailForms = $this->MailForms->find('all', ['conditions' => ['user_id' => $user->id]])->first();
 
         $histories = $this->Histories->find('all', ['conditions' => ['user_id' => $user->id]])->order(['history_order' => 'asc']);
@@ -89,6 +93,7 @@ class PortfoliosController extends AppController
         // viewに渡すデータセット
         $this->set('profile', $profile);
         $this->set('site', $site);
+        $this->set('design', $design);
         $this->set('histories', $histories);
         $this->set('works', $works);
         $this->set('others', $others);
@@ -98,8 +103,8 @@ class PortfoliosController extends AppController
         // 画像のパス
         $this->set('profile_image', $this->profile_image($profile, $username));
         $this->set('favicon', $this->favicon($site, $username));
-        $this->set('header_image', $this->header_image($site, $username));
-        $this->set('header_image_sp', $this->header_image_sp($site, $username));
+        $this->set('fv_image_pc', $this->fv_image_pc($design, $username));
+        $this->set('fv_image_sp', $this->fv_image_sp($design, $username));
         $this->set('works_image_path', WorksTable::WORKS_IMAGE_PATH);
         $this->set('root_works_image_path', WorksTable::ROOT_WORKS_IMAGE_PATH);
         $this->set('contacts_image_path', ContactsTable::WORKS_IMAGE_PATH);
@@ -148,12 +153,12 @@ class PortfoliosController extends AppController
      *
      * @return string|null
      */
-    private function header_image($entity, $username)
+    private function fv_image_pc($entity, $username)
     {
-        if (is_null($entity->header_image_path) || !file_exists(SitesTable::ROOT_HEADER_IMAGE_PATH)) {
+        if (is_null($entity->fv_image_path) || !file_exists(DesignsTable::ROOT_FV_IMAGE_PC_PATH)) {
             return null;
         } else {
-            return SitesTable::HEADER_IMAGE_PATH . $username . '/' . $entity->header_image_path;
+            return DesignsTable::FV_IMAGE_PC_PATH . $username . '/' . $entity->fv_image_path;
         }
     }
 
@@ -165,12 +170,12 @@ class PortfoliosController extends AppController
      *
      * @return string|null
      */
-    private function header_image_sp($entity, $username)
+    private function fv_image_sp($entity, $username)
     {
-        if (is_null($entity->header_image_sp_path) || !file_exists(SitesTable::ROOT_HEADER_IMAGE_SP_PATH)) {
+        if (is_null($entity->fv_image_sp_path) || !file_exists(DesignsTable::ROOT_FV_IMAGE_SP_PATH)) {
             return null;
         } else {
-            return SitesTable::HEADER_IMAGE_SP_PATH . $username . '/' . $entity->header_image_sp_path;
+            return DesignsTable::FV_IMAGE_SP_PATH . $username . '/' . $entity->fv_image_sp_path;
         }
     }
 }

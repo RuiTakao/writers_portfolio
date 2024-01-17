@@ -1,7 +1,7 @@
 <?php
 
 use App\Model\Table\ProfilesTable;
-use App\Model\Table\SitesTable;
+use App\Model\Table\DesignsTable;
 use Cake\Core\Configure;
 ?>
 <!DOCTYPE html>
@@ -10,8 +10,8 @@ use Cake\Core\Configure;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <?= $this->Html->css(['all.min', 'portfolios', 'admin/setting_header']) ?>
-    <?php $path = SitesTable::HEADER_IMAGE_SP_PATH . $auth->username . '/' . $site->header_image_sp_path ?>
+    <?= $this->Html->css(['all.min', 'portfolios', 'fv/pattern' . $design->fv_design, 'admin/setting_header']) ?>
+    <?php $path = DesignsTable::FV_IMAGE_SP_PATH . $auth->username . '/' . $design->fv_image_sp_path ?>
     <style>
         .fv_bg {
             background-image: url('<?= $this->Url->image($path) ?>');
@@ -85,32 +85,32 @@ use Cake\Core\Configure;
         </div>
     </div>
     <div class="container">
-        <?= $this->Form->create($site,  [
-            'url' => ['controller' => 'Sites', 'action' => 'settingHeaderSpImage'],
+        <?= $this->Form->create($design,  [
+            'url' => ['controller' => 'Designs', 'action' => 'settingFvImageSp'],
             'onSubmit' => 'return checkEdit()'
         ]) ?>
         <div class="flex">
             <div class="flex_left">
-                <?= $this->Form->control('header_image_sp_positionX', [
+                <?= $this->Form->control('fv_image_sp_positionX', [
                     'type' => 'range',
                     'id' => 'positionX',
                     'label' => '画像の左右の調整',
                     'min' => 0,
                     'max' => 100,
-                    'value' => h($site->header_image_sp_positionX)
+                    'value' => h($design->fv_image_sp_positionX)
                 ]) ?>
-                <?= $this->Form->control('header_image_sp_positionY', [
+                <?= $this->Form->control('fv_image_sp_positionY', [
                     'type' => 'range',
                     'id' => 'positionY',
                     'label' => '画像の上下の調整',
                     'min' => 0,
                     'max' => 100,
-                    'value' => h($site->header_image_sp_positionY)
+                    'value' => h($design->fv_image_sp_positionY)
                 ]) ?>
             </div>
             <div class="flex_right">
                 <?= $this->Form->submit(Configure::read('button.save'),  ['class' => 'button default']) ?>
-                <?= $this->Html->link('戻る', ['action' => 'editHeaderSpImage'], ['class' => 'button default back mt16']) ?>
+                <?= $this->Html->link('戻る', ['action' => 'editFvImageSp'], ['class' => 'button default back mt16']) ?>
             </div>
         </div>
         <?= $this->Form->end() ?>
@@ -125,9 +125,9 @@ use Cake\Core\Configure;
         const positionX = document.getElementById('positionX');
         const positionY = document.getElementById('positionY');
 
-        bg.style.backgroundPositionX = "<?= $site->header_image_sp_positionX . '%' ?>";
-        bg.style.backgroundPositionY = "<?= $site->header_image_sp_positionY . '%' ?>";
-        bg_cover.style.opacity = "<?= $site->header_image_opacity . '%' ?>";
+        bg.style.backgroundPositionX = "<?= $design->fv_image_sp_positionX . '%' ?>";
+        bg.style.backgroundPositionY = "<?= $design->fv_image_sp_positionY . '%' ?>";
+        bg_cover.style.opacity = "60%";
 
         positionX.addEventListener('input', () => {
             bg.style.backgroundPositionX = `${positionX.value}%`;

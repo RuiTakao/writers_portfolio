@@ -1,7 +1,7 @@
 <?php
 
 use App\Model\Table\ProfilesTable;
-use App\Model\Table\SitesTable;
+use App\Model\Table\DesignsTable;
 use Cake\Core\Configure;
 ?>
 <!DOCTYPE html>
@@ -10,8 +10,8 @@ use Cake\Core\Configure;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <?= $this->Html->css(['all.min', 'portfolios', 'admin/setting_header']) ?>
-    <?php $path = SitesTable::HEADER_IMAGE_PATH . $auth->username . '/' . $site->header_image_path ?>
+    <?= $this->Html->css(['all.min', 'portfolios', 'fv/pattern' . $design->fv_design, 'admin/setting_header']) ?>
+    <?php $path = DesignsTable::FV_IMAGE_PC_PATH . $auth->username . '/' . $design->fv_image_path ?>
     <style>
         .fv_bg {
             background-image: url('<?= $this->Url->image($path) ?>');
@@ -40,8 +40,8 @@ use Cake\Core\Configure;
         </div>
     </div>
     <div class="container">
-        <?= $this->Form->create($site,  [
-            'url' => ['controller' => 'Sites', 'action' => 'settingHeaderImage'],
+        <?= $this->Form->create($design,  [
+            'url' => ['controller' => 'Designs', 'action' => 'settingFvImagePc'],
             'onSubmit' => 'return checkEdit()'
         ]) ?>
         <div class="flex">
@@ -52,7 +52,7 @@ use Cake\Core\Configure;
                     'label' => '画像の左右の調整',
                     'min' => 0,
                     'max' => 100,
-                    'value' => h($site->header_image_positionX)
+                    'value' => h($design->fv_image_positionX)
                 ]) ?>
                 <?= $this->Form->control('header_image_positionY', [
                     'type' => 'range',
@@ -60,20 +60,12 @@ use Cake\Core\Configure;
                     'label' => '画像の上下の調整',
                     'min' => 0,
                     'max' => 100,
-                    'value' => h($site->header_image_positionY)
-                ]) ?>
-                <?= $this->Form->control('header_image_opacity', [
-                    'type' => 'range',
-                    'id' => 'opacity',
-                    'label' => '背景画像透過度',
-                    'min' => 0,
-                    'max' => 100,
-                    'value' => h($site->header_image_opacity)
+                    'value' => h($design->fv_image_positionY)
                 ]) ?>
             </div>
             <div class="flex_right">
                 <?= $this->Form->submit(Configure::read('button.save'),  ['class' => 'button default']) ?>
-                <?= $this->Html->link('戻る', ['action' => 'editHeaderImage'], ['class' => 'button default back mt16']) ?>
+                <?= $this->Html->link('戻る', ['action' => 'editFvImagePc'], ['class' => 'button default back mt16']) ?>
             </div>
         </div>
         <?= $this->Form->end() ?>
@@ -88,16 +80,17 @@ use Cake\Core\Configure;
         const positionX = document.getElementById('positionX');
         const positionY = document.getElementById('positionY');
 
-        bg.style.backgroundPositionX = "<?= $site->header_image_positionX . '%' ?>";
-        bg.style.backgroundPositionY = "<?= $site->header_image_positionY . '%' ?>";
-        bg_cover.style.opacity = "<?= $site->header_image_opacity . '%' ?>";
+        bg.style.backgroundPositionX = "<?= $design->fv_image_positionX . '%' ?>";
+        bg.style.backgroundPositionY = "<?= $design->fv_image_positionY . '%' ?>";
+        bg_cover.style.opacity = "60%";
 
-        opacity.addEventListener('input', () => {
-            bg_cover.style.opacity = `${opacity.value}%`;
-        });
         positionX.addEventListener('input', () => {
             bg.style.backgroundPositionX = `${positionX.value}%`;
         });
+        positionY.addEventListener('input', () => {
+            bg.style.backgroundPositionY = `${positionY.value}%`;
+        });
+
         positionY.addEventListener('input', () => {
             bg.style.backgroundPositionY = `${positionY.value}%`;
         });

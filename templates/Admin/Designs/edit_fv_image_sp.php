@@ -1,23 +1,27 @@
 <?php
 
-use App\Model\Table\SitesTable;
+use App\Model\Table\DesignsTable;
 use Cake\Core\Configure;
 
 // ヘッダー画像が設定されているか判定
 $setting_button_class = "button default";
 $path = null;
 $setting_action = "#";
-if (empty($site->header_image_sp_path)) {
+if (empty($design->fv_image_sp_path)) {
     $setting_button_class .= ' disabled';
 } else {
-    $path = SitesTable::HEADER_IMAGE_SP_PATH . $auth->username . '/' . $site->header_image_sp_path;
-    $setting_action = "settingHeaderSpImage";
+    $path = DesignsTable::FV_IMAGE_SP_PATH . $auth->username . '/' . $design->fv_image_sp_path;
+    if (!in_array($design->fv_design, DesignsTable::FV_DESIGN_SETTING_PERMISSION)) {
+        $setting_button_class .= ' disabled';
+    } else {
+        $setting_action = "settingFvImageSp";
+    }
 }
 ?>
 
 <?php /* ページタイトル */ ?>
 <?php $this->start('page_title') ?>
-<?= $this->Html->link('サイト設定', ['action' => 'index']) ?> > ヘッダー画像（モバイルサイズ）編集
+<?= $this->Html->link('サイトデザイン設定', ['action' => 'index']) ?> > サイトTOP画像（モバイル）編集
 <?php $this->end() ?>
 
 <?php /* css */ ?>
@@ -35,15 +39,15 @@ if (empty($site->header_image_sp_path)) {
 <?php $this->end() ?>
 
 <?php /* form */ ?>
-<?= $this->Form->create($site, [
-    'url' => ['controller' => 'Sites', 'action' => 'editHeaderSpImage'],
+<?= $this->Form->create($design, [
+    'url' => ['controller' => 'Designs', 'action' => 'editFvImageSp'],
     'type' => 'file',
     'onSubmit' => 'return checkEdit()'
 ]) ?>
-<?= $this->Form->control('header_image_sp_path', ['type' => 'file', 'class' => 'dropify', 'label' => false, 'required' => false]) ?>
+<?= $this->Form->control('fv_image_sp_path', ['type' => 'file', 'class' => 'dropify', 'label' => false, 'required' => false]) ?>
 <div class="button-container default mt32">
     <?= $this->Form->submit(Configure::read('button.save'),  ['class' => 'button default']) ?>
-    <?= $this->Html->link('ヘッダー画像の設定', ['action' => $setting_action], ['class' => $setting_button_class]) ?>
+    <?= $this->Html->link('サイトTOP画像の設定', ['action' => $setting_action], ['class' => $setting_button_class]) ?>
     <?= $this->Html->link('戻る', ['action' => 'index'], ['class' => 'button default back']) ?>
 </div>
 <?= $this->Form->end() ?>

@@ -11,12 +11,18 @@
 /webroot/img/users/sites/headers_sp/*
 /webroot/img/users/works/*
 /webroot/img/users/contacts/*
+/webroot/img/users/favicon/*
+/webroot/img/users/fv_pc/*
+/webroot/img/users/fv_sp/*
 !/webroot/img/users/profiles/.gitkeep
 !/webroot/img/users/sites/favicons/.gitkeep
 !/webroot/img/users/sites/headers/.gitkeep
 !/webroot/img/users/sites/headers_sp/.gitkeep
 !/webroot/img/users/works/.gitkeep
 !/webroot/img/users/contacts/.gitkeep
+!/webroot/img/users/favicon/.gitkeep
+!/webroot/img/users/fv_pc/.gitkeep
+!/webroot/img/users/fv_sp/.gitkeep
 
 # OS generated files #
 ######################

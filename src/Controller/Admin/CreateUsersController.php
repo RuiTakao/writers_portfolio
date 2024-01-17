@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Controller\Admin\AppController;
 use App\Model\Table\ContactsTable;
+use App\Model\Table\DesignsTable;
 use App\Model\Table\MailFormsTable;
 use App\Model\Table\ProfilesTable;
 use App\Model\Table\SitesTable;
@@ -22,6 +23,7 @@ use Cake\Routing\Router;
  * @property UsersTable $Users
  * @property ProfilesTable $Profiles
  * @property SitesTable $Sites
+ * @property DesignsTable $Designs
  * @property MailFormsTable $MailForms
  * @property ContactsTable $Contacts
  */
@@ -44,6 +46,7 @@ class CreateUsersController extends AppController
         $this->Users = TableRegistry::getTableLocator()->get('Users');
         $this->Profiles = TableRegistry::getTableLocator()->get('Profiles');
         $this->Sites = TableRegistry::getTableLocator()->get('Sites');
+        $this->Designs = TableRegistry::getTableLocator()->get('Designs');
         $this->MailForms = TableRegistry::getTableLocator()->get('MailForms');
         $this->Contacts = TableRegistry::getTableLocator()->get('Contacts');
 
@@ -99,6 +102,59 @@ class CreateUsersController extends AppController
     }
 
     /**
+     * 確認画面
+     * 
+     * @return Response|void|null
+     */
+    public function confirm()
+    {
+
+        // セッションデータが無ければリダイレクト
+        if (!$this->session->check(self::DATA_CREATE_USER)) {
+            return $this->redirect('/');
+        }
+
+        // セッションからデータ取得
+        $session_data = $this->session->read(self::DATA_CREATE_USER);
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            // postの場合
+
+            // セッションデータ削除
+            $this->session->delete(self::DATA_CREATE_USER);
+
+            // ユーザーテーブル更新、認証処理
+            if (!$this->updateUser($session_data)) {
+                return $this->redirect('/');
+            }
+
+            // デフォルトデータセット
+            $this->setDefaultData();
+
+            // 完了画面へリダイレクト
+            return $this->redirect(['action' => 'complete']);
+        }
+
+        // viewに渡すデータセット
+        $this->set('user', $session_data);
+    }
+
+    /**
+     * ユーザー作成完了
+     * 
+     * @return Response|void|null
+     */
+    public function complete()
+    {
+        // viewに渡すデータセット
+        $this->set('user', $this->AuthUser);
+    }
+
+    /**********************************
+     * Private Method
+     **********************************/
+
+     /**
      * ユーザー作成バリデーション
      * 
      * @param UsersTable $entity
@@ -141,78 +197,6 @@ class CreateUsersController extends AppController
     }
 
     /**
-     * 確認画面
-     * 
-     * @return Response|void|null
-     */
-    public function confirm()
-    {
-
-        // セッションデータが無ければリダイレクト
-        if (!$this->session->check(self::DATA_CREATE_USER)) {
-            return $this->redirect('/');
-        }
-
-        // セッションからデータ取得
-        $session_data = $this->session->read(self::DATA_CREATE_USER);
-
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            // postの場合
-
-            // セッションデータ削除
-            $this->session->delete(self::DATA_CREATE_USER);
-
-            // ユーザーテーブル更新、認証処理
-            if (!$this->createUser($session_data)) {
-                return $this->redirect('/');
-            }
-
-            // プロフィールテーブル作成処理
-            if (!$this->createProfile()) {
-                return $this->redirect('/');
-            }
-
-            // サイトテーブル作成処理
-            if (!$this->createSite()) {
-                return $this->redirect('/');
-            }
-
-            // メールフォームテーブル作成処理
-            if (!$this->createMailForms()) {
-                return $this->redirect('/');
-            }
-
-            // お問い合わせフォームテーブル作成処理
-            if (!$this->createContact()) {
-                return $this->redirect('/');
-            }
-
-            // 実績画像保存ディレクトリ作成処理
-            $this->createWork();
-
-            // ユーザー作成に使用したセッションデータ削除
-            $this->session->delete(self::DATA_CREATE_USER);
-
-            // 完了画面へリダイレクト
-            return $this->redirect(['action' => 'complete']);
-        }
-
-        // viewに渡すデータセット
-        $this->set('user', $session_data);
-    }
-
-    /**
-     * ユーザー作成完了
-     * 
-     * @return Response|void|null
-     */
-    public function complete()
-    {
-        // viewに渡すデータセット
-        $this->set('user', $this->AuthUser);
-    }
-
-    /**
      * ユーザーテーブル更新、認証済にする
      * 
      * @param array $data
@@ -221,7 +205,7 @@ class CreateUsersController extends AppController
      * 
      * @throws DatabaseException
      */
-    private function createUser($data)
+    private function updateUser($data)
     {
 
         // ログイン情報からid取得
@@ -264,302 +248,133 @@ class CreateUsersController extends AppController
     }
 
     /**
-     * プロフィールテーブル作成
-     * 
-     * @return bool
-     * 
-     * @throws DatabaseException
-     */
-    private function createProfile()
-    {
-        // トランザクション用の変数用意
-        $connection = $this->Profiles->getConnection();
-
-        $data = [
-            'view_name' => $this->AuthUser->username,
-            'user_id' => $this->AuthUser->id
-        ];
-
-        try {
-
-            // トランザクション開始
-            $connection->begin();
-
-            $profiles = $this->Profiles->newEmptyEntity();
-            $profiles = $this->Profiles->patchEntity($profiles, $data);
-            if ($profiles->getErrors()) {
-                throw new DatabaseException(UsersTable::INVALID_CREATE_USER);
-            }
-
-            // 登録処理
-            $ret = $this->Profiles->save($profiles);
-            if (!$ret) {
-                throw new DatabaseException(UsersTable::INVALID_CREATE_USER);
-            }
-
-            // ユーザープロフィール画像保存用ディレクトリ作成
-            $this->_createDir(WWW_ROOT . 'img/users/profiles/' . $this->AuthUser->username);
-
-            // コミット
-            $connection->commit();
-        } catch (DatabaseException $e) {
-
-            // ロールバック
-            $connection->rollback();
-            $this->session->write('message', $e);
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * サイトテーブル作成
-     * 
-     * @return bool
-     * 
-     * @throws DatabaseException
-     */
-    private function createSite()
-    {
-        // トランザクション用の変数用意
-        $connection = $this->Sites->getConnection();
-
-        $data = [
-            'site_title' => $this->AuthUser->username,
-            'user_id' => $this->AuthUser->id
-        ];
-
-        try {
-
-            // トランザクション開始
-            $connection->begin();
-
-            $sites = $this->Sites->newEmptyEntity();
-            $sites = $this->Sites->patchEntity($sites, $data);
-            if ($sites->getErrors()) {
-                return $this->redirect('/');
-            }
-
-            // 登録処理
-            $ret = $this->Sites->save($sites);
-            if (!$ret) {
-                throw new DatabaseException(UsersTable::INVALID_CREATE_USER);
-            }
-
-            // ファビコン画像保存用ディレクトリ作成
-            $this->_createDir(WWW_ROOT . 'img/users/sites/favicons/' . $this->AuthUser->username);
-
-            // ヘッダー画像保存用ディレクトリ作成
-            $this->_createDir(WWW_ROOT . 'img/users/sites/headers/' . $this->AuthUser->username);
-
-            // ヘッダー画像（モバイルサイズ）保存用ディレクトリ作成
-            $this->_createDir(WWW_ROOT . 'img/users/sites/headers_sp/' . $this->AuthUser->username);
-
-            // コミット
-            $connection->commit();
-        } catch (DatabaseException $e) {
-
-            // ロールバック
-            $connection->rollback();
-            $this->session->write('message', $e);
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * 実績画像保存ディレクトリ作成
+     * デフォルトデータ設定
      * 
      * @return void
      */
-    private function createWork()
+    private function setDefaultData()
     {
-        // 実績画像保存用ディレクトリ作成
-        $path = WWW_ROOT . 'img/users/works/' . $this->AuthUser->username;
-        if (file_exists($path)) {
-            foreach (glob($path . '/*') as $dir) {
-                array_map('unlink', glob($dir . '/*.*'));
-                rmdir($dir);
-            }
-            rmdir($path);
-        }
-        mkdir($path);
-    }
+        $username = $this->AuthUser->username;
 
-    /**
-     * メールフォームテーブル作成
-     * 
-     * @return bool
-     * 
-     * @throws DatabaseException
-     */
-    private function createMailForms()
-    {
-        // トランザクション用の変数用意
-        $connection = $this->MailForms->getConnection();
+        /**
+         * Profiles
+         */
+        // ユーザープロフィール画像保存用ディレクトリ作成
+        $this->_createSingleDir(WWW_ROOT . 'img/users/profiles/' . $username);
 
-        $data = ['user_id' => $this->AuthUser->id];
-
-        try {
-
-            // トランザクション開始
-            $connection->begin();
-
-            $mailForms = $this->MailForms->newEmptyEntity();
-            $mailForms = $this->MailForms->patchEntity($mailForms, $data);
-            if ($mailForms->getErrors()) {
-                return $this->redirect('/');
-            }
-
-            // 登録処理
-            $ret = $this->MailForms->save($mailForms);
-            if (!$ret) {
-                throw new DatabaseException(UsersTable::INVALID_CREATE_USER);
-            }
-
-            // コミット
-            $connection->commit();
-        } catch (DatabaseException $e) {
-
-            // ロールバック
-            $connection->rollback();
-            $this->session->write('message', $e);
-            return false;
+        // プロフィールテーブル作成処理
+        if (!$this->_defaultInsert(['view_name' => $username], $this->Profiles)) {
+            return $this->redirect('/');
         }
 
-        return true;
-    }
+        /**
+         * Sites
+         */
+        // ファビコン画像保存用ディレクトリ作成
+        $this->_createSingleDir(WWW_ROOT . 'img/users/favicon/' . $username);
 
-    /**
-     * お問い合わせテーブル作成
-     * 
-     * @return bool
-     * 
-     * @throws DatabaseException
-     */
-    private function createContact()
-    {
-        // 実績画像保存用ディレクトリ作成
-        $path = WWW_ROOT . 'img/users/contacts/' . $this->AuthUser->username;
-        if (file_exists($path)) {
-            foreach (glob($path . '/*') as $dir) {
-                array_map('unlink', glob($dir . '/*.*'));
-                rmdir($dir);
-            }
-            rmdir($path);
+        // サイトテーブル作成処理
+        if (!$this->_defaultInsert(['site_title' => $username], $this->Sites)) {
+            return $this->redirect('/');
         }
-        mkdir($path);
+
+        /**
+         * Designs
+         */
+        // TOP画像保存用ディレクトリ作成
+        $fv_pc_image_path = WWW_ROOT . 'img/users/fv_pc/' . $username;
+        $this->_createSingleDir($fv_pc_image_path);
+        copy(WWW_ROOT . 'img/fv_default/default1.jpg', $fv_pc_image_path . '/default1.jpg');
+
+        // TOP画像（モバイルサイズ）保存用ディレクトリ作成
+        $this->_createSingleDir(WWW_ROOT . 'img/users/fv_sp/' . $username);
+
+        //デザインテーブル
+        if (!$this->_defaultInsert(['fv_image_path' => 'default1.jpg'], $this->Designs)) {
+            return $this->redirect('/');
+        }
+
+        /**
+         * Works
+         */
+        // 実績画像保存ディレクトリ作成処理
+        $this->_createMultiDir(WWW_ROOT . 'img/users/works/' . $username);
+
+        /**
+         * MailForms
+         */
+        // メールフォームテーブル作成処理
+        if (!$this->_defaultInsert([], $this->MailForms)) {
+            return $this->redirect('/');
+        }
+
+        /**
+         * Contacts
+         */
+        // お問い合わせ画像保存ディレクトリ作成処理
+        $contact_dir_path = WWW_ROOT . 'img/users/contacts/' . $username;
+        $this->_createMultiDir($contact_dir_path);
 
         // お問い合わせテーブルLINE作成
-        if (!$this->CreateContactLine($path)) {
-            return false;
-        }
-
-        // お問い合わせテーブルその他作成
-        if (!$this->CreateContactOther($path)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * お問い合わせテーブルLINE作成
-     * 
-     * @param string $path 画像保存パス
-     * 
-     * @return bool
-     * 
-     * @throws DatabaseException
-     */
-    private function CreateContactLine($path)
-    {
-        // トランザクション用の変数用意
-        $connection = $this->Contacts->getConnection();
-
         $data = [
             'title' => 'LINE',
             'overview' => 'LINEお問い合わせについての説明',
             'url_name' => 'LINEリンク',
             'url_path' => Router::url('/'),
             'image_path' => 'line_qr.jpg',
-            'contacts_order' => 1,
-            'user_id' => $this->AuthUser->id
+            'contacts_order' => 1
         ];
-
-        try {
-
-            // トランザクション開始
-            $connection->begin();
-
-            $contacts = $this->Contacts->newEmptyEntity();
-            $contacts = $this->Contacts->patchEntity($contacts, $data);
-            if ($contacts->getErrors()) {
-                return false;
-            }
-
-            // 登録処理
-            $ret = $this->Contacts->save($contacts);
-            if (!$ret) {
-                throw new DatabaseException(UsersTable::INVALID_CREATE_USER);
-            }
-
-            // コミット
-            $connection->commit();
-        } catch (DatabaseException $e) {
-
-            // ロールバック
-            $connection->rollback();
-            $this->session->write('message', $e);
-            return false;
+        $ret = $this->_defaultInsert($data, $this->Contacts);
+        if (!$ret) {
+            return $this->redirect('/');
         }
+        $this->_createSingleDir($contact_dir_path . '/' . $ret->id);
+        copy(WWW_ROOT . 'img/contact/line_qr.jpg', $contact_dir_path . '/' . $ret->id . '/line_qr.jpg');
 
-        $this->_createDir($path . '/' . $ret->id);
-        copy(WWW_ROOT . 'img/contact/line_qr.jpg', $path . '/' . $ret->id . '/line_qr.jpg');
-
-        return true;
-    }
-
-    /**
-     * お問い合わせテーブルその他作成
-     * 
-     * @param string $path 画像保存パス
-     * 
-     * @return bool
-     * 
-     * @throws DatabaseException
-     */
-    private function CreateContactOther($path)
-    {
-
-        // トランザクション用の変数用意
-        $connection = $this->Contacts->getConnection();
-
+        // お問い合わせテーブルその他作成
         $data = [
             'title' => 'その他お問い合わせ',
             'overview' => 'メルマガ等、お問い合わせを設定してください',
             'url_name' => 'お問い合わせリンク',
             'url_path' => Router::url('/'),
             'image_path' => 'contact_img.jpg',
-            'contacts_order' => 2,
-            'user_id' => $this->AuthUser->id
+            'contacts_order' => 2
         ];
+        $ret = $this->_defaultInsert($data, $this->Contacts);
+        if (!$ret) {
+            return $this->redirect('/');
+        }
+        $this->_createSingleDir($contact_dir_path . '/' . $ret->id);
+        copy(WWW_ROOT . 'img/contact/contact_img.jpg', $contact_dir_path . '/' . $ret->id . '/contact_img.jpg');
+    }
+
+    /**
+     * テーブル作成
+     * 
+     * @param array $data
+     * @param object $entity
+     * 
+     * @return object|bool
+     * 
+     * @throws DatabaseException
+     */
+    private function _defaultInsert($data, $entity)
+    {
+        // トランザクション用の変数用意
+        $connection = $entity->getConnection();
 
         try {
 
             // トランザクション開始
             $connection->begin();
 
-            $contacts = $this->Contacts->newEmptyEntity();
-            $contacts = $this->Contacts->patchEntity($contacts, $data);
-            if ($contacts->getErrors()) {
-                return false;
+            $set_entity = $entity->patchEntity($entity->newEmptyEntity(), array_merge($data, ['user_id' => $this->AuthUser->id]));
+            if ($set_entity->getErrors()) {
+                return $this->redirect('/');
             }
 
             // 登録処理
-            $ret = $this->Contacts->save($contacts);
+            $ret = $entity->save($set_entity);
             if (!$ret) {
                 throw new DatabaseException(UsersTable::INVALID_CREATE_USER);
             }
@@ -574,22 +389,39 @@ class CreateUsersController extends AppController
             return false;
         }
 
-        $this->_createDir($path . '/' . $ret->id);
-        copy(WWW_ROOT . 'img/contact/contact_img.jpg', $path . '/' . $ret->id . '/contact_img.jpg');
-
-        return true;
+        return $ret;
     }
 
     /**
-     * ディレクトリ作成
+     * 単一ディレクトリ作成
      * 
      * @param string $path
+     * 
      * @return void 
      */
-    private function _createDir($path)
+    private function _createSingleDir($path)
     {
         if (file_exists($path)) {
             array_map('unlink', glob($path . '/*.*'));
+            rmdir($path);
+        }
+        mkdir($path);
+    }
+
+    /**
+     * 複数ディレクトリ作成
+     * 
+     * @param string $path
+     * 
+     * @return void 
+     */
+    private function _createMultiDir($path)
+    {
+        if (file_exists($path)) {
+            foreach (glob($path . '/*') as $dir) {
+                array_map('unlink', glob($dir . '/*.*'));
+                rmdir($dir);
+            }
             rmdir($path);
         }
         mkdir($path);

@@ -1,5 +1,6 @@
 <?php
 
+use App\Model\Table\DesignsTable;
 use Cake\I18n\FrozenTime;
 ?>
 <!DOCTYPE html>
@@ -12,57 +13,41 @@ use Cake\I18n\FrozenTime;
         <link rel="icon" href="<?= $this->Url->image($favicon) ?>">
     <?php endif; ?>
     <meta name="description" content="<?= h($site->site_description) ?>">
-    <?= $this->Html->css(['all.min', 'portfolios']) ?>
-    <?php if (!empty($header_image)) : ?>
+    <?= $this->Html->css(['all.min', 'portfolios', 'fv/pattern' . $design->fv_design]) ?>
+    <?php if (!empty($fv_image_pc)) : ?>
+        <?php
+        if (in_array($design->fv_design, DesignsTable::FV_DESIGN_SETTING_PERMISSION)) {
+            $background_position_pc = $design->fv_image_positionX . '% ' . $design->fv_image_positionY . '%';
+            $background_position_sp = $design->fv_image_sp_positionX    . '% ' . $design->fv_image_sp_positionY . '%';
+        } else {
+            $background_position_pc = 'center';
+            $background_position_sp = 'center';
+        }
+        ?>
         <style>
-            .fv_bg_cover {
-                background: #fff;
-                opacity: <?= $site->header_image_opacity . '%' ?>;
+            .fv_bg {
+                background-image: url('<?= $this->Url->image($fv_image_pc) ?>');
+                background-position: <?= $background_position_pc ?>;
             }
 
-            .fv_bg {
-                background-image: url('<?= $this->Url->image($header_image) ?>');
-                background-position: <?= $site->header_image_positionX . '% ' . $site->header_image_positionY . '%' ?>;
-            }
-        </style>
-        <?php if (!empty($header_image_sp)) : ?>
-            <style>
-                @media screen and (max-width: 640px) {
-                    .fv_bg {
-                        background-image: url('<?= $this->Url->image($header_image_sp) ?>');
-                        background-position: <?= $site->header_image_sp_positionX . '% ' . $site->header_image_sp_positionY . '%' ?>;
-                    }
+            <?php if (!empty($fv_image_sp)) : ?>@media screen and (max-width: 640px) {
+                .fv_bg {
+                    background-image: url('<?= $this->Url->image($fv_image_sp) ?>');
+                    background-position: <?= $background_position_sp ?>;
                 }
-            </style>
-        <?php endif; ?>
+            }
+
+            <?php endif; ?>
+        </style>
     <?php endif; ?>
     <title><?= h($site->site_title) ?></title>
 </head>
 
 <body>
     <main class="main">
-        <div class="fv">
-            <div class="fv_bg_cover"></div>
-            <div class="fv_bg"></div>
-            <div class="fv_container">
-                <div class="fv_user_icon">
-                    <?php if (!empty($profile_image)) : ?>
-                        <?= $this->Html->image($profile_image) ?>
-                    <?php else : ?>
-                        <i class="fa-solid fa-user"></i>
-                    <?php endif; ?>
-                </div>
-                <div class="fv_user_content">
-                    <p class="fv_user_name"><?= h($profile->view_name) ?></p>
-                    <p class="fv_user_works"><?= h($profile->works) ?></p>
-                </div>
-            </div>
-        </div>
-        <div class="pr">
-            <div class="container">
-                <div class="pr_content"><?= !empty($profile->profile_text) ? nl2br(h($profile->profile_text)) : '' ?></div>
-            </div>
-        </div>
+
+        <?php /* ファーストビュー */ ?>
+        <?= $this->element('fv/pattern' . $design->fv_design) ?>
 
         <?php /* 経歴 */ ?>
         <?php if ($site->histories_flg) : ?>
