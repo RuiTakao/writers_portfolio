@@ -1,5 +1,4 @@
 <div class="fv">
-    <div class="fv_bg_cover"></div>
     <div class="fv_bg"></div>
     <div class="fv_container">
         <div class="fv_user_icon">
@@ -9,11 +8,11 @@
                 <i class="fa-solid fa-user"></i>
             <?php endif; ?>
         </div>
-        <div class="fv_user_content">
-            <p class="fv_user_name"><?= h($profile->view_name) ?></p>
-            <p class="fv_user_works"><?= h($profile->works) ?></p>
-        </div>
     </div>
+</div>
+<div class="container">
+    <p class="fv_user_name"><?= h($profile->view_name) ?></p>
+    <p class="fv_user_works"><?= h($profile->works) ?></p>
 </div>
 
 <div class="pr">

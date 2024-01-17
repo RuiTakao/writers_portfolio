@@ -25,11 +25,6 @@ use Cake\I18n\FrozenTime;
         }
         ?>
         <style>
-            .fv_bg_cover {
-                background: #fff;
-                opacity: 60%;
-            }
-
             .fv_bg {
                 background-image: url('<?= $this->Url->image($fv_image_pc) ?>');
                 background-position: <?= $background_position_pc ?>;

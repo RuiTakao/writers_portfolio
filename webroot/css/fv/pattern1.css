@@ -17,17 +17,6 @@
     z-index: 1;
 }
 
-.fv_bg_cover {
-    height: 400px;
-    position: absolute;
-    width: 100%;
-    top: 0;
-    left: 0;
-    background-image: linear-gradient(45deg, #fff 25%, #eee 25%, #eee 50%, #fff 50%, #fff 75%, #eee 75%, #eee);
-    background-size: 32px 32px;
-    z-index: 2;
-}
-
 .fv_container {
     position: absolute;
     max-width: 768px;
@@ -36,9 +25,6 @@
     left: 50%;
     transform: translateX(-50%);
     z-index: 3;
-    display: flex;
-    align-items: center;
-    gap: 32px;
 }
 
 .fv_user_icon {
@@ -63,16 +49,17 @@
 }
 
 .fv_user_name {
+    margin-top: 32px;
     font-size: 32px;
     color: #333;
     font-weight: 600;
 }
 
 .fv_user_works {
-    font-size: 24px;
+    font-size: 22px;
     color: #333;
     font-weight: 600;
-    margin-top: 8px;
+    margin-top: 4px;
 }
 
 @media screen and (max-width:960px) {
@@ -129,7 +116,7 @@
 	自己PR
 *********************************/
 .pr {
-    margin-top: 64px;
+    margin-top: 32px;
 }
 
 .pr_content {
