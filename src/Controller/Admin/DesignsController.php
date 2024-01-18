@@ -123,6 +123,12 @@ class DesignsController extends AppController
             // requestデータ取得
             $data = $this->request->getData();
 
+            // 選択されていない場合は何もせずリダイレクト
+            if (empty($data['default_image'])) {
+                $this->session->write('message', Configure::read('alert_message.complete'));
+                return $this->redirect(['action' => 'index']);
+            }
+
             $image = 'default' . $data['default_image'] . '.jpg';
             $data = ['fv_image_path' => $image];
 
