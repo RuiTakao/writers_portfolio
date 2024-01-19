@@ -29,5 +29,6 @@
 <?= $this->Form->submit('確定する', ['class' => 'button']); ?>
 <?= $this->Form->end() ?>
 <?= $this->Html->link('修正する', ['action' => 'create'], ['class' => 'button back']) ?>
+<?= $this->Html->link('ユーザー作成を終了する', ['controller' => 'users', 'action' => 'logout'], ['class' => 'button back', 'onClick' => 'return createUserEnd();']) ?>
 </div>
 </main>

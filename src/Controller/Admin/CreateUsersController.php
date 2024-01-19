@@ -97,8 +97,16 @@ class CreateUsersController extends AppController
             return $this->redirect(['action' => 'confirm']);
         }
 
+        if ($this->session->check(self::DATA_CREATE_USER)) {
+            $username = $this->session->read(self::DATA_CREATE_USER)['username'];
+            $this->session->delete(self::DATA_CREATE_USER);
+        } else {
+            $username = null;
+        }
+
         // viewに渡すデータセット
         $this->set('user', $user);
+        $this->set('username', $username);
     }
 
     /**
@@ -154,7 +162,7 @@ class CreateUsersController extends AppController
      * Private Method
      **********************************/
 
-     /**
+    /**
      * ユーザー作成バリデーション
      * 
      * @param UsersTable $entity
