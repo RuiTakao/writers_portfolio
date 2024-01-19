@@ -104,6 +104,15 @@ aside a {
 main {
     background: #F0F0F1;
 }
+/*********************************
+	require
+*********************************/
+.req {
+    background: #DC3545;
+    color: #fff;
+    padding: 0 4px;
+    border-radius: 4px;
+}
 
 /*********************************
 	flex item

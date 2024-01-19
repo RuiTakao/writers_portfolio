@@ -49,6 +49,16 @@
         }
     }
 
+    <?php /* ユーザー作成終了 */ ?>
+
+    function createUserEnd() {
+        if (confirm(`ユーザー作成を終了しますか？`)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     <?php if ($session->read('message')) : ?>
         <?php /* 処理結果通知モーダル */ ?>
         window.onload = () => alert('<?= $session->read('message') ?>');

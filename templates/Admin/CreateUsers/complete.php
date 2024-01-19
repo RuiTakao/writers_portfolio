@@ -20,5 +20,5 @@
 <p class="confirm_text">ポートフォリオアドレス：<span><?= $_SERVER['SERVER_NAME'] . '/' . $user['username'] ?></span></p>
 <p class="confirm_text">パスワード：<span>・・・・・・</span></p>
 
-<p>再度ログインしてください</p>
+<p class="caution_text">再度ログインしてください</p>
 <?= $this->Html->link('ログイン画面へ', ['controller' => 'Users', 'action' => 'logout'], ['class' => 'button back', 'style' => 'margin-top: 4px;']) ?>
