@@ -77,6 +77,15 @@ class CreateUsersController extends AppController
         // 空のエンティティ作成
         $user = $this->Users->newEmptyEntity();
 
+        // 確認画面からの戻りの場合
+        $username = null;
+        if (
+            strpos($this->referer(), '/create-users/confirm') !== false &&
+            $this->session->check(self::DATA_CREATE_USER)
+        ) {
+            $username = $this->session->read(self::DATA_CREATE_USER)['username'];
+        }
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             // postの場合
 
@@ -89,19 +98,13 @@ class CreateUsersController extends AppController
             // バリデーション処理
             if ($this->create_validate($user, $data)) {
                 $this->set('user', $user);
+                $this->set('username', $data['username']);
                 return;
             }
 
             // セッションにデータ保持し確認画面へ遷移
             $this->session->write(self::DATA_CREATE_USER, $data);
             return $this->redirect(['action' => 'confirm']);
-        }
-
-        if ($this->session->check(self::DATA_CREATE_USER)) {
-            $username = $this->session->read(self::DATA_CREATE_USER)['username'];
-            $this->session->delete(self::DATA_CREATE_USER);
-        } else {
-            $username = null;
         }
 
         // viewに渡すデータセット
@@ -150,7 +153,7 @@ class CreateUsersController extends AppController
     /**
      * ユーザー作成完了
      * 
-     * @return Response|void|null
+     * @return void
      */
     public function complete()
     {
@@ -185,6 +188,9 @@ class CreateUsersController extends AppController
         } elseif (!preg_match("/^[a-zA-Z0-9]+$/", $data['username'])) {
             $entity->setError('username', ['ユーザー名は半角英数字のみで入力してください。']);
             $error_count++;
+        } elseif (mb_strlen($data['username']) > 10) {
+            $entity->setError('username', ['ユーザー名は10字以内で入力してください。']);
+            $error_count++;
         }
 
         if ($data['password'] == '') {
@@ -198,6 +204,9 @@ class CreateUsersController extends AppController
             $error_count++;
         } elseif (!preg_match("/^[ -~]+$/", $data['password'])) {
             $entity->setError('password', ['パスワードは半角記号英数字のみで入力してください。']);
+            $error_count++;
+        } elseif (mb_strlen($data['password']) > 100) {
+            $entity->setError('password', ['パスワードは100字以内で入力してください。']);
             $error_count++;
         }
 
