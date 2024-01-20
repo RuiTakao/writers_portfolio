@@ -41,7 +41,7 @@ if (empty($design->fv_image_path)) {
 
 <?php /* form */ ?>
 <?= $this->Form->create($design, [
-    'url' => ['controller' => 'Designs', 'action' => 'editFvImagePc'],
+    'url' => ['controller' => 'Designs', 'action' => 'editFvImagePcUpload'],
     'type' => 'file',
     'onSubmit' => 'return checkEdit()'
 ]) ?>
