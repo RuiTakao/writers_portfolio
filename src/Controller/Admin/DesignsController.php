@@ -6,18 +6,26 @@ namespace App\Controller\Admin;
 
 use App\Controller\Admin\AppController;
 use App\Model\Table\DesignsTable;
+use App\Model\Table\ProfilesTable;
 use Cake\Core\Configure;
 use Cake\Database\Exception\DatabaseException;
+use Cake\Http\Client\Response;
 use Cake\ORM\TableRegistry;
 
 /**
  * Designs Controller
  *
+ * @property DesignsTable $Designs
+ * @property ProfilesTable $Profiles
+ * 
  * @method \App\Model\Entity\Design[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class DesignsController extends AppController
 {
 
+    /**
+     * @return void
+     */
     public function initialize(): void
     {
         parent::initialize();
@@ -31,9 +39,9 @@ class DesignsController extends AppController
     }
 
     /**
-     * Index method
+     * デザイン設定画面表示
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void
      */
     public function index()
     {
@@ -47,6 +55,11 @@ class DesignsController extends AppController
         $this->set('top_layout', $top_layout);
     }
 
+    /**
+     * TOPのレイアウト設定画面
+     * 
+     * @return Response|null|void
+     */
     public function editFvDesign()
     {
         // ログインidからデータ取得
@@ -98,20 +111,40 @@ class DesignsController extends AppController
         $this->set('design', $design);
     }
 
+    /**
+     * TOP画像(PC)設定画面
+     * 
+     * @return void
+     */
     public function editFvImagePc()
     {
     }
 
+    /**
+     * TOP画像(SP)設定画面＆アップロード画面
+     * 
+     * @return Response|null|void
+     */
     public function editFvImageSp()
     {
         return $this->editFvImage('fv_image_sp_path', DesignsTable::ROOT_FV_IMAGE_SP_PATH);
     }
 
+    /**
+     * TOP画像(PC)アップロード画面
+     * 
+     * @return Response|null|void
+     */
     public function editFvImagePcUpload()
     {
         return $this->editFvImage('fv_image_path', DesignsTable::ROOT_FV_IMAGE_PC_PATH);
     }
 
+    /**
+     * TOP画像(PC)デフォルト画像選択画面
+     * 
+     * @return Response|null|void
+     */
     public function editFvImagePcSelect()
     {
         // ログインidからデータ取得
@@ -184,16 +217,38 @@ class DesignsController extends AppController
         $this->set('design', $design);
     }
 
+    /**
+     * TOP画像(PC)画像の調整画面
+     * 
+     * @return void
+     */
     public function settingFvImagePc()
     {
         return $this->settingFvImage();
     }
 
+    /**
+     * TOP画像(SP)画像の調整画面
+     * 
+     * @return void
+     */
     public function settingFvImageSp()
     {
         return $this->settingFvImage();
     }
 
+    /**********************************
+     * Private Method
+     **********************************/
+
+    /**
+     * 画像の設定画面
+     * 
+     * @param string $column カラム名
+     * @param string $root_path 画像保存先のパス
+     * 
+     * @return Response|null|void
+     */
     private function editFvImage($column, $root_path)
     {
         // ログインidからデータ取得
@@ -282,6 +337,11 @@ class DesignsController extends AppController
         $this->set('design', $design);
     }
 
+    /**
+     * TOP画像画像の調整画面
+     * 
+     * @return void
+     */
     private function settingFvImage()
     {
         $this->viewBuilder()->disableAutoLayout();
