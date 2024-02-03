@@ -136,3 +136,25 @@
     padding: 16px;
     width: 75%;
 }
+
+/*********************************
+	responsive
+*********************************/
+
+@media screen and (max-width: 768px) {
+    .aside {
+        display: none;
+    }
+
+    .main {
+        padding-left: 0px;
+    }
+
+    .page_content {
+        width: 100%;
+    }
+
+    .header_nav_list {
+        display: none;
+    }
+}

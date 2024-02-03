@@ -39,3 +39,34 @@
     font-size: 24px;
     font-weight: 600;
 }
+
+/*********************************
+	responsive
+*********************************/
+
+@media screen and (max-width: 768px) {
+    .flex {
+        display: block;
+    }
+
+    .flex_right {
+        width: 100%;
+        margin-top: 32px;
+    }
+    
+    .adjust_padding {
+        padding-bottom: 0;
+    }
+
+    .current_content_title {
+        margin-top: 64px;
+    }
+
+    .fz32 {
+        font-size: 22px;
+    }
+
+    .ml32 {
+        margin-left: 16px;
+    }
+}
