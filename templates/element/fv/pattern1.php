@@ -11,12 +11,12 @@
     </div>
 </div>
 <div class="container">
-    <p class="fv_user_name"><?= h($profile->view_name) ?></p>
-    <p class="fv_user_works"><?= h($profile->works) ?></p>
+    <p class="fv_user_name"><?= h($user->profile->view_name) ?></p>
+    <p class="fv_user_works"><?= h($user->profile->works) ?></p>
 </div>
 
 <div class="pr">
     <div class="container">
-        <div class="pr_content"><?= !empty($profile->profile_text) ? nl2br(h($profile->profile_text)) : '' ?></div>
+        <div class="pr_content"><?= !empty($user->profile->profile_text) ? nl2br(h($user->profile->profile_text)) : '' ?></div>
     </div>
 </div>

@@ -53,9 +53,20 @@ class UsersTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->hasMany('Profiles', [
-            'foreignKey' => 'user_id',
-        ]);
+        $this->hasOne('Profiles')
+            ->setClassName('Profiles')
+            ->setForeignKey('user_id')
+            ->setJoinType('LEFT');
+
+        $this->hasOne('Sites')
+            ->setClassName('Sites')
+            ->setForeignKey('user_id')
+            ->setJoinType('LEFT');
+
+        $this->hasOne('Designs')
+            ->setClassName('Designs')
+            ->setForeignKey('user_id')
+            ->setJoinType('LEFT');
     }
 
     /**

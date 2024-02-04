@@ -56,7 +56,11 @@ class PortfoliosController extends AppController
     {
         $this->viewBuilder()->disableAutoLayout();
 
-        $user = $this->Users->find('all', ['conditions' => ['username' => $username]])->first();
+        $user = $this->Users
+            ->find()
+            ->contain(['Profiles', 'Sites', 'Designs'])
+            ->where(['username' => $username])
+            ->first();
 
         if (is_null($user) || $user->autherized_flg == 0) {
             return $this->redirect('/');
@@ -74,12 +78,6 @@ class PortfoliosController extends AppController
         //     return $this->redirect(['action' => 'index', $username]);
         // }
 
-        $profile = $this->Profiles->find('all', ['conditions' => ['user_id' => $user->id]])->first();
-
-        $site = $this->Sites->find('all', ['conditions' => ['user_id' => $user->id]])->first();
-
-        $design = $this->Designs->find('all', ['conditions' => ['user_id' => $user->id]])->first();
-
         $mailForms = $this->MailForms->find('all', ['conditions' => ['user_id' => $user->id]])->first();
 
         $histories = $this->Histories->find('all', ['conditions' => ['user_id' => $user->id]])->order(['history_order' => 'asc']);
@@ -91,20 +89,17 @@ class PortfoliosController extends AppController
         $contacts = $this->Contacts->find('all', ['conditions' => ['user_id' => $user->id]])->order(['contacts_order' => 'asc']);
 
         // viewに渡すデータセット
-        $this->set('profile', $profile);
-        $this->set('site', $site);
-        $this->set('design', $design);
+        $this->set('user', $user);
         $this->set('histories', $histories);
         $this->set('works', $works);
         $this->set('others', $others);
         $this->set('contacts', $contacts);
         $this->set('mailForms', $mailForms);
-        $this->set('username', $username);
         // 画像のパス
-        $this->set('profile_image', $this->profile_image($profile, $username));
-        $this->set('favicon', $this->favicon($site, $username));
-        $this->set('fv_image_pc', $this->fv_image_pc($design, $username));
-        $this->set('fv_image_sp', $this->fv_image_sp($design, $username));
+        $this->set('profile_image', $this->profile_image($user->profile, $username));
+        $this->set('favicon', $this->favicon($user->site, $username));
+        $this->set('fv_image_pc', $this->fv_image_pc($user->design, $username));
+        $this->set('fv_image_sp', $this->fv_image_sp($user->design, $username));
         $this->set('works_image_path', WorksTable::WORKS_IMAGE_PATH);
         $this->set('root_works_image_path', WorksTable::ROOT_WORKS_IMAGE_PATH);
         $this->set('contacts_image_path', ContactsTable::WORKS_IMAGE_PATH);

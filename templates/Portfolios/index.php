@@ -12,13 +12,13 @@ use Cake\I18n\FrozenTime;
     <?php if (!is_null($favicon)) : ?>
         <link rel="icon" href="<?= $this->Url->image($favicon) ?>">
     <?php endif; ?>
-    <meta name="description" content="<?= h($site->site_description) ?>">
-    <?= $this->Html->css(['all.min', 'portfolios', 'fv/pattern' . $design->fv_design]) ?>
+    <meta name="description" content="<?= h($user->site->site_description) ?>">
+    <?= $this->Html->css(['all.min', 'portfolios', 'fv/pattern' . $user->design->fv_design]) ?>
     <?php if (!empty($fv_image_pc)) : ?>
         <?php
-        if (in_array($design->fv_design, DesignsTable::FV_DESIGN_SETTING_PERMISSION)) {
-            $background_position_pc = $design->fv_image_positionX . '% ' . $design->fv_image_positionY . '%';
-            $background_position_sp = $design->fv_image_sp_positionX    . '% ' . $design->fv_image_sp_positionY . '%';
+        if (in_array($user->design->fv_design, DesignsTable::FV_DESIGN_SETTING_PERMISSION)) {
+            $background_position_pc = $user->design->fv_image_positionX . '% ' . $user->design->fv_image_positionY . '%';
+            $background_position_sp = $user->design->fv_image_sp_positionX    . '% ' . $user->design->fv_image_sp_positionY . '%';
         } else {
             $background_position_pc = 'center';
             $background_position_sp = 'center';
@@ -40,20 +40,20 @@ use Cake\I18n\FrozenTime;
             <?php endif; ?>
         </style>
     <?php endif; ?>
-    <title><?= h($site->site_title) ?></title>
+    <title><?= h($user->site->site_title) ?></title>
 </head>
 
 <body>
     <main class="main">
 
         <?php /* ファーストビュー */ ?>
-        <?= $this->element('fv/pattern' . $design->fv_design) ?>
+        <?= $this->element('fv/pattern' . $user->design->fv_design) ?>
 
         <?php /* 経歴 */ ?>
-        <?php if ($site->histories_flg) : ?>
+        <?php if ($user->site->histories_flg) : ?>
             <div class="career section">
                 <div class="container">
-                    <h2 class="section_title"><?= $site->histories_title ?></h2>
+                    <h2 class="section_title"><?= $user->site->histories_title ?></h2>
                     <ul class="career_list">
 
                         <?php foreach ($histories as $history) : ?>
@@ -85,10 +85,10 @@ use Cake\I18n\FrozenTime;
         <?php endif; ?>
 
         <?php /* 実績 */ ?>
-        <?php if ($site->works_flg) : ?>
+        <?php if ($user->site->works_flg) : ?>
             <div class="works section">
                 <div class="container">
-                    <h2 class="section_title"><?= $site->works_title ?></h2>
+                    <h2 class="section_title"><?= $user->site->works_title ?></h2>
                     <ul class="works_content_list">
 
                         <?php foreach ($works as $work) : ?>
@@ -98,7 +98,7 @@ use Cake\I18n\FrozenTime;
                                 <h3 class="content_title"><?= h($work->title) ?></h3>
 
                                 <?php /* 画像パス */ ?>
-                                <?php $path = $username . '/' . $work->id . '/' . $work->image_path; ?>
+                                <?php $path = $user->username . '/' . $work->id . '/' . $work->image_path; ?>
                                 <?php if (!is_null($work->image_path) && $work->image_path != '' && file_exists($root_works_image_path . $path)) : ?>
                                     <div class="works_content_image"><?= $this->Html->image($works_image_path . $path) ?></div>
                                 <?php endif; ?>
@@ -117,10 +117,10 @@ use Cake\I18n\FrozenTime;
         <?php endif; ?>
 
         <?php /* その他 */ ?>
-        <?php if ($site->others_flg) : ?>
+        <?php if ($user->site->others_flg) : ?>
             <div class="work_style section">
                 <div class="container">
-                    <h2 class="section_title"><?= $site->others_title ?></h2>
+                    <h2 class="section_title"><?= $user->site->others_title ?></h2>
                     <div class="work_style_content">
 
                         <?php foreach ($others as $other) : ?>
@@ -142,10 +142,10 @@ use Cake\I18n\FrozenTime;
         <?php endif; ?>
 
         <?php /* お問い合わせ */ ?>
-        <?php if ($site->contacts_flg) : ?>
+        <?php if ($user->site->contacts_flg) : ?>
             <div class="contacts section">
                 <div class="container">
-                    <h2 class="section_title"><?= h($site->contacts_title) ?></h2>
+                    <h2 class="section_title"><?= h($user->site->contacts_title) ?></h2>
                     <ul class="contacts_content_list">
 
                         <?php foreach ($contacts as $contact) : ?>
@@ -155,7 +155,7 @@ use Cake\I18n\FrozenTime;
                                 <h3 class="content_title"><?= h($contact->title) ?></h3>
 
                                 <?php /* 画像パス */ ?>
-                                <?php $path = $username . '/' . $contact->id . '/' . $contact->image_path; ?>
+                                <?php $path = $user->username . '/' . $contact->id . '/' . $contact->image_path; ?>
                                 <?php if (!is_null($contact->image_path) && $contact->image_path != '' && file_exists($root_contacts_image_path . $path)) : ?>
                                     <div class="contacts_content_image"><?= $this->Html->image($contacts_image_path . $path) ?></div>
                                 <?php endif; ?>
@@ -171,7 +171,7 @@ use Cake\I18n\FrozenTime;
                         <?php if ($mailForms->view_mail_form) : ?>
                             <li class="contacts_content_item">
                                 <h3 class="content_title">お問い合わせフォーム</h3>
-                                <?= $this->Form->create(null, ['url' => ['controller' => 'Portfolios', 'action' => 'index', $username]]) ?>
+                                <?= $this->Form->create(null, ['url' => ['controller' => 'Portfolios', 'action' => 'index', $user->username]]) ?>
                                 <?= $this->Form->control('name', ['label' => '名前']) ?>
                                 <?= $this->Form->control('email', ['label' => 'メールアドレス']) ?>
                                 <?= $this->Form->control('content', ['type' => 'textarea', 'label' => 'お問い合わせ内容']) ?>

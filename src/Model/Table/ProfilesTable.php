@@ -57,15 +57,9 @@ class ProfilesTable extends Table
         parent::initialize($config);
 
         $this->setTable('profiles');
-        $this->setDisplayField('view_name');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
-
-        $this->belongsTo('Users', [
-            'foreignKey' => 'user_id',
-            'joinType' => 'INNER',
-        ]);
     }
 
     /**

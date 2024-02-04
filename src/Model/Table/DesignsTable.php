@@ -87,13 +87,7 @@ class DesignsTable extends Table
         parent::initialize($config);
 
         $this->setTable('designs');
-        $this->setDisplayField('id');
         $this->setPrimaryKey('id');
-
-        $this->belongsTo('Users', [
-            'foreignKey' => 'user_id',
-            'joinType' => 'INNER',
-        ]);
     }
 
     /**
